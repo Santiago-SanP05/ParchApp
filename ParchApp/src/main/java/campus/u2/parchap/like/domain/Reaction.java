@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -22,28 +23,28 @@ import java.util.Date;
  * @author kevin
  */
 @Entity
-public class Like {
+public class Reaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLike;
     
     @ManyToOne
     @JoinColumn(name = "idUser")
-    private User likeUser;
+    private User userLike;
     
     @ManyToOne
     @JoinColumn(name = "idPost")
     private Post likePost;
     
-    @Temporal(TemporalType.DATE)
-    private Date publication_date;
+    
+    private LocalDateTime publication_date;
 
-    public Like() {
+    public Reaction() {
     }
 
-    public Like(Long idLike, User likeUser, Post likePost, Date publication_date) {
+    public Reaction(Long idLike, User userLike, Post likePost, LocalDateTime publication_date) {
         this.idLike = idLike;
-        this.likeUser = likeUser;
+        this.userLike = userLike;
         this.likePost = likePost;
         this.publication_date = publication_date;
     }
@@ -57,11 +58,11 @@ public class Like {
     }
 
     public User getLikeUser() {
-        return likeUser;
+        return userLike;
     }
 
-    public void setLikeUser(User likeUser) {
-        this.likeUser = likeUser;
+    public void setLikeUser(User userLike) {
+        this.userLike = userLike;
     }
 
     public Post getLikePost() {
@@ -72,11 +73,11 @@ public class Like {
         this.likePost = likePost;
     }
 
-    public Date getPublication_date() {
+    public LocalDateTime getPublication_date() {
         return publication_date;
     }
 
-    public void setPublication_date(Date publication_date) {
+    public void setPublication_date(LocalDateTime publication_date) {
         this.publication_date = publication_date;
     }
     

@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -29,7 +30,7 @@ public class Comment {
     
     @ManyToOne
     @JoinColumn(name = "idUser")
-    private User commentUser;
+    private User userComment;
     
     @ManyToOne
     @JoinColumn(name = "idPost")
@@ -37,13 +38,13 @@ public class Comment {
     
     private String text;
     
-    @Temporal(TemporalType.DATE)
-    private Date publicationDate;
+    
+    private LocalDateTime publicationDate;
 
     public Comment() {
     }
 
-    public Comment(String text, Date publicationDate) {
+    public Comment(String text, LocalDateTime publicationDate) {
         this.text = text;
         this.publicationDate = publicationDate;
     }
@@ -57,11 +58,11 @@ public class Comment {
     }
 
     public User getCommentUser() {
-        return commentUser;
+        return userComment;
     }
 
-    public void setCommentUser(User commentUser) {
-        this.commentUser = commentUser;
+    public void setCommentUser(User userComment) {
+        this.userComment = userComment;
     }
 
     public Post getCommentPost() {
@@ -80,11 +81,11 @@ public class Comment {
         this.text = text;
     }
 
-    public Date getPublicationDate() {
+    public LocalDateTime getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(LocalDateTime publicationDate) {
         this.publicationDate = publicationDate;
     }
 

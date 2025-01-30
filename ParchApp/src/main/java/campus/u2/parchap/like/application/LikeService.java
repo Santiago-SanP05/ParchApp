@@ -4,7 +4,7 @@
  */
 package campus.u2.parchap.like.application;
 
-import campus.u2.parchap.like.domain.Like;
+import campus.u2.parchap.like.domain.Reaction;
 import java.util.List;
 
 /**
@@ -12,11 +12,11 @@ import java.util.List;
  * @author kevin
  */
 public interface LikeService {
-    List<Like> getAllTypeMaintenance();
+    List<Reaction> getAllTypeMaintenance();
 
-    Like getTypeMaintenanceById(Long id);
+    Reaction getTypeMaintenanceById(Long id);
 
-    Like saveTypeMaintenance(Like like);
+    Reaction saveTypeMaintenance(Reaction like);
 
     void deleteTypeMaintenance(Long id);
 }

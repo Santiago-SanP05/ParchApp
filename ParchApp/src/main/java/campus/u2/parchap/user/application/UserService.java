@@ -12,11 +12,11 @@ import java.util.List;
  * @author kevin
  */
 public interface UserService {
-    List<User> getAllTypeMaintenance();
+    List<User> getAllUser();
 
-    User getTypeMaintenanceById(Long id);
+    User getUserById(Long id);
 
-    User saveTypeMaintenance(User user);
+    User saveUser(User user);
 
-    void deleteTypeMaintenance(Long id);
+    void deleteUser(Long id);
 }

@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -28,27 +29,27 @@ public class Follower {
     
     private Long idFollower;
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idFollower")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "followerId")
     private User userFollower;
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idFollowed")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "followedId")
     private User userFollowed;
     
-    @Temporal(TemporalType.DATE)
-    private Date followDate;
+   
+    private LocalDateTime followDate;
 
     public Follower() {
     }
     
-    public Follower(User userFollower, User userFollowed, Date followDate) {
+    public Follower(User userFollower, User userFollowed, LocalDateTime followDate) {
     this.userFollower = userFollower;
     this.userFollowed = userFollowed;
     this.followDate = followDate;
 }
 
-    public Follower(Date followDate) {
+    public Follower(LocalDateTime followDate) {
         this.followDate = followDate;
     }
 
@@ -76,11 +77,11 @@ public class Follower {
         this.userFollowed = userFollowed;
     }
 
-    public Date getFollowDate() {
+    public LocalDateTime getFollowDate() {
         return followDate;
     }
 
-    public void setFollowDate(Date followDate) {
+    public void setFollowDate(LocalDateTime followDate) {
         this.followDate = followDate;
     }
     

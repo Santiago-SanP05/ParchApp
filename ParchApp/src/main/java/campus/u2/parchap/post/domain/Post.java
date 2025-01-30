@@ -5,7 +5,7 @@
 package campus.u2.parchap.post.domain;
 
 import campus.u2.parchap.comment.domain.Comment;
-import campus.u2.parchap.like.domain.Like;
+import campus.u2.parchap.like.domain.Reaction;
 import campus.u2.parchap.user.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,7 @@ public class Post {
     private Long idPost;
     
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUser")
     private User userPublication;
     
@@ -42,19 +43,19 @@ public class Post {
     
     private String imageUrl;
     
-    @Temporal(TemporalType.DATE)
-    private Date publicationDate;
+    
+    private LocalDateTime publicationDate;
     
     @OneToMany(mappedBy = "commentPost")
     private List<Comment> comment1 = new ArrayList<>();
     
     @OneToMany(mappedBy = "likePost")
-    private List<Like> like1 = new ArrayList<>();
+    private List<Reaction> like1 = new ArrayList<>();
     
     public Post() {
     }
 
-    public Post(String caption, String imageUrl, Date publicationDate) {
+    public Post(String caption, String imageUrl, LocalDateTime publicationDate) {
         this.caption = caption;
         this.imageUrl = imageUrl;
         this.publicationDate = publicationDate;
@@ -94,11 +95,11 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
-    public Date getPublicationDate() {
+    public LocalDateTime getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(LocalDateTime publicationDate) {
         this.publicationDate = publicationDate;
     }
     
@@ -118,18 +119,18 @@ public class Post {
         comment.setCommentPost(this);
     }
     
-    public void addLike1(Like like) {
+    public void addLike1(Reaction like) {
         this.like1.add(like);
         like.setLikePost(this);
         
     }
     
-    public void removeLike1(Like like) {
+    public void removeLike1(Reaction like) {
         this.like1.remove(like);
         like.setLikePost(this);
     }
 
-    public List<Like> getLike1() {
+    public List<Reaction> getLike1() {
         return like1;
     }
     

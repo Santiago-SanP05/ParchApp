@@ -7,7 +7,8 @@ package campus.u2.parchap.user.domain;
 
 import campus.u2.parchap.comment.domain.Comment;
 import campus.u2.parchap.follower.domain.Follower;
-import campus.u2.parchap.like.domain.Like;
+
+import campus.u2.parchap.like.domain.Reaction;
 import campus.u2.parchap.post.domain.Post;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,30 +43,30 @@ public class User {
     
     private String biography;
     
-    private Date createDate;
+    private LocalDateTime createDate;
     
-    private Date updateDate;
+    private LocalDateTime updateDate;
     
-    @OneToMany(mappedBy = "userFollower", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userFollower", fetch = FetchType.LAZY)
     private List<Follower> followers  =new ArrayList<>();
     
-    @OneToMany (mappedBy = "userFollowed", fetch = FetchType.EAGER)
+    @OneToMany (mappedBy = "userFollowed", fetch = FetchType.LAZY)
     private List<Follower> followeds = new ArrayList<>();
     
-    @OneToMany(mappedBy = "userPublication", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userPublication", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
     
-    @OneToMany(mappedBy = "userComment",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userComment",fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
     
     @OneToMany(mappedBy = "userLike")
-    private List<Like> like1 = new ArrayList<>();
+    private List<Reaction> like1 = new ArrayList<>();
     
     public User() {
     }
 
-    public User(Long Id_User, String name, String nameUSer, String urlPhoto, String email, String password, String biography, Date createDate, Date updateDate) {
-        this.idUser = Id_User;
+    public User(String name, String nameUSer, String urlPhoto, String email, String password, String biography, LocalDateTime createDate, LocalDateTime updateDate) {
+        
         this.name = name;
         this.nameUSer = nameUSer;
         this.urlPhoto = urlPhoto;
@@ -133,19 +135,19 @@ public class User {
         this.biography = biography;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -206,19 +208,19 @@ public class User {
         comment.setCommentUser(this);
     }
     
-    public void addLike1(Like like){
+    public void addLike1(Reaction like){
         this.like1.add(like);
         like.setLikeUser(this);
     }
     
-    public void removeLike1(Like like){
+    public void removeLike1(Reaction like){
         this.like1.remove(like);
         like.setLikeUser(this);
     }
 
    
 
-    public List<Like> getLike1() {
+    public List<Reaction> getLike1() {
         return like1;
     }
     
