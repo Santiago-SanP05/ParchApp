@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package campus.u2.parchap.user.infrastructure;
+package campus.u2.parchap.post.infrastructure;
 
-import campus.u2.parchap.user.application.UserServiceImpl;
+import campus.u2.parchap.post.application.PostServiceImpl;
+import campus.u2.parchap.post.domain.Post;
 import campus.u2.parchap.user.domain.User;
 import java.util.List;
 import java.util.Optional;
@@ -25,41 +26,45 @@ import org.springframework.web.bind.annotation.RestController;
  * @author kevin
  */
 @RestController
-@RequestMapping("api/user")
-public class UserController {
+@RequestMapping("api/post")
+public class PostController {
+
     
-    private final UserServiceImpl userServiceImpl;
+    
+    private final PostServiceImpl postServiceImpl;
     
     @Autowired
-    public UserController(UserServiceImpl userServiceImpl){
-        this.userServiceImpl = userServiceImpl;
+    public PostController(PostServiceImpl postServiceImpl) {
+        this.postServiceImpl = postServiceImpl;
     }
     
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUser(){
-        return userServiceImpl.findAll();
+    public List<Post> getAllPost(){
+        return postServiceImpl.findAll();
     }
     
     @GetMapping("/{id}")
-    public Optional getUserById(@PathVariable Long id){
-        return userServiceImpl.findById(id);
+    public Optional getPostById(@PathVariable Long id){
+        return postServiceImpl.findById(id);
     }
     
     @PostMapping
-    public User createUser(@RequestBody User user){
-        return userServiceImpl.save(user);
+    public Post createPost(@RequestBody Post post){
+        return postServiceImpl.save(post);
     }
     
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id){
-        userServiceImpl.deleteById(id);
+    public void deletePost(@PathVariable Long id){
+        postServiceImpl.deleteById(id);
     }
     
+    
+    
     @PutMapping("/{id}")
-    public User updateComment(@PathVariable Long id, @RequestBody User user) {
-        user.setId_User(id);
-        return userServiceImpl.save(user);
+    public Post updatePost(@PathVariable Long id, @RequestBody Post post){
+        post.setIdPost(id);
+        return postServiceImpl.save(post);
     }
     
 }

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package campus.u2.parchap.user.infrastructure;
+package campus.u2.parchap.like.infrastructure;
 
-import campus.u2.parchap.user.application.UserServiceImpl;
-import campus.u2.parchap.user.domain.User;
+import campus.u2.parchap.like.application.ReactionServiceImpl;
+import campus.u2.parchap.like.domain.Reaction;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,41 +25,41 @@ import org.springframework.web.bind.annotation.RestController;
  * @author kevin
  */
 @RestController
-@RequestMapping("api/user")
-public class UserController {
-    
-    private final UserServiceImpl userServiceImpl;
-    
+@RequestMapping("api/reaction")
+public class ReactionController {
+
+    private final ReactionServiceImpl reactionServiceImpl;
+
     @Autowired
-    public UserController(UserServiceImpl userServiceImpl){
-        this.userServiceImpl = userServiceImpl;
+    public ReactionController(ReactionServiceImpl reactionServiceImpl) {
+        this.reactionServiceImpl = reactionServiceImpl;
     }
-    
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUser(){
-        return userServiceImpl.findAll();
+    public List<Reaction> findAllPost() {
+        return reactionServiceImpl.findAll();
     }
-    
+
     @GetMapping("/{id}")
-    public Optional getUserById(@PathVariable Long id){
-        return userServiceImpl.findById(id);
+    public Optional getPostById(@PathVariable Long id) {
+        return reactionServiceImpl.findById(id);
     }
-    
+
     @PostMapping
-    public User createUser(@RequestBody User user){
-        return userServiceImpl.save(user);
+    public Reaction createPost(@RequestBody Reaction reaction) {
+        return reactionServiceImpl.save(reaction);
     }
-    
+
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id){
-        userServiceImpl.deleteById(id);
+    public void deletePost(@PathVariable Long id) {
+        reactionServiceImpl.deleteById(id);
     }
-    
+
     @PutMapping("/{id}")
-    public User updateComment(@PathVariable Long id, @RequestBody User user) {
-        user.setId_User(id);
-        return userServiceImpl.save(user);
+    public Reaction updateComment(@PathVariable Long id, @RequestBody Reaction reaction) {
+        reaction.setIdLike(id);
+        return reactionServiceImpl.save(reaction);
     }
-    
+
 }

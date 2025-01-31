@@ -2,21 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package campus.u2.parchap.post.application;
+package campus.u2.parchap.comment.domain;
 
-import campus.u2.parchap.post.domain.Post;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
  * @author kevin
  */
-public interface PostService {
-    List<Post> getAllPost();
-
-    Post getPostById(Long id);
-
-    Post savePost(Post post);
-
-    void deletePost(Long id);
+public interface CommentRepository {
+    List<Comment> findAll();
+    Comment save(Comment comment);
+    Optional <Comment> findById(Long id);
+    void deleteById(Long Id);
 }

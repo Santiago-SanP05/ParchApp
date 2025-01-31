@@ -43,11 +43,6 @@ public class Follower {
     public Follower() {
     }
     
-    public Follower(User userFollower, User userFollowed, LocalDateTime followDate) {
-    this.userFollower = userFollower;
-    this.userFollowed = userFollowed;
-    this.followDate = followDate;
-}
 
     public Follower(LocalDateTime followDate) {
         this.followDate = followDate;

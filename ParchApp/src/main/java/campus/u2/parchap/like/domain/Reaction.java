@@ -42,10 +42,7 @@ public class Reaction {
     public Reaction() {
     }
 
-    public Reaction(Long idLike, User userLike, Post likePost, LocalDateTime publication_date) {
-        this.idLike = idLike;
-        this.userLike = userLike;
-        this.likePost = likePost;
+    public Reaction(LocalDateTime publication_date) {
         this.publication_date = publication_date;
     }
 
