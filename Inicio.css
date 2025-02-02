@@ -1,0 +1,95 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+.divide{
+    display: flex;
+    height: 100%;
+ 
+}
+.logo{
+    height: 30vh;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+}
+.menu {
+    display: flex;
+    width: 25%;
+    align-items: center;
+    border-right: 4px white solid;
+    height: 100vh;
+    flex-direction: column;
+    position: sticky;
+    top: 0; 
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 2rem;
+}
+
+.publicaciones{
+    border: blue 4px solid;
+    width: 75%;
+    color: rgb(65, 249, 255);
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+#logoParchApp{
+    height: 10vh;
+}
+.atributos{
+    display: flex;
+    flex-direction: column;
+    gap: 8vh;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+header{
+    height: 13vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-bottom: 4px solid white;
+}
+header input{
+    height: 5vh;
+    width: 80%;
+    border-radius: 2vh;
+    text-align: center;
+}
+#imagen{
+    height: 50%;
+    border-radius: 8vh 8vh 8vh 8vh;
+}
+.encabezadoPubli{
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    padding: 2vh;
+    gap: 1vh;
+}
+.publicacion{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.cuerpoPubli{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+#imgPublicacion{
+    height: 50vh;
+    width: 80%;
+    border: 0.5vh solid white;
+    border-radius: 2vh;
+}
+.comentarios{
+    height: 20vh;
+}

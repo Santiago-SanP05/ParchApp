@@ -32,7 +32,7 @@ public class ParchapApplication {
                 
                 
                 PostServiceImpl postserviceimpl = contexto.getBean(PostServiceImpl.class);
-                Post p1 = new Post("aqui de vaca-ciones", "urllavaquita", dateArrived);
+                Post p1 = new Post("aqui tomando el sol", "https://www.albitana.com/wp-content/uploads/2018/01/granja-escuela-albitana-1393.jpg", dateArrived);
                 
                 postserviceimpl.save(p1);
                 

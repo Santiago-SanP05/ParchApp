@@ -1,16 +1,20 @@
+@font-face {
+    font-family: 'ParchApp';
+    src: url('Power\ Calm.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 body {
-    background-image: url(653.jpg);
-    background-size: cover; 
-    background-position: center; 
-    background-attachment: fixed; 
-    background-repeat: no-repeat;
-    
+    background: linear-gradient(to right, #000000, #1E3A8A, #3B82F6);
+
+
+
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-header{
+.central{
     display: flex;
-    border: rgb(255, 255, 255) 2px solid;
-    height: 97vh;
+
+    height: 70vh;
     width: 100%;
     justify-content: center;
     align-items: center;
@@ -29,6 +33,7 @@ header{
     border-radius: 5vh 5vh 5vh 5vh;
 }
 .contLogin {
+    font-family: 'ParchApp';
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,7 +43,8 @@ header{
     
 }
 .contLogin h1{
-    margin: 2vh;
+    font-family: 'ParchApp';
+    margin: 1vh;
     font-size: 2rem;
 }
 input{
@@ -54,6 +60,7 @@ input{
 button{
     height: 8%;
     width: 100%;
+    font-family: 'ParchApp';
     border-radius: 10px;
     border-bottom: black solid 2px;
     border-top: transparent;
@@ -64,4 +71,7 @@ button{
 
 button:hover{
     background-color: rgb(71, 255, 25);
+}
+.logo{
+    height: 15vh;
 }
