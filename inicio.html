@@ -6,28 +6,36 @@
     <title>ParchApp</title>
     <link rel="stylesheet" href="Inicio.css" />
   </head>
+
   <body>
-    <section class="divide">
-      <section class="menu">
+    <div class="divide">
+      <nav class="menu">
         <div class="logo">
-            <img id="logoParchApp" src="parchaap-removebg-preview.png" alt="ParchApp">
-            
+          <a href="#">
+            <img id="logoParchApp" src="parchaap-removebg-preview.png" alt="ParchApp Logo">
+          </a>
         </div>
         <div class="atributos">
-          <a href="">Principal</a>
-          <a href="">Notificaciones</a>
-          <a href="">Perfil</a>
+          <a id="principal" href="#"><img src="casa.png" alt="logoCasa"><p>Principal</p></a>
+          <a href="#"><img src="notificaciones.png" alt="logoNotificaciones"><p>Notificaciones</p></a>
+          <a id="perfil" href="#"><img src="perfil.png" alt="logoPerfil"><p>Perfil</p></a>
         </div>
-      </section>
-      <section class="publicaciones">
-        <header>
-            <input type="text" placeholder="Buscar">
+      </nav>
+
+      <main class="publicaciones">
+        <header class="encabezado">
+          <input type="text" placeholder="Buscar" aria-label="Buscar publicaciones">
         </header>
-        <section class="publicacion">
-          
-        </section>
-      </section>
-    </section>
+
+        <article class="publicacion">
+
+
+
+        </article>
+      </main>
+    </div>
+
     <script src="inicio.js"></script>
+    <script src="perfil.js"></script>
   </body>
 </html>
