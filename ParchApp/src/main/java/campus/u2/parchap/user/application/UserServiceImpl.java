@@ -40,14 +40,23 @@ public class UserServiceImpl {
     }
 
     public UserDTO save(User user) {
-        // Establecer fechas de creación y actualización (si es necesario)
-        user.setCreateDate(LocalDateTime.now());
-        user.setUpdateDate(LocalDateTime.now());
-
-        // Guardar el usuario en la base de datos
-        User savedUser = userRepository.save(user);
-        return convertToDTO(savedUser);
+    // Verificar si la contraseña ya está encriptada (las contraseñas encriptadas con BCrypt comienzan con "$2a$" o similares)
+    if (!user.getPassword().startsWith("$2a$")) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
+
+    // Establecer fechas de creación y actualización (si es necesario)
+    user.setCreateDate(LocalDateTime.now());
+    user.setUpdateDate(LocalDateTime.now());
+
+    // Guardar el usuario en la base de datos
+    User savedUser = userRepository.save(user);
+
+    // Convertir a DTO y retornar
+    return convertToDTO(savedUser);
+}
+
+
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);

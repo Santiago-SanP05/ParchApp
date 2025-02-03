@@ -42,10 +42,10 @@ public class ParchapApplication {
         // Crear un objeto User con todos sus datos
         User user1 = new User();
         user1.setName("sassant");
-        user1.setNameUser("sassant123");
+        user1.setNameUser("Elsasant");
         user1.setUrlPhoto("http://example.com/sassant.jpg");
-        user1.setEmail("sassant@email.com");
-        user1.setPassword("password123");
+        user1.setEmail("nana@email.com");
+        user1.setPassword("goodpoint");
         user1.setBiography("Soy un usuario nuevo en la aplicación.");
 
         User user2 = new User();
@@ -53,7 +53,7 @@ public class ParchapApplication {
         user2.setNameUser("grrrrrr");
         user2.setUrlPhoto("http://example.com/sassant.jpg");
         user2.setEmail("ElDeariporo@email.com");
-        user2.setPassword(passwordEncoder.encode("Abeja"));
+        user2.setPassword("Abeja");
         user2.setBiography("Soy un usuario nuevo en la aplicación.");
 
         User user3 = new User();
@@ -75,48 +75,44 @@ public class ParchapApplication {
         p1.setImageUrl("https://www.albitana.com/wp-content/uploads/2018/01/granja-escuela-albitana-1393.jpg");
         p1.setPublicationDate(LocalDateTime.now());
         p1.setUserPublication(user1);
-
-        // Guardar el post
+//
+//        // Guardar el post
         postServiceImpl.save(p1);
-
-        // Crear un comentario para el post (DTO)
+//
+//        // Crear un comentario para el post (DTO)
         Comment comment = new Comment("¡Quiero estar en esas vaca-ciones!", dateArrived);
         comment.setCommentUser(user1); // Asignamos el usuario
         comment.setCommentPost(p1); // Asignamos el post
         commentServiceImpl.save(comment); // Guardar el comentario
-
-        // Crear la reacción para el post
+//
+//        // Crear la reacción para el post
         Reaction reaction = new Reaction(dateArrived);
         reaction.setLikePost(p1);  // Asociamos el post a la reacción
         reaction.setLikeUser(user1); // Asociamos el usuario que está reaccionando
         reactionServiceImpl.save(reaction); // Guardar la reacción
-
-        // Crear el seguidor (no es necesario usar DTO en este caso)
-        // Crear el seguidor (no es necesario usar DTO en este caso)
+//
+//        // Crear el seguidor (no es necesario usar DTO en este caso)
+//        // Crear el seguidor (no es necesario usar DTO en este caso)
         Follower follower = new Follower();
-
-// Asignar el usuario seguidor (quien sigue)
-        follower.setUserFollower(user1); // Aquí user1 es quien sigue
-
-// Asignar el usuario seguido (quien es seguido)
-        follower.setUserFollowed(user2); // Aquí user2 es quien es seguido
-
-// Guardar el seguidor
-        followerServiceImpl.save(follower); // Guardar el seguidor
-
-// Relacionar los seguidores y seguidores seguidos
+////
+////// Asignar el usuario seguidor (quien sigue)
+//        follower.setUserFollower(user1); // Aquí user1 es quien sigue
+////
+////// Asignar el usuario seguido (quien es seguido)
+//        follower.setUserFollowed(user2); // Aquí user2 es quien es seguido
+////
+////// Guardar el seguidor
+//        followerServiceImpl.save(follower); // Guardar el seguidor
+//
+//// Relacionar los seguidores y seguidores seguidos
         user1.addFollower(follower); // Agregar al usuario como seguidor
         user2.addFollowed(follower); // Agregar al usuario como seguido
-
-// Guardar los cambios en los usuarios
+//
+//// Guardar los cambios en los usuarios
         userServiceImpl.save(user1);
         userServiceImpl.save(user2);
-
-        // Relacionar los seguidores y seguidores seguidos
-        user1.addFollower(follower); // Agregar al usuario como seguidor
-        user2.addFollowed(follower); // Agregar al usuario como seguido
-        userServiceImpl.save(user1); // Guardar cambios en el usuario
-
+        
+//
         System.out.println("Usuarios, posts, comentarios, reacciones y relaciones guardadas exitosamente.");
         
     }
