@@ -36,7 +36,7 @@ function mostrarPerfil(){
             
           <div class="publicacion-item">
             <header class="encabezadoPubli">
-              <img src="Images/burrita.jpg" alt="Imagen de perfil del usuario" id="imagen">
+              <img src="/Images/burrita.jpg" alt="Imagen de perfil del usuario" id="imagen">
               <div>
                 <h2>${"aqui va el nombre del ususario"}</h2>
                 <time datetime="${"aqui va la fecha de publicacion"}">${new Date("aqui va la fecha de publicacion").toLocaleString()}</time>
@@ -51,11 +51,11 @@ function mostrarPerfil(){
             <footer class="contenedorComentarios">
               <div class="comentarios">
                 <div class="contenedorReaccion">
-                  <a href=""><img src="Images/Me encanta.png" alt="Reacción de me encanta"></a>
+                  <a href=""><img src="/Images/Me encanta.png" alt="Reacción de me encanta"></a>
                   <p>123</p>
                 </div>
                 <div class="contenedorimgcoment">
-                  <a href=""><img src="Images/Comentarios.png" alt="Icono de comentarios"></a>
+                  <a href=""><img src="/Images/Comentarios.png" alt="Icono de comentarios"></a>
                 </div>
               </div>
             </footer>
