@@ -30,7 +30,8 @@ public class FollowerServiceImpl {
                 .collect(Collectors.toList());
     }
 
-    public FollowerDTO save(Follower follower) {
+    public FollowerDTO save(FollowerDTO followerDTO) {
+        Follower follower = convertToEntity(followerDTO); // Convertimos DTO a entidad
         Follower savedFollower = followerRepository.save(follower);
         return convertToDTO(savedFollower);
     }
@@ -72,3 +73,4 @@ public class FollowerServiceImpl {
         return follower;
     }
 }
+

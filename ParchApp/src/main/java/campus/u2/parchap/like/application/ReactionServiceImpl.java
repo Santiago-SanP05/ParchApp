@@ -33,18 +33,20 @@ public class ReactionServiceImpl {
     }
 
     // Guardar una nueva reacción
-    public ReactionDTO save(Reaction reaction) {
+    public ReactionDTO save(ReactionDTO reactionDTO) {
+        Reaction reaction = convertToEntity(reactionDTO);
+        
         // Establecer la fecha de publicación si no está configurada
         if (reaction.getPublication_date() == null) {
             reaction.setPublication_date(LocalDateTime.now());
         }
 
         // Verificar que el usuario asociado no sea nulo
-        if (reaction.getLikeUser()== null) {
+        if (reaction.getLikeUser() == null) {
             throw new IllegalArgumentException("El usuario que realiza la reacción no puede ser nulo.");
         }
 
-        // Obtener el usuario a partir del ID, solo si 'userLike' no es nulo
+        // Obtener el usuario a partir del ID
         User user = userRepository.findById(reaction.getLikeUser().getId_User())
                 .orElseThrow(() -> new IllegalArgumentException("No se encontró un usuario con el id: " + reaction.getLikeUser().getId_User()));
 
@@ -77,8 +79,6 @@ public class ReactionServiceImpl {
         Reaction reaction = new Reaction();
         reaction.setIdLike(reactionDTO.getIdLike());
         reaction.setPublication_date(reactionDTO.getPublication_date());
-
-        // Aquí podrías también convertir el User del DTO, si fuera necesario
         return reaction;
     }
 }

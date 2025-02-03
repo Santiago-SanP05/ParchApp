@@ -56,8 +56,15 @@ public class CommentServiceImpl {
 
     // Convertir de entidad a DTO
     private CommentDTO convertToDTO(Comment comment) {
-        return new CommentDTO(comment.getIdComment(), comment.getText(), comment.getPublicationDate());
-    }
+    return new CommentDTO(
+        comment.getIdComment(), 
+        comment.getText(), 
+        comment.getPublicationDate(),
+        comment.getCommentUser().getId_User(), // Aquí corregimos el acceso a idUser
+        comment.getCommentPost().getIdPost()
+    );
+}
+
 
     // Convertir de DTO a entidad
     private Comment convertToEntity(CommentDTO commentDTO) {

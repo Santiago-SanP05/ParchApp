@@ -22,36 +22,28 @@ public class FollowerController {
         this.followerServiceImpl = followerServiceImpl;
     }
 
-    // Obtener todos los seguidores
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<FollowerDTO> getAllFollowers() {
         return followerServiceImpl.findAll();
     }
 
-    // Obtener un seguidor por ID
     @GetMapping("/{id}")
     public ResponseEntity<FollowerDTO> getFollowerById(@PathVariable Long id) {
         Optional<FollowerDTO> followerDTO = followerServiceImpl.findById(id);
-        if (followerDTO.isPresent()) {
-            return ResponseEntity.ok(followerDTO.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return followerDTO.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // Crear un nuevo seguidor
     @PostMapping
-    public ResponseEntity<FollowerDTO> createFollower(@RequestBody Follower follower) {
-        FollowerDTO savedFollower = followerServiceImpl.save(follower);  // Recibe el objeto Follower directamente
+    public ResponseEntity<FollowerDTO> createFollower(@RequestBody FollowerDTO followerDTO) {
+        FollowerDTO savedFollower = followerServiceImpl.save(followerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedFollower);
     }
 
-    // Eliminar un seguidor
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFollower(@PathVariable Long id) {
-        Optional<FollowerDTO> followerDTO = followerServiceImpl.findById(id);
-        if (followerDTO.isPresent()) {
+        if (followerServiceImpl.findById(id).isPresent()) {
             followerServiceImpl.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
@@ -59,14 +51,14 @@ public class FollowerController {
         }
     }
 
-    // Actualizar un seguidor
     @PutMapping("/{id}")
-    public ResponseEntity<FollowerDTO> updateFollower(@PathVariable Long id, @RequestBody Follower follower) {
+    public ResponseEntity<FollowerDTO> updateFollower(@PathVariable Long id, @RequestBody FollowerDTO followerDTO) {
         if (!followerServiceImpl.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        follower.setIdFollower(id);  // Seteamos el ID del seguidor a actualizar
-        FollowerDTO updatedFollower = followerServiceImpl.save(follower);
+        followerDTO.setIdFollower(id);  // Seteamos el ID del seguidor a actualizar
+        FollowerDTO updatedFollower = followerServiceImpl.save(followerDTO);
         return ResponseEntity.ok(updatedFollower);
     }
 }
+

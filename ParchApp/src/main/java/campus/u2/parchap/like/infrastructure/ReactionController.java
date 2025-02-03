@@ -43,8 +43,8 @@ public class ReactionController {
 
     // Crear una nueva reacción
     @PostMapping
-    public ReactionDTO createReaction(@RequestBody Reaction reaction) {
-        return reactionServiceImpl.save(reaction);
+    public ReactionDTO createReaction(@RequestBody ReactionDTO reactionDTO) {
+        return reactionServiceImpl.save(reactionDTO);
     }
 
     // Eliminar una reacción
@@ -55,8 +55,8 @@ public class ReactionController {
 
     // Actualizar una reacción
     @PutMapping("/{id}")
-    public ReactionDTO updateReaction(@PathVariable Long id, @RequestBody Reaction reaction) {
-        reaction.setIdLike(id);
-        return reactionServiceImpl.save(reaction);
+    public ReactionDTO updateReaction(@PathVariable Long id, @RequestBody ReactionDTO reactionDTO) {
+        reactionDTO.setIdLike(id); // Asegurar que el ID del DTO coincide con el de la URL
+        return reactionServiceImpl.save(reactionDTO);
     }
 }
