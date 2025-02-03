@@ -1,48 +1,74 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package campus.u2.parchap.follower.application;
 
 import campus.u2.parchap.follower.domain.Follower;
+import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.follower.domain.FollowerRepository;
-import java.util.List;
-import java.util.Optional;
+import campus.u2.parchap.user.domain.User;
+import campus.u2.parchap.user.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author kevin
- */
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
-public class FollowerServiceImpl implements FollowerRepository{
-    
+public class FollowerServiceImpl {
+
     private final FollowerRepository followerRepository;
-    
+    private final UserRepository userRepository;
+
     @Autowired
-    public FollowerServiceImpl(FollowerRepository followerRepository) {
+    public FollowerServiceImpl(FollowerRepository followerRepository, UserRepository userRepository) {
         this.followerRepository = followerRepository;
-    }
-    
-    @Override
-    public List<Follower> findAll() {
-        return followerRepository.findAll();
+        this.userRepository = userRepository;
     }
 
-    @Override
-    public Follower save(Follower follower) {
-        return followerRepository.save(follower);
+    public List<FollowerDTO> findAll() {
+        return followerRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public Optional<Follower> findById(Long id) {
-        return followerRepository.findById(id);
+    public FollowerDTO save(Follower follower) {
+        Follower savedFollower = followerRepository.save(follower);
+        return convertToDTO(savedFollower);
     }
 
-    @Override
+    public Optional<FollowerDTO> findById(Long id) {
+        return followerRepository.findById(id)
+                .map(this::convertToDTO);
+    }
+
     public void deleteById(Long id) {
         followerRepository.deleteById(id);
     }
-    
+
+    private FollowerDTO convertToDTO(Follower follower) {
+        Long userFollowerId = follower.getUserFollower().getId_User();
+        Long userFollowedId = follower.getUserFollowed().getId_User();
+        
+        return new FollowerDTO(
+                follower.getIdFollower(),
+                follower.getFollowDate(),
+                userFollowerId,  
+                userFollowedId   
+        );
+    }
+
+    private Follower convertToEntity(FollowerDTO followerDTO) {
+        Follower follower = new Follower();
+        follower.setFollowDate(followerDTO.getFollowDate());
+
+        User userFollower = userRepository.findById(followerDTO.getUserFollowerId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + followerDTO.getUserFollowerId()));
+
+        User userFollowed = userRepository.findById(followerDTO.getUserFollowedId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + followerDTO.getUserFollowedId()));
+
+        follower.setUserFollower(userFollower);
+        follower.setUserFollowed(userFollowed);
+
+        return follower;
+    }
 }

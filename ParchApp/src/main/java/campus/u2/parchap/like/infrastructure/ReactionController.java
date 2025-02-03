@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package campus.u2.parchap.like.infrastructure;
 
 import campus.u2.parchap.like.application.ReactionServiceImpl;
 import campus.u2.parchap.like.domain.Reaction;
+import campus.u2.parchap.like.domain.ReactionDTO;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author kevin
- */
 @RestController
 @RequestMapping("api/reaction")
 public class ReactionController {
@@ -35,31 +28,35 @@ public class ReactionController {
         this.reactionServiceImpl = reactionServiceImpl;
     }
 
+    // Obtener todas las reacciones
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Reaction> findAllPost() {
+    public List<ReactionDTO> findAllReactions() {
         return reactionServiceImpl.findAll();
     }
 
+    // Obtener una reacción por ID
     @GetMapping("/{id}")
-    public Optional getPostById(@PathVariable Long id) {
+    public Optional<ReactionDTO> getReactionById(@PathVariable Long id) {
         return reactionServiceImpl.findById(id);
     }
 
+    // Crear una nueva reacción
     @PostMapping
-    public Reaction createPost(@RequestBody Reaction reaction) {
+    public ReactionDTO createReaction(@RequestBody Reaction reaction) {
         return reactionServiceImpl.save(reaction);
     }
 
+    // Eliminar una reacción
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
+    public void deleteReaction(@PathVariable Long id) {
         reactionServiceImpl.deleteById(id);
     }
 
+    // Actualizar una reacción
     @PutMapping("/{id}")
-    public Reaction updateComment(@PathVariable Long id, @RequestBody Reaction reaction) {
+    public ReactionDTO updateReaction(@PathVariable Long id, @RequestBody Reaction reaction) {
         reaction.setIdLike(id);
         return reactionServiceImpl.save(reaction);
     }
-
 }

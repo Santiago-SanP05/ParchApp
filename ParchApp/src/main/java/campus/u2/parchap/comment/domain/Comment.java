@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package campus.u2.parchap.comment.domain;
 
 import campus.u2.parchap.post.domain.Post;
@@ -12,15 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-/**
- *
- * @author kevin
- */
+
 @Entity
 public class Comment {
     
@@ -88,10 +79,4 @@ public class Comment {
     public void setPublicationDate(LocalDateTime publicationDate) {
         this.publicationDate = publicationDate;
     }
-
-
-    
-    
-    
-    
 }

@@ -1,72 +1,55 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package campus.u2.parchap.post.infrastructure;
 
 import campus.u2.parchap.post.application.PostServiceImpl;
+import campus.u2.parchap.post.domain.PostDTO;
 import campus.u2.parchap.post.domain.Post;
-import campus.u2.parchap.user.domain.User;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-/**
- *
- * @author kevin
- */
-@CrossOrigin(origins = "http://127.0.0.1:5500") 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/post")
 public class PostController {
 
-    
-    
     private final PostServiceImpl postServiceImpl;
-    
+
     @Autowired
     public PostController(PostServiceImpl postServiceImpl) {
         this.postServiceImpl = postServiceImpl;
     }
-    
+
+    // Método para obtener todos los posts
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Post> getAllPost(){
+    public List<PostDTO> getAllPost() {
         return postServiceImpl.findAll();
     }
-    
+
+    // Método para obtener un post por ID
     @GetMapping("/{id}")
-    public Optional getPostById(@PathVariable Long id){
+    public Optional<PostDTO> getPostById(@PathVariable Long id) {
         return postServiceImpl.findById(id);
     }
-    
+
+    // Método para crear un nuevo post
     @PostMapping
-    public Post createPost(@RequestBody Post post){
+    public PostDTO createPost(@RequestBody Post post) {
         return postServiceImpl.save(post);
     }
-    
+
+    // Método para eliminar un post
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id){
+    public void deletePost(@PathVariable Long id) {
         postServiceImpl.deleteById(id);
     }
-    
-    
-    
+
+    // Método para actualizar un post
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody Post post){
+    public PostDTO updatePost(@PathVariable Long id, @RequestBody Post post) {
         post.setIdPost(id);
         return postServiceImpl.save(post);
     }
-    
 }

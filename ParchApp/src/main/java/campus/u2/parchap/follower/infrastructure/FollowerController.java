@@ -1,30 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package campus.u2.parchap.follower.infrastructure;
 
 import campus.u2.parchap.follower.application.FollowerServiceImpl;
 import campus.u2.parchap.follower.domain.Follower;
-import java.util.List;
-import java.util.Optional;
+import campus.u2.parchap.follower.domain.FollowerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-/**
- *
- * @author kevin
- */
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/follower")
 public class FollowerController {
@@ -36,31 +22,51 @@ public class FollowerController {
         this.followerServiceImpl = followerServiceImpl;
     }
 
+    // Obtener todos los seguidores
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Follower> getAllPost() {
+    public List<FollowerDTO> getAllFollowers() {
         return followerServiceImpl.findAll();
     }
 
+    // Obtener un seguidor por ID
     @GetMapping("/{id}")
-    public Optional getPostById(@PathVariable Long id) {
-        return followerServiceImpl.findById(id);
+    public ResponseEntity<FollowerDTO> getFollowerById(@PathVariable Long id) {
+        Optional<FollowerDTO> followerDTO = followerServiceImpl.findById(id);
+        if (followerDTO.isPresent()) {
+            return ResponseEntity.ok(followerDTO.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
+    // Crear un nuevo seguidor
     @PostMapping
-    public Follower createPost(@RequestBody Follower follower) {
-        return followerServiceImpl.save(follower);
+    public ResponseEntity<FollowerDTO> createFollower(@RequestBody Follower follower) {
+        FollowerDTO savedFollower = followerServiceImpl.save(follower);  // Recibe el objeto Follower directamente
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedFollower);
     }
 
+    // Eliminar un seguidor
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
-        followerServiceImpl.deleteById(id);
+    public ResponseEntity<Void> deleteFollower(@PathVariable Long id) {
+        Optional<FollowerDTO> followerDTO = followerServiceImpl.findById(id);
+        if (followerDTO.isPresent()) {
+            followerServiceImpl.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
+    // Actualizar un seguidor
     @PutMapping("/{id}")
-    public Follower updateComment(@PathVariable Long id, @RequestBody Follower follower) {
-        follower.setIdFollower(id);
-        return followerServiceImpl.save(follower);
+    public ResponseEntity<FollowerDTO> updateFollower(@PathVariable Long id, @RequestBody Follower follower) {
+        if (!followerServiceImpl.findById(id).isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        follower.setIdFollower(id);  // Seteamos el ID del seguidor a actualizar
+        FollowerDTO updatedFollower = followerServiceImpl.save(follower);
+        return ResponseEntity.ok(updatedFollower);
     }
-
 }

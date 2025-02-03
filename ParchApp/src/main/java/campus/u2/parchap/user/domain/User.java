@@ -18,7 +18,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class User {
     
     private String name;
     
-    private String nameUSer;
+    private String nameUser;
     
     private String urlPhoto;
     
@@ -65,10 +64,10 @@ public class User {
     public User() {
     }
 
-    public User(String name, String nameUSer, String urlPhoto, String email, String password, String biography, LocalDateTime createDate, LocalDateTime updateDate) {
+    public User(String name, String nameUser, String urlPhoto, String email, String password, String biography, LocalDateTime createDate, LocalDateTime updateDate) {
         
         this.name = name;
-        this.nameUSer = nameUSer;
+        this.nameUser = nameUser;
         this.urlPhoto = urlPhoto;
         this.email = email;
         this.password = password;
@@ -95,12 +94,12 @@ public class User {
         this.name = name;
     }
 
-    public String getNameUSer() {
-        return nameUSer;
+    public String getNameUser() {
+        return nameUser;
     }
 
-    public void setNameUSer(String nameUSer) {
-        this.nameUSer = nameUSer;
+    public void setNameUser(String nameUser) {
+        this.nameUser = nameUser;
     }
 
     public String getUrlPhoto() {
@@ -218,13 +217,8 @@ public class User {
         like.setLikeUser(this);
     }
 
-   
-
     public List<Reaction> getLike1() {
         return like1;
     }
-    
-    
-    
-    
+
 }

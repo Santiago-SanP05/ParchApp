@@ -15,5 +15,7 @@ public interface FollowerRepository {
     List<Follower> findAll();
     Follower save(Follower follower);
     Optional <Follower> findById(Long id);
-    void deleteById(Long id);
+    void deleteById(Long id);    
+    void delete(Follower follower);
+    Optional<Follower> findByUserFollower_IdUserAndUserFollowed_IdUser(Long followerId, Long followedId);
 }

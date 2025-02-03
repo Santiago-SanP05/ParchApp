@@ -6,11 +6,13 @@ package campus.u2.parchap.user.domain;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Repository;
 
 public interface UserRepository {
     List<User> findAll();
     User save(User user);
     Optional<User> findById(Long id);
+    Optional<User> findByName(String name);
+    Optional<User> findByNameUser(String nameUser);
+    Optional<User> findByEmail(String email);
     void deleteById(Long id);
 }
