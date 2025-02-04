@@ -80,7 +80,7 @@ public class ParchapApplication {
         p2.setCaption("Otro post interesante");
         p2.setPublicationDate(LocalDateTime.now());
         p2.setUserId(2L); // Asignar al usuario con ID 2
-
+        
         // Guardar posts
         postServiceImpl.save(p1);
         postServiceImpl.save(p2);

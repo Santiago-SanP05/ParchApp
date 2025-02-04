@@ -118,6 +118,7 @@ public class PostServiceImpl {
     private Post convertToEntity(PostDTO postDTO) {
         Post post = new Post();
         post.setIdPost(postDTO.getIdPost());
+        post.setCaption(postDTO.getCaption());
         post.setImageUrl(postDTO.getImageUrl());
         post.setPublicationDate(postDTO.getPublicationDate());
 
