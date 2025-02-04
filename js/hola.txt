@@ -1,0 +1,17 @@
+/*
+
+var commentarios = document.querySelector("#vercommentarios");
+commentarios.addEventListener("click", abrircomentarios);
+
+function abrircomentarios(){
+  var contenido = document.querySelector(".todoComentarios");
+  contenido.innerHTML = `
+            <div class="centradorComentarios">
+              <div class="resultadoComentarios">
+                <div class="etiquetasCommentario">
+                  <h4>aqui va el usuario</h4>
+                  <p>aqui va el contenido de la publicacion</p>
+                </div>
+              </div>
+            </div>`
+}*/

@@ -44,7 +44,7 @@ public class ParchapApplication {
         u1.setNameUser("juanp");
         u1.setEmail("juan.perez@example.com");
         u1.setBiography("Desarrollador de software");
-        u1.setUrlPhoto("http://example.com/foto.jpg");
+        u1.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
         u1.setPasword("noraaaa");
 
         UserDTO u2 = new UserDTO();
@@ -52,7 +52,7 @@ public class ParchapApplication {
         u2.setNameUser("frrrrr");
         u2.setEmail("grrr@example.com");
         u2.setBiography("Desarrollador de software");
-        u2.setUrlPhoto("http://example.com/foto.jpg");
+        u2.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
         u2.setPasword("Alpha");
 
         UserDTO u3 = new UserDTO();
@@ -60,7 +60,7 @@ public class ParchapApplication {
         u3.setNameUser("sassant");
         u3.setEmail("AliasMocoLargo@example.com");
         u3.setBiography("Desarrollador de software");
-        u3.setUrlPhoto("http://example.com/foto.jpg");
+        u3.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
         u3.setPasword("Alpha");
 
         // Guardar usuarios

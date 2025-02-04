@@ -88,21 +88,22 @@ a{
     height: 50vh;
     width: 60%;
     border: 0.5vh solid white;
-    border-radius: 2vh;
+    border-bottom: none;
+    border-radius: 2vh 2vh 0 0 ;
 }
 .contenedorComentarios{
     height: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 2vh;
 }
 .comentarios{
     display: flex;
-    width: 80%;
+    width: 60%;
     justify-content: space-around;
     text-align: center;
     align-items: center;
     height: 100%;
+    border: 4px rgb(255, 255, 255) solid;
 
 }
 .comentarios img{
@@ -192,4 +193,49 @@ a{
 .editPerfil button:hover{
     background-color: rgb(71, 255, 25);
     
+}
+.resultadoComentarios{
+    height: 100%;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    border: solid 4px rgb(255, 255, 255);
+    border-top: none;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3vh;
+}
+.centradorComentarios{
+    display: flex;
+    justify-content: center;
+}
+.etiquetasCommentario{
+    border: 2px white solid;
+    height: 100%;
+    width: 70%;
+    border-radius: 3vh 3vh 3vh 3vh;
+    padding-left: 2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1.3em;
+}
+.etiquetasCommentario h4{
+    margin: 0;
+}
+.etiquetasCommentario p{
+    margin: 0;
+}
+.contenedorimgcoment{
+    display: flex;
+    gap: 1vh;
+    align-items: center;
+}
+.publicacion-item{
+    border-bottom: 1px white solid;
+}
+.todoComentarios{
+    margin-bottom: 6vh;
 }
