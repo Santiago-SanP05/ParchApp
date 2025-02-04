@@ -10,22 +10,25 @@ public class PostDTO {
     private Long idPost;
     private String imageUrl;
     private LocalDateTime publicationDate;
+    private String caption;
     private List<CommentDTO> coments;
     private List<ReactionDTO> reactions;
     private Long userId;  
 
-    public PostDTO(Long idPost, String imageUrl, LocalDateTime publicationDate, List<CommentDTO> coments, List<ReactionDTO> reactions, Long userId) {
+    public PostDTO(Long idPost, String imageUrl, LocalDateTime publicationDate,String caption, List<CommentDTO> coments, List<ReactionDTO> reactions, Long userId) {
         this.idPost = idPost;
         this.imageUrl = imageUrl;
         this.publicationDate = publicationDate;
+        this.caption = caption;
         this.coments = coments;
         this.reactions = reactions;
         this.userId = userId;
     }
     
-    public PostDTO(String imageUrl, LocalDateTime publicationDate, List<CommentDTO> coments, List<ReactionDTO> reactions, Long userId) {
+    public PostDTO(String imageUrl, LocalDateTime publicationDate,String caption, List<CommentDTO> coments, List<ReactionDTO> reactions, Long userId) {
         this.imageUrl = imageUrl;
         this.publicationDate = publicationDate;
+        this.caption = caption;
         this.coments = coments;
         this.reactions = reactions;
         this.userId = userId;
@@ -80,6 +83,15 @@ public class PostDTO {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+    
     
     
 }

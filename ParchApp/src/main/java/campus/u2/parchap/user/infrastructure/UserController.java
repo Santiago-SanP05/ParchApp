@@ -1,7 +1,6 @@
 package campus.u2.parchap.user.infrastructure;
 
 import campus.u2.parchap.user.application.UserServiceImpl;
-import campus.u2.parchap.user.domain.User;
 import campus.u2.parchap.user.domain.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("api/users")
@@ -23,31 +22,35 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDTO> getAllUsers() {
-        return userServiceImpl.findAll();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userServiceImpl.findAll();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public Optional<UserDTO> getUserById(@PathVariable Long id) {
-        return userServiceImpl.findById(id);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        Optional<UserDTO> userDTO = userServiceImpl.findById(id);
+        return userDTO.map(ResponseEntity::ok)
+                      .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO createUser(@RequestBody User user) {
-        return userServiceImpl.save(user);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long id) {
-        userServiceImpl.deleteById(id);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userServiceImpl.save(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PutMapping("/{id}")
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody User user) {
-        user.setId_User(id);
-        return userServiceImpl.save(user);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        userDTO.setIdUser(id);
+        UserDTO updatedUser = userServiceImpl.save(userDTO);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userServiceImpl.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

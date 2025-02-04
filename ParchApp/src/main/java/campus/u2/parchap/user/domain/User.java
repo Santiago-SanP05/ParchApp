@@ -20,10 +20,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author kevin
- */
+
+
 @Entity
 public class User {
     @Id

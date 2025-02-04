@@ -1,23 +1,23 @@
-
 package campus.u2.parchap.user.domain;
-
 
 import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.post.domain.PostDTO;
 import java.util.List;
 
 public class UserDTO {
+
     private Long idUser;
     private String name;
     private String nameUser;
     private String email;
     private String biography;
     private String urlPhoto;
+    private String Password;
     private String token;
     private List<PostDTO> posts;
     private List<FollowerDTO> followers;
     private List<FollowerDTO> followered;
-    
+
     public UserDTO() {
     }
 
@@ -33,8 +33,7 @@ public class UserDTO {
         this.followers = followers;
         this.followered = followered;
     }
-    
-    
+
     public UserDTO(Long idUser, String name, String nameUser, String email, String biography, String urlPhoto) {
         this.idUser = idUser;
         this.name = name;
@@ -43,7 +42,7 @@ public class UserDTO {
         this.biography = biography;
         this.urlPhoto = urlPhoto;
     }
-    
+
     public UserDTO(String name, String nameUser, String email, String biography, String urlPhoto) {
         this.name = name;
         this.nameUser = nameUser;
@@ -61,7 +60,7 @@ public class UserDTO {
         this.urlPhoto = urlPhoto;
         this.token = token;
     }
-    
+
     public UserDTO(String name, String nameUser, String email, String biography, String urlPhoto, String token) {
         this.name = name;
         this.nameUser = nameUser;
@@ -82,7 +81,7 @@ public class UserDTO {
         this.followers = followers;
         this.followered = followered;
     }
-    
+
     public UserDTO(String name, String nameUser, String email, String biography, String urlPhoto, List<PostDTO> posts, List<FollowerDTO> followers, List<FollowerDTO> followered) {
         this.name = name;
         this.nameUser = nameUser;
@@ -93,14 +92,25 @@ public class UserDTO {
         this.followers = followers;
         this.followered = followered;
     }
-    
+
+    public UserDTO(String errorMessage) {
+        this.name = errorMessage;
+        this.nameUser = "";
+        this.email = "";
+        this.biography = "";
+        this.urlPhoto = "";
+        this.token = "";
+        this.posts = null;
+        this.followers = null;
+        this.followered = null;
+    }
+
     public UserDTO(String nameUser, String email, String token) {
         this.nameUser = nameUser;
         this.email = email;
         this.token = token;
     }
-    
-    
+
     public Long getIdUser() {
         return idUser;
     }
@@ -132,31 +142,31 @@ public class UserDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public String getBiography() {
         return biography;
     }
-    
+
     public void setBiography(String biography) {
         this.biography = biography;
     }
-    
+
     public String getUrlPhoto() {
         return urlPhoto;
     }
-    
+
     public void setUrlPhoto(String urlPhoto) {
         this.urlPhoto = urlPhoto;
     }
-    
+
     public String getToken() {
         return token;
     }
-    
+
     public void setToken(String token) {
         this.token = token;
     }
-    
+
     public List<PostDTO> getPosts() {
         return posts;
     }
@@ -180,6 +190,15 @@ public class UserDTO {
     public void setFollowered(List<FollowerDTO> followered) {
         this.followered = followered;
     }
-    
-}
 
+    public String getPasword() {
+        return Password;
+    }
+
+    public void setPasword(String Pasword) {
+        this.Password = Pasword;
+    }
+    
+    
+
+}

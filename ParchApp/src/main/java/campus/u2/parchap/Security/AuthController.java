@@ -33,61 +33,66 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-public ResponseEntity<UserDTO> login(@RequestBody LoginRequest loginRequest) {
-    // Validación de los datos recibidos
-    if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty()) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new UserDTO("Username is required", "", ""));
-    }
-
-    if (loginRequest.getEmail() == null || loginRequest.getEmail().isEmpty()) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new UserDTO("Email is required", "", ""));
-    }
-
-    if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty()) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new UserDTO("Password is required", "", ""));
-    }
-
-    try {
-        // Busca al usuario en la base de datos por nombre de usuario
-        Optional<User> userOptional = userRepository.findByNameUser(loginRequest.getUsername());
-
-        // Verifica si el usuario existe
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new UserDTO("User not found", "", ""));
+    public ResponseEntity<UserDTO> login(@RequestBody LoginRequest loginRequest) {
+        // Validación de los datos recibidos
+        if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new UserDTO("Username is required"));
         }
 
-        User user = userOptional.get();
-
-        // Verificar que el correo coincida
-        if (!user.getEmail().equals(loginRequest.getEmail())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new UserDTO("Invalid email", "", ""));
+        if (loginRequest.getEmail() == null || loginRequest.getEmail().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new UserDTO("Email is required"));
         }
 
-        // Verifica si la contraseña es correcta (este es el bloque que mencionaste)
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new UserDTO("Invalid password", "", ""));
+        if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new UserDTO("Password is required"));
         }
 
-        // Si todo está bien, genera el JWT
-        String token = jwtAuthtenticationConfig.getJWTToken(user.getEmail());
+        try {
+            // Busca al usuario en la base de datos por nombre de usuario
+            Optional<User> userOptional = userRepository.findByNameUser(loginRequest.getUsername());
 
-        // Devuelve el DTO con los datos del usuario y el token generado
-        return ResponseEntity.ok(new UserDTO(user.getName(), user.getEmail(), token));
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new UserDTO("Internal Server Error: " + e.getMessage(), "", ""));
+            // Verifica si el usuario existe
+            if (userOptional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new UserDTO("User not found"));
+            }
+
+            User user = userOptional.get();
+
+            // Verificar que el correo coincida
+            if (!user.getEmail().equals(loginRequest.getEmail())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new UserDTO("Invalid email"));
+            }
+
+            // Verifica si la contraseña es correcta
+            if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new UserDTO("Invalid password"));
+            }
+
+            // Si todo está bien, genera el JWT
+            String token = jwtAuthtenticationConfig.getJWTToken(user.getEmail());
+
+            // Crear el DTO para devolver (solo con los campos básicos)
+            UserDTO userDTO = new UserDTO(
+                    user.getId_User(), // idUser
+                    user.getName(), // name
+                    user.getNameUser(), // nameUser
+                    user.getEmail(), // email
+                    user.getBiography(), // biography
+                    user.getUrlPhoto(), // urlPhoto
+                    token // token
+            );
+
+            return ResponseEntity.ok(userDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new UserDTO("Internal Server Error: " + e.getMessage()));
+        }
     }
+
 }
-
-}
-
-
-
-
-

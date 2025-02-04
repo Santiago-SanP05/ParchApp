@@ -25,6 +25,12 @@ public class CommentDTO {
         this.idPost = idPost;
     }
     
+    public CommentDTO(Long idComment, String text, LocalDateTime publicationDate) {
+        this.idComment = idComment;
+        this.text = text;
+        this.publicationDate = publicationDate;
+    }
+    
     public CommentDTO() {
     }
 

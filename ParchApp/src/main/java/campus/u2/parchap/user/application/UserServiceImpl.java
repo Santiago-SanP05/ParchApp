@@ -39,20 +39,25 @@ public class UserServiceImpl {
         return userRepository.findById(id).map(this::convertToDTO);
     }
 
-    public UserDTO save(User user) {
-    // Encriptar la contraseña antes de guardar
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public UserDTO save(UserDTO userDTO) {
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setNameUser(userDTO.getNameUser());
+        user.setEmail(userDTO.getEmail());
+        user.setBiography(userDTO.getBiography());
+        user.setUrlPhoto(userDTO.getUrlPhoto());
 
-    // Establecer fechas de creación y actualización (si es necesario)
-    user.setCreateDate(LocalDateTime.now());
-    user.setUpdateDate(LocalDateTime.now());
+        // Asignar valores adicionales
+        user.setPassword(passwordEncoder.encode(userDTO.getPasword())); // Debe venir del frontend
+        user.setCreateDate(LocalDateTime.now());
+        user.setUpdateDate(LocalDateTime.now());
 
-    // Guardar el usuario en la base de datos
-    User savedUser = userRepository.save(user);
+        // Guardar usuario en la base de datos
+        user = userRepository.save(user);
 
-    // Convertir a DTO y retornar
-    return convertToDTO(savedUser);
-    }
+        // Retornar un UserDTO sin la contraseña
+        return new UserDTO(user.getId_User(), user.getName(), user.getNameUser(), user.getEmail(), user.getBiography(), user.getUrlPhoto());
+}
 
 
     public void deleteById(Long id) {
