@@ -163,3 +163,4 @@ async function abrircomentarios() {
     console.error('Hubo un problema con la solicitud:', error);
   }
 }
+

@@ -239,3 +239,31 @@ a{
 .todoComentarios{
     margin-bottom: 6vh;
 }
+
+.datosRegistrar input{
+    width: 40vh;
+    border-radius: 4vh;
+    text-align: center;
+    height: 4vh;
+    border: solid 4px rgb(58, 58, 58);
+    font-size: 0.8em;
+}
+.datosRegistrar{
+    margin-top: 2vh;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.enviarEditar{
+    margin-top: 2vh;
+    height: 5vh;
+    width: 20%;
+    border-radius: 4vh;
+    font-size: 1.3rem;
+}
+.enviarEditar:hover{
+    background-color: rgb(71, 255, 25);
+}
