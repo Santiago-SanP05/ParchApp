@@ -22,9 +22,9 @@ public class CommentServiceImpl {
     private final PostRepository postRepository;  // Para manejar publicaciones
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, 
-                              UserRepository userRepository,
-                              PostRepository postRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository,
+            UserRepository userRepository,
+            PostRepository postRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
@@ -33,7 +33,7 @@ public class CommentServiceImpl {
     // Obtener todos los comentarios
     public List<CommentDTO> findAll() {
         return commentRepository.findAll().stream()
-                .map(this::convertToDTO)  // Convertir cada comentario a DTO
+                .map(this::convertToDTO) // Convertir cada comentario a DTO
                 .collect(Collectors.toList());
     }
 
@@ -44,9 +44,15 @@ public class CommentServiceImpl {
     }
 
     // Guardar un comentario
-    public CommentDTO save(Comment comment) {
-        Comment savedComment = commentRepository.save(comment);  // Guardamos directamente la entidad
-        return convertToDTO(savedComment);  // Convertimos la entidad guardada a DTO
+    public CommentDTO save(CommentDTO commentDTO) {
+        // Convertir CommentDTO a Comment
+        Comment comment = convertToEntity(commentDTO);
+
+        // Guardar el comentario
+        Comment savedComment = commentRepository.save(comment);
+
+        // Convertir la entidad Comment de nuevo a CommentDTO
+        return convertToDTO(savedComment);
     }
 
     // Eliminar un comentario por ID
@@ -56,27 +62,28 @@ public class CommentServiceImpl {
 
     // Convertir de entidad a DTO
     private CommentDTO convertToDTO(Comment comment) {
-    return new CommentDTO(
-        comment.getIdComment(), 
-        comment.getText(), 
-        comment.getPublicationDate(),
-        comment.getCommentUser().getId_User(), // Aquí corregimos el acceso a idUser
-        comment.getCommentPost().getIdPost()
-    );
-}
-
+        return new CommentDTO(
+                comment.getIdComment(),
+                comment.getText(),
+                comment.getPublicationDate(),
+                comment.getCommentUser().getId_User(), // Aquí corregimos el acceso a idUser
+                comment.getCommentPost().getIdPost()
+        );
+    }
 
     // Convertir de DTO a entidad
     private Comment convertToEntity(CommentDTO commentDTO) {
+        // Crear entidad Comment a partir de los datos del DTO
         Comment comment = new Comment(commentDTO.getText(), commentDTO.getPublicationDate());
 
-        // Recibir el ID del usuario y la publicación desde el DTO
-        User user = userRepository.findById(commentDTO.getIdComment())  // Asignar usuario al comentario
+        // Obtener usuario y publicación usando los ID proporcionados en el DTO
+        User user = userRepository.findById(commentDTO.getIdUser()) // Usamos el ID del usuario
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
-        Post post = postRepository.findById(commentDTO.getIdComment())  // Asignar publicación al comentario
+
+        Post post = postRepository.findById(commentDTO.getIdPost()) // Usamos el ID de la publicación
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
 
+        // Asociar usuario y publicación al comentario
         comment.setCommentUser(user);
         comment.setCommentPost(post);
 

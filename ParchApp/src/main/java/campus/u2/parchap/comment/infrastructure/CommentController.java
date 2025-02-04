@@ -1,7 +1,6 @@
 package campus.u2.parchap.comment.infrastructure;
 
 import campus.u2.parchap.comment.application.CommentServiceImpl;
-import campus.u2.parchap.comment.domain.Comment;
 import campus.u2.parchap.comment.domain.CommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,8 +38,8 @@ public class CommentController {
     // Crear un comentario
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDTO createComment(@RequestBody Comment comment) {
-        return commentServiceImpl.save(comment);  // Recibimos la entidad directamente
+    public CommentDTO createComment(@RequestBody CommentDTO commentDTO) {
+        return commentServiceImpl.save(commentDTO);
     }
 
     // Eliminar un comentario por ID
@@ -52,9 +51,9 @@ public class CommentController {
 
     // Actualizar un comentario por ID
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @RequestBody Comment comment) {
-        comment.setIdComment(id);
-        CommentDTO updatedComment = commentServiceImpl.save(comment);
+    public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @RequestBody CommentDTO commentDTO) {
+        commentDTO.setIdComment(id);
+        CommentDTO updatedComment = commentServiceImpl.save(commentDTO); // Usamos el DTO actualizado
         return ResponseEntity.ok(updatedComment);
     }
 }

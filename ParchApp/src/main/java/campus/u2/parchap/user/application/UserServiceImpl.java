@@ -1,7 +1,11 @@
 package campus.u2.parchap.user.application;
 
+import campus.u2.parchap.comment.domain.CommentDTO;
 import campus.u2.parchap.follower.domain.Follower;
+import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.follower.domain.FollowerRepository;
+import campus.u2.parchap.like.domain.ReactionDTO;
+import campus.u2.parchap.post.domain.PostDTO;
 import campus.u2.parchap.user.domain.User;
 import campus.u2.parchap.user.domain.UserDTO;
 import campus.u2.parchap.user.domain.UserRepository;
@@ -19,7 +23,7 @@ public class UserServiceImpl {
 
     private final UserRepository userRepository;
     private final FollowerRepository followerRepository;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -57,8 +61,7 @@ public class UserServiceImpl {
 
         // Retornar un UserDTO sin la contraseña
         return new UserDTO(user.getId_User(), user.getName(), user.getNameUser(), user.getEmail(), user.getBiography(), user.getUrlPhoto());
-}
-
+    }
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
@@ -82,9 +85,9 @@ public class UserServiceImpl {
         }
 
         User follower = userRepository.findById(followerId)
-            .orElseThrow(() -> new RuntimeException("Seguidor no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Seguidor no encontrado"));
         User followed = userRepository.findById(followedId)
-            .orElseThrow(() -> new RuntimeException("Usuario seguido no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuario seguido no encontrado"));
 
         // Verificar si ya existe la relación de seguimiento
         Optional<Follower> existingFollow = followerRepository.findByUserFollower_IdUserAndUserFollowed_IdUser(followerId, followedId);
@@ -100,6 +103,83 @@ public class UserServiceImpl {
         followerRepository.save(follow);
     }
 
+    public List<PostDTO> getPostsByUserId(Long userId) {
+    // Buscar al usuario por su ID
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    // Obtener los posts del usuario
+    return user.getPost().stream()
+            .map(post -> new PostDTO(
+                    post.getIdPost(),                                // ID del post
+                    post.getImageUrl(),                              // URL de la imagen
+                    post.getPublicationDate(),                       // Fecha de publicación
+                    post.getCaption(),                               // Descripción del post
+                    post.getComments().stream()                       // Convertir comentarios a DTOs
+                            .map(comment -> new CommentDTO(
+                                    comment.getIdComment(),
+                                    comment.getText(),
+                                    comment.getPublicationDate(),
+                                    comment.getCommentUser().getId_User(),  // ID del usuario que hizo el comentario
+                                    comment.getCommentPost().getIdPost()))  // ID del post comentado
+                            .collect(Collectors.toList()),
+
+                    // Convertir reacciones a DTOs
+                    post.getLike1().stream()
+                            .map(reaction -> new ReactionDTO(
+                                    reaction.getIdLike(),
+                                    reaction.getLikeUser().getId_User(),        // ID del usuario que hizo la reacción
+                                    reaction.getLikePost().getIdPost(),          // ID del post en el que se hizo la reacción
+                                    reaction.getPublication_date()))         // Fecha de publicación de la reacción
+                            .collect(Collectors.toList()),
+
+                    // ID del usuario que publicó el post
+                    post.getUserPublication().getId_User()))
+            .collect(Collectors.toList());
+}
+
+    public List<FollowerDTO> getFollowersByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        return user.getFollower().stream()
+                .map(follower -> new FollowerDTO(
+                follower.getIdFollower(),
+                follower.getFollowDate(),
+                follower.getUserFollower().getId_User(),
+                follower.getUserFollowed().getId_User()))
+                .collect(Collectors.toList());
+    }
+
+    public List<FollowerDTO> getFollowedByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        return user.getFollowed().stream()
+                .map(followed -> new FollowerDTO(
+                followed.getIdFollower(),
+                followed.getFollowDate(),
+                followed.getUserFollower().getId_User(),
+                followed.getUserFollowed().getId_User()))
+                .collect(Collectors.toList());
+    }
+
+    public UserDTO updateBiography(Long userId, String newBiography) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setBiography(newBiography);
+        user.setUpdateDate(LocalDateTime.now());
+        user = userRepository.save(user);
+        return convertToDTO(user);
+    }
+
+    public UserDTO changePassword(Long userId, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setUpdateDate(LocalDateTime.now());
+        user = userRepository.save(user);
+        return convertToDTO(user);
+    }
+
     public void unfollowUser(Long followerId, Long followedId) {
         Follower follow = followerRepository.findByUserFollower_IdUserAndUserFollowed_IdUser(followerId, followedId)
                 .orElseThrow(() -> new RuntimeException("No existe una relación de seguimiento"));
@@ -107,4 +187,3 @@ public class UserServiceImpl {
         followerRepository.delete(follow);
     }
 }
-

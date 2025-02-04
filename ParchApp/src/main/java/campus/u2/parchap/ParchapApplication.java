@@ -2,8 +2,10 @@ package campus.u2.parchap;
 
 import campus.u2.parchap.comment.application.CommentServiceImpl;
 import campus.u2.parchap.comment.domain.Comment;
+import campus.u2.parchap.comment.domain.CommentDTO;
 import campus.u2.parchap.follower.application.FollowerServiceImpl;
 import campus.u2.parchap.follower.domain.Follower;
+import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.like.application.ReactionServiceImpl;
 import campus.u2.parchap.like.domain.Reaction;
 import campus.u2.parchap.like.domain.ReactionDTO;
@@ -35,10 +37,8 @@ public class ParchapApplication {
         CommentServiceImpl commentServiceImpl = contexto.getBean(CommentServiceImpl.class);
         ReactionServiceImpl reactionServiceImpl = contexto.getBean(ReactionServiceImpl.class);
         FollowerServiceImpl followerServiceImpl = contexto.getBean(FollowerServiceImpl.class);
-        PasswordEncoder passwordEncoder = contexto.getBean(PasswordEncoder.class);
-        
-        
-        // Crear una instancia de UserDTO con los datos del nuevo usuario
+
+        // Crear usuarios
         UserDTO u1 = new UserDTO();
         u1.setName("Juan Pérez");
         u1.setNameUser("juanp");
@@ -46,7 +46,7 @@ public class ParchapApplication {
         u1.setBiography("Desarrollador de software");
         u1.setUrlPhoto("http://example.com/foto.jpg");
         u1.setPasword("noraaaa");
-        
+
         UserDTO u2 = new UserDTO();
         u2.setName("enrique");
         u2.setNameUser("frrrrr");
@@ -54,7 +54,7 @@ public class ParchapApplication {
         u2.setBiography("Desarrollador de software");
         u2.setUrlPhoto("http://example.com/foto.jpg");
         u2.setPasword("Alpha");
-        
+
         UserDTO u3 = new UserDTO();
         u3.setName("NigaMan");
         u3.setNameUser("sassant");
@@ -63,87 +63,73 @@ public class ParchapApplication {
         u3.setUrlPhoto("http://example.com/foto.jpg");
         u3.setPasword("Alpha");
 
-        // Llamar al método save para guardar el nuevo usuario
+        // Guardar usuarios
         userServiceImpl.save(u1);
         userServiceImpl.save(u2);
         userServiceImpl.save(u3);
 
-        // Crear un nuevo usuario (DTO)
-        // Crear un objeto User con todos sus datos
-//        User user1 = new User();
-//        user1.setName("sassant");
-//        user1.setNameUser("Elsasant");
-//        user1.setUrlPhoto("http://example.com/sassant.jpg");
-//        user1.setEmail("nana@email.com");
-//        user1.setPassword("goodpoint");
-//        user1.setBiography("Soy un usuario nuevo en la aplicación.");
-//
-//        User user2 = new User();
-//        user2.setName("Faring");
-//        user2.setNameUser("grrrrrr");
-//        user2.setUrlPhoto("http://example.com/sassant.jpg");
-//        user2.setEmail("ElDeariporo@email.com");
-//        user2.setPassword("Abeja");
-//        user2.setBiography("Soy un usuario nuevo en la aplicación.");
-//
-//        User user3 = new User();
-//        user3.setName("exagon");
-//        user3.setNameUser("elnegrito");
-//        user3.setUrlPhoto("http://example.com/sassant.jpg");
-//        user3.setEmail("aña@email.com");
-//        user3.setPassword("barrancabermeja");
-//        user3.setBiography("Soy un usuario nuevo en la aplicación.");
-//
-//        // Guardar los usuarios
-//        userServiceImpl.save(user1);
-//        userServiceImpl.save(user2);
-//        userServiceImpl.save(user3);
-//
-//        // Crear un post para el usuario (DTO)
-//        Post p1 = new Post();
-//        p1.setCaption("Aquí tomando el sol");
-//        p1.setImageUrl("https://www.albitana.com/wp-content/uploads/2018/01/granja-escuela-albitana-1393.jpg");
-//        p1.setPublicationDate(LocalDateTime.now());
-//        p1.setUserPublication(user1);
-////
-////        // Guardar el post
-//        postServiceImpl.save(p1);
-////
-////        // Crear un comentario para el post (DTO)
-//        Comment comment = new Comment("¡Quiero estar en esas vaca-ciones!", dateArrived);
-//        comment.setCommentUser(user1); // Asignamos el usuario
-//        comment.setCommentPost(p1); // Asignamos el post
-//        commentServiceImpl.save(comment); // Guardar el comentario
-////
-////        // Crear la reacción para el post
-//        Reaction reaction = new Reaction(dateArrived);
-//        reaction.setLikePost(p1);  // Asociamos el post a la reacción
-//        reaction.setLikeUser(user1); // Asociamos el usuario que está reaccionando
-//        reactionServiceImpl.save(reaction); // Guardar la reacción
-////
-////        // Crear el seguidor (no es necesario usar DTO en este caso)
-////        // Crear el seguidor (no es necesario usar DTO en este caso)
-//        Follower follower = new Follower();
-//////
-//////// Asignar el usuario seguidor (quien sigue)
-////        follower.setUserFollower(user1); // Aquí user1 es quien sigue
-//////
-//////// Asignar el usuario seguido (quien es seguido)
-////        follower.setUserFollowed(user2); // Aquí user2 es quien es seguido
-//////
-//////// Guardar el seguidor
-////        followerServiceImpl.save(follower); // Guardar el seguidor
-////
-////// Relacionar los seguidores y seguidores seguidos
-//        user1.addFollower(follower); // Agregar al usuario como seguidor
-//        user2.addFollowed(follower); // Agregar al usuario como seguido
-////
-////// Guardar los cambios en los usuarios
-//        userServiceImpl.save(user1);
-//        userServiceImpl.save(user2);
-//        
-////
-//        System.out.println("Usuarios, posts, comentarios, reacciones y relaciones guardadas exitosamente.");
-        
+        // Crear posts
+        PostDTO p1 = new PostDTO();
+        p1.setImageUrl("https://pressover.news/wp-content/uploads/2021/11/5-57022_halo-3-hd-wallpaper-backgrounds-halo-2-scaled.jpg");
+        p1.setCaption("Mi primer post");
+        p1.setPublicationDate(LocalDateTime.now());
+        p1.setUserId(1L); // Asignar al usuario con ID 1
+
+        PostDTO p2 = new PostDTO();
+        p2.setImageUrl("https://m.media-amazon.com/images/M/MV5BNjJjYWNlODMtNjQwZS00ZThiLThiMDktN2I4ODliYmNkNmVmXkEyXkFqcGdeQWFkcmllY2xh._V1_.jpg");
+        p2.setCaption("Otro post interesante");
+        p2.setPublicationDate(LocalDateTime.now());
+        p2.setUserId(2L); // Asignar al usuario con ID 2
+
+        // Guardar posts
+        postServiceImpl.save(p1);
+        postServiceImpl.save(p2);
+
+        // Crear comentarios
+        CommentDTO c1 = new CommentDTO();
+        c1.setText("¡Gran post!");
+        c1.setPublicationDate(LocalDateTime.now());
+        c1.setIdUser(2L); // Comentario hecho por el usuario con ID 2
+        c1.setIdPost(1L); // Comentario en el post con ID 1
+
+        CommentDTO c2 = new CommentDTO();
+        c2.setText("Me encanta esto.");
+        c2.setPublicationDate(LocalDateTime.now());
+        c2.setIdUser(3L); // Comentario hecho por el usuario con ID 3
+        c2.setIdPost(1L); // Comentario en el post con ID 1
+
+        // Guardar comentarios
+        commentServiceImpl.save(c1);
+        commentServiceImpl.save(c2);
+
+        // Crear reacciones
+        ReactionDTO r1 = new ReactionDTO();
+        r1.setPublicationDate(LocalDateTime.now());
+        r1.setIdUser(1L); // Reacción hecha por el usuario con ID 1
+        r1.setIdPost(2L); // Reacción en el post con ID 2
+
+        ReactionDTO r2 = new ReactionDTO();
+        r2.setPublicationDate(LocalDateTime.now());
+        r2.setIdUser(3L); // Reacción hecha por el usuario con ID 3
+        r2.setIdPost(2L); // Reacción en el post con ID 2
+
+// Guardar reacciones
+        reactionServiceImpl.save(r1);
+        reactionServiceImpl.save(r2);
+
+        // Crear seguidores
+        FollowerDTO f1 = new FollowerDTO();
+        f1.setFollowDate(LocalDateTime.now());
+        f1.setUserFollowerId(1L); // Usuario con ID 1 sigue a
+        f1.setUserFollowedId(2L); // Usuario con ID 2
+
+        FollowerDTO f2 = new FollowerDTO();
+        f2.setFollowDate(LocalDateTime.now());
+        f2.setUserFollowerId(2L); // Usuario con ID 2 sigue a
+        f2.setUserFollowedId(3L); // Usuario con ID 3
+
+        // Guardar seguidores
+        followerServiceImpl.save(f1);
+        followerServiceImpl.save(f2);
     }
 }
