@@ -1,5 +1,6 @@
 package campus.u2.parchap.user.infrastructure;
 
+import campus.u2.parchap.post.domain.PostDTO;
 import campus.u2.parchap.user.application.UserServiceImpl;
 import campus.u2.parchap.user.domain.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,13 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<UserDTO> userDTO = userServiceImpl.findById(id);
         return userDTO.map(ResponseEntity::ok)
-                      .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<PostDTO>> getPostsByUserId(@PathVariable Long id) {
+        List<PostDTO> posts = userServiceImpl.getPostsByUserId(id);
+        return ResponseEntity.ok(posts);
     }
 
     @PostMapping
@@ -53,4 +60,3 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 }
-
