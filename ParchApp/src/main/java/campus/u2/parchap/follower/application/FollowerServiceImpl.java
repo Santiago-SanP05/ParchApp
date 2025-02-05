@@ -5,11 +5,13 @@ import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.follower.domain.FollowerRepository;
 import campus.u2.parchap.user.domain.User;
 import campus.u2.parchap.user.domain.UserRepository;
+import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,13 +27,29 @@ public class FollowerServiceImpl {
     }
 
     public List<FollowerDTO> findAll() {
-        return followerRepository.findAll().stream()
+        List<Follower> followers = followerRepository.findAll();
+        Set<Long> seenUsers = new HashSet<>();
+        return followers.stream()
+                .filter(follower -> seenUsers.add(follower.getUserFollower().getId_User()))
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     public FollowerDTO save(FollowerDTO followerDTO) {
-        Follower follower = convertToEntity(followerDTO); // Convertimos DTO a entidad
+        // Convertimos el DTO a entidad
+        Follower follower = convertToEntity(followerDTO);
+
+        // Verificamos si ya existe una relación entre los usuarios
+        Optional<Follower> existingFollower = followerRepository.findByUserFollowerAndUserFollowed(
+                follower.getUserFollower(), follower.getUserFollowed()
+        );
+
+        // Si ya existe, lanzamos un error
+        if (existingFollower.isPresent()) {
+            throw new IllegalArgumentException("Esta relación de seguimiento ya existe.");
+        }
+
+        // Si no existe, lo guardamos
         Follower savedFollower = followerRepository.save(follower);
         return convertToDTO(savedFollower);
     }

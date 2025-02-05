@@ -4,6 +4,7 @@
  */
 package campus.u2.parchap.user.domain;
 
+import campus.u2.parchap.follower.domain.Follower;
 import java.util.List;
 import java.util.Optional;
 

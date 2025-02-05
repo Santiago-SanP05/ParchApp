@@ -241,10 +241,16 @@ public class ParchapApplication {
         f2.setFollowDate(LocalDateTime.now());
         f2.setUserFollowerId(2L); // Usuario con ID 2 sigue a
         f2.setUserFollowedId(3L); // Usuario con ID 3
+        
+        FollowerDTO f3 = new FollowerDTO();
+        f3.setFollowDate(LocalDateTime.now());
+        f3.setUserFollowerId(1L); // Usuario con ID 2 sigue a
+        f3.setUserFollowedId(3L); // Usuario con ID 3
 
         // Guardar seguidores
         followerServiceImpl.save(f1);
         followerServiceImpl.save(f2);
+        followerServiceImpl.save(f3);
         
         
     }

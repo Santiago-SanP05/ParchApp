@@ -198,7 +198,4 @@ public class UserDTO {
     public void setPassword(String Pasword) {
         this.Password = Pasword;
     }
-    
-    
-
 }

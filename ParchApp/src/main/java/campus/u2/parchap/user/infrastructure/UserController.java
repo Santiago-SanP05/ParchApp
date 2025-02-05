@@ -1,5 +1,6 @@
 package campus.u2.parchap.user.infrastructure;
 
+import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.post.domain.PostDTO;
 import campus.u2.parchap.user.application.UserServiceImpl;
 import campus.u2.parchap.user.domain.UserDTO;
@@ -41,12 +42,11 @@ public class UserController {
         return ResponseEntity.ok(posts);
     }
 
-     @PostMapping
+    @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         UserDTO createdUser = userServiceImpl.save(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
-    
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
@@ -59,5 +59,17 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userServiceImpl.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/followers")
+    public ResponseEntity<List<UserDTO>> getFollowers(@PathVariable Long id) {
+        List<UserDTO> followers = userServiceImpl.getFollowersByUserId(id);
+        return ResponseEntity.ok(followers);
+    }
+
+    @GetMapping("/{id}/followed")
+    public ResponseEntity<List<UserDTO>> getFollowed(@PathVariable Long id) {
+        List<UserDTO> followed = userServiceImpl.getFollowedByUserId(id);
+        return ResponseEntity.ok(followed);
     }
 }

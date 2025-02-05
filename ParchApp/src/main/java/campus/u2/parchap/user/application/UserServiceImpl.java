@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -144,29 +146,64 @@ public class UserServiceImpl {
                 .collect(Collectors.toList());
     }
 
-    public List<FollowerDTO> getFollowersByUserId(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return user.getFollower().stream()
-                .map(follower -> new FollowerDTO(
-                follower.getIdFollower(),
-                follower.getFollowDate(),
-                follower.getUserFollower().getId_User(),
-                follower.getUserFollowed().getId_User()))
-                .collect(Collectors.toList());
+    public List<UserDTO> getFollowersByUserId(Long userId) {
+    // Obtener el usuario desde la base de datos
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    // Filtrar los seguidores buscando en los seguidores del usuario en la columna 'userFollowed'
+    List<Follower> followers = followerRepository.findByUserFollowed(user);
+
+    // Usar un Set para evitar duplicados
+    Set<Long> seenUsers = new HashSet<>();
+
+    // Convertir las entidades a DTO y devolver la lista
+    return followers.stream()
+            .filter(follower -> seenUsers.add(follower.getUserFollower().getId_User())) // Evitar duplicados
+            .map(follower -> convertToDTO(follower.getUserFollower()))
+            .collect(Collectors.toList());
     }
 
-    public List<FollowerDTO> getFollowedByUserId(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return user.getFollowed().stream()
-                .map(followed -> new FollowerDTO(
-                followed.getIdFollower(),
-                followed.getFollowDate(),
-                followed.getUserFollower().getId_User(),
-                followed.getUserFollowed().getId_User()))
-                .collect(Collectors.toList());
-    }
+    public List<UserDTO> getFollowedByUserId(Long userId) {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    // Filtrar los usuarios a los que sigue buscando en la columna 'userFollower'
+    List<Follower> followed = followerRepository.findByUserFollower(user);
+
+    // Usar un Set para evitar duplicados
+    Set<Long> seenUsers = new HashSet<>();
+
+    // Convertir las entidades a DTO y devolver la lista
+    return followed.stream()
+            .filter(follower -> seenUsers.add(follower.getUserFollowed().getId_User())) // Evitar duplicados
+            .map(follower -> convertToDTO(follower.getUserFollowed()))
+            .collect(Collectors.toList());
+}
+
+//    public List<FollowerDTO> getFollowersByUserId(Long userId) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//        return user.getFollower().stream()
+//                .map(follower -> new FollowerDTO(
+//                follower.getIdFollower(),
+//                follower.getFollowDate(),
+//                follower.getUserFollower().getId_User(),
+//                follower.getUserFollowed().getId_User()))
+//                .collect(Collectors.toList());
+//    }
+//
+//    public List<FollowerDTO> getFollowedByUserId(Long userId) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//        return user.getFollowed().stream()
+//                .map(followed -> new FollowerDTO(
+//                followed.getIdFollower(),
+//                followed.getFollowDate(),
+//                followed.getUserFollower().getId_User(),
+//                followed.getUserFollowed().getId_User()))
+//                .collect(Collectors.toList());
+//    }
 
     public UserDTO updateBiography(Long userId, String newBiography) {
         User user = userRepository.findById(userId)
