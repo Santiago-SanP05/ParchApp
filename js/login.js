@@ -52,20 +52,56 @@ const loginUsuario = async (username, email, password) => {
 
 
 const entrar = document.querySelector('#principal'); 
-
 entrar.addEventListener("click", loginUsuario);
 
 
+
+
+
+
+
+
+
 function vistaregistrar(){
-    var contenedorRegistrar = document.querySelector(".contLogin");
-    contenedorRegistrar.innerHTML = `
- 
+    var contenidoRegistrar = document.querySelector(".contLogin");
+    contenidoRegistrar.innerHTML= "";
+    contenidoRegistrar.innerHTML=`
+         <style>
+        .inputRegister {
+            flex-direction: row;
+
+        }
+        .login {
+            width: 80%;
+        }
+        .contLogin{
+            width: 80%;
+        }
+
+
+    </style>
+        <div class="columnTitulo">
+        <h1 id="titulo">ParchApp</h1>
+                    <h1>Registrar</h1>
+        </div>
+                    <div class="inputRegister">
+                    <p>Nombre usuario: <input id="editnombreusuario" type="text" placeholder="${"data.name"}"></p>
+                    <p>Usuario: <input id="editusuario" type="text" placeholder="${"data.nameUser"}"></p>
+                    <p>Correo: <input id="editemail" type="email" placeholder="${"data.email"}"></p>
+                    <p>Biografia: <input id="editBio" type="text" placeholder="${"data.biography"}"></p>
+                    <p>Url foto: <input id="editUrlImagen" type="url" placeholder="${"data.urlPhoto"}"> </p>
+                    <p>Contraseña: <input id="editcontraseña" type="password" placeholder="**********"></p>
+                    <p>Confiramar Contraseña: <input id="editcontraseñaConfirmar" type="password" placeholder="confirmar contraseña"></p>
+                    </div>
+                    
+                   <button id="principal">Entrar</button>
+                    <a href="#" id="registrar">Registrarme</a>
     `;
-    console.log("hola mundo");
 }
 
 const registrar = document.querySelector("#registrar");
 registrar.addEventListener("click", vistaregistrar);
+
 
 /*
 <h1 id="titulo">ParchApp</h1>

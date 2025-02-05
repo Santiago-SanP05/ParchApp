@@ -1,30 +1,3 @@
-falta terminar la funcion de enviar datos de usuario editado
+falta mostrar comentarios en el perfil
 
-const actualizarDatos = async () => {
-    const url = 'http://localhost:8080/api/usuarios/1'; // URL del endpoint con el ID
-    const datosActualizados = {
-        nombre: 'Juan Pérez',
-        correo: 'juanperez@example.com'
-    };
-
-    try {
-        const respuesta = await fetch(url, {
-            method: 'PUT', // Método HTTP PUT
-            headers: {
-                'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
-            },
-            body: JSON.stringify(datosActualizados) // Convierte el objeto a JSON
-        });
-
-        if (respuesta.ok) {
-            const datos = await respuesta.json();
-            console.log('Datos actualizados:', datos);
-        } else {
-            console.error('Error al actualizar:', respuesta.status);
-        }
-    } catch (error) {
-        console.error('Error de red:', error);
-    }
-};
-
-actualizarDatos();
+arreglar el apartado de registrar usuario y hacer la funcion para que lea y registre usuario

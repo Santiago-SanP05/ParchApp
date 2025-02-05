@@ -1,3 +1,15 @@
+function getCurrentDateTime() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
 
 const perfil = document.querySelector('#perfil'); 
 
@@ -22,13 +34,11 @@ async function mostrarPerfil(){
 
 
     const data = await response.json();
-    console.log(data);
-    console.log(identifiacador);
     for (const element of data) {
       if (element.email === identifiacador) {
         const publicacion = document.querySelector(".publicacion");
       publicacion.innerHTML=`
-                       <div class="contenedorUsuario">
+            <div class="contenedorUsuario">
               <div class="usuarioImagen">
                   <img src="${element.urlPhoto}" alt="Imagen de perfil del usuario">
               </div>
@@ -54,41 +64,15 @@ async function mostrarPerfil(){
                 </div>
               </div>
             </div>
-            <div class="publicacion-item">
-              <header class="encabezadoPubli">
-                <img src="/Images/burrita.jpg" alt="Imagen de perfil del usuario" id="imagen">
-                <div>
-                  <h2>${"aqui va el nombre del ususario"}</h2>
-                  <time datetime="${"aqui va la fecha de publicacion"}">${new Date("aqui va la fecha de publicacion").toLocaleString()}</time>
-                </div>
-              </header>
-  
-              <section class="cuerpoPubli">
-                <h2>${"aqui va el contenido o descripcion de la imagen"}</h2>
-                <img id="imgPublicacion" src="${"aqui va la imagen"}" alt="Imagen de la publicación">
-              </section>
-  
-              <footer class="contenedorComentarios">
-                <div class="comentarios">
-                  <div class="contenedorReaccion">
-                    <a href=""><img src="/Images/Me encanta.png" alt="Reacción de me encanta"></a>
-                    <p>123</p>
-                  </div>
-                  <div class="contenedorimgcoment">
-                    <a href=""><img src="/Images/Comentarios.png" alt="Icono de comentarios"></a>
-                  </div>
-                </div>
-              </footer>
-            </div>
-                  
-  
-      `;
+            <div class="publicacion-item"></div>
+
+      `
+      await publicacionUsuario();
       }
     }
     var editarRegistrar = document.querySelector(".botoneditar");
 
 editarRegistrar.addEventListener("click",editarUsuario);
-    
 } catch (error) {
   console.error('Hubo un problema con la solicitud:', error);
 }
@@ -123,7 +107,7 @@ async function editarUsuario(){
             <p>Correo: <input id="editemail" type="email" placeholder="${data.email}"></p>
             <p>Biografia: <input id="editBio" type="text" placeholder="${data.biography}"></p>
             <p>Url foto: <input id="editUrlImagen" type="url" placeholder="${data.urlPhoto}"> </p>
-            <p>Contraseña: <input id="" type="password" placeholder="${data.pasword}"></p>
+            <p>Contraseña: <input id="editcontraseña" type="password" placeholder="**********"></p>
             <p>Confiramar Contraseña: <input id="editcontraseñaConfirmar" type="password" placeholder="confirmar contraseña"></p>
             <button class="enviarEditar"> Enviar </button>
           </div>
@@ -138,30 +122,199 @@ enviarDatosEditadosUser.addEventListener("click", enviareditarususario)
 }
 
 
-function enviareditarususario(){
+async function enviareditarususario(){
   const editnombreusuario = document.querySelector("#editnombreusuario").value.trim();
   const editusuario = document.querySelector("#editusuario").value.trim();
   const editemail = document.querySelector("#editemail").value.trim();
   const editBio = document.querySelector("#editBio").value.trim();
   const editUrlImagen= document.querySelector("#editUrlImagen").value.trim();
-  const editcontraseña = document.querySelector("#editusuario").value.trim();
+  const editcontraseña = document.querySelector("#editcontraseña").value.trim();
   const editcontraseñaConfirmar = document.querySelector("#editcontraseñaConfirmar").value.trim();
+  console.log(editnombreusuario);
+  console.log(editusuario);
+  console.log(editemail);
+  console.log(editBio);
+  console.log(editUrlImagen);
+  console.log(editcontraseña);
+  console.log(editcontraseñaConfirmar);
 
   if (!editnombreusuario || !editusuario || !editemail || !editcontraseña || !editcontraseñaConfirmar || !editBio) {
     throw new Error("Por favor, completa todos los campos obligatorios.");
 }
   const validaemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validaurl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i;
+ 
+  if (editemail && !validaemail.test(editemail)) {
+    alert("El email no concide con los parametros necesario recuerda el formato hola@gmail.com");
+    return;
+  }
+  if (editUrlImagen  && !validaurl.test(editUrlImagen)) {
+    alert("Recuerda que para la imagen debe ser una url.");    
+    return;
+  }
   if (editcontraseña !== editcontraseñaConfirmar) {
-    throw new Error("La contraseña de confirmación no coincide con la contraseña ingresada.");
-  }
-  if (editemail && !validaemail.test(validaemail)) {
     alert("La contraseña de confirmación no coincide con la contraseña ingresada.");
-  }
-  if (editUrlImagen  && !validaurl.test(validaurl)) {
-    alert("La contraseña de confirmación no coincide con la contraseña ingresada.");
+    return;
   }
 
-  
+  const url = 'http://localhost:3002/api/users/'+localStorage.getItem("id");
+  console.log(url)
+    const datosActualizados = {
+      name: editnombreusuario,
+      nameUSer: editusuario,
+      urlPhoto: editUrlImagen,
+      email: editemail,
+      password: editcontraseña,
+      biography: editBio,
+      updateDate: getCurrentDateTime()
+      
+    };
 
+    try {
+      let tooken = localStorage.getItem("token");
+        const respuesta = await fetch(url, {
+            method: 'PUT', // Método HTTP PUT
+            headers: {
+              "Authorization": `Bearer ${tooken}`,
+                'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
+            },
+            body: JSON.stringify(datosActualizados) // Convierte el objeto a JSON
+        });
+
+        if (respuesta.ok) {
+            const datos = await respuesta.json();
+            console.log('Datos actualizados:', datos);
+        } else {
+            console.error('Error al actualizar:', respuesta.status);
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+    }
+
+}
+
+async function publicacionUsuario() {
+  try {
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id");
+    const urluser = 'http://localhost:3002/api/users/';
+
+    // Obtener datos del usuario
+    const response2 = await fetch(urluser + id, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!response2.ok) {
+      throw new Error(`Error en la solicitud del usuario: ${response2.status}`);
+    }
+
+    const data2 = await response2.json();
+
+    // Obtener publicaciones del usuario
+    const response = await fetch(urluser + id + '/posts', {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud de publicaciones: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const publicacionesUsuario = document.querySelector(".publicacion-item");
+    
+    // Limpiar el contenedor antes de agregar nuevas publicaciones
+    publicacionesUsuario.innerHTML = "";
+
+    for (const element of data) {
+      console.log(element);
+
+      // Agregar cada publicación sin borrar las anteriores
+      publicacionesUsuario.insertAdjacentHTML('beforeend', `
+        <div class="publicacion">
+          <header class="encabezadoPubli">
+            <img src="${data2.urlPhoto}" alt="Imagen de perfil del usuario" id="imagen">
+            <div>
+              <h2>@${data2.nameUser}</h2>
+              <time datetime="${element.publicationDate}">${new Date(element.publicationDate).toLocaleString()}</time>
+            </div>
+          </header>
+
+          <section class="cuerpoPubli">
+            <h2>${element.caption}</h2>
+            <img id="imgPublicacion" src="${element.imageUrl}" alt="Imagen de la publicación">
+          </section>
+
+          <footer class="contenedorComentarios">
+            <div class="comentarios">
+              <div class="contenedorReaccion">
+                <a href="#"><img src="/Images/Me encanta.png" alt="Reacción de me encanta"></a>
+                <p>${element.reactions.length}</p>
+              </div>
+              <div class="contenedorimgcoment">
+                <a href="#"><img src="/Images/Comentarios.png" alt="Icono de comentarios"></a>
+                <p>${element.coments.length}</p>
+              </div>
+            </div>
+          </footer>
+
+          <div class="todoComentarios"></div>
+        </div>
+      `);
+
+      await abrircomentarios();
+    }
+  } catch (error) {
+    console.error('Hubo un problema con la solicitud:', error);
+  }
+}
+
+
+async function abrircomentarios() {
+
+  try {
+    var contenido = document.querySelector(".todoComentarios");
+    const token = localStorage.getItem("token");
+    const urluser = 'http://localhost:3002/api/users/';
+
+    const response = await fetch(urluser+localStorage.getItem("id")+'/posts',{
+      method: "GET",
+      headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+      }
+  });
+
+
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud: ${response.status}`);
+    }
+
+
+    const data = await response.json();
+
+
+    
+    
+    for (var first of data) {
+      console.log(first.coments);
+      contenido.innerHTML= `
+            <div class="centradorComentarios">
+              <div class="resultadoComentarios">
+                  <h4>${first.idComment}</h4>
+                  <p>${first.text}</p>
+                  <p>${first.publicationDate}</p>
+              </div>
+            </div>`
+    }
+  } catch (error) {
+    console.error('Hubo un problema con la solicitud:', error);
+  }
 }

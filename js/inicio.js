@@ -79,7 +79,7 @@ async function fetchData() {
                 <p>${first.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
-                <a id="vercommentarios" href="#"><img src="/Images/Comentarios.png" alt="Icono de comentarios"></a>
+                <img src="/Images/Comentarios.png" alt="Icono de comentarios">
                 <p>${first.coments.length}</p>
               </div>
             </div>
@@ -88,6 +88,7 @@ async function fetchData() {
           <div class="todoComentarios">
             <div class="centradorComentarios">
               <div class="resultadoComentarios">
+              
                 ${comentariosConNombres.join('')} <!-- Comentarios con el nombre de usuario -->
               </div>
             </div>
@@ -100,8 +101,7 @@ async function fetchData() {
     publicacion.innerHTML = contenidoPublicaciones;
 
     // Manejamos el evento de los comentarios
-    var commentarios = document.querySelector("#vercommentarios");
-    commentarios.addEventListener("click", abrircomentarios);
+
 
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
@@ -120,47 +120,5 @@ principal.addEventListener("click", fetchData);
 
 
 
-async function abrircomentarios() {
 
-  try {
-    const token = localStorage.getItem("token");
-    var contenido = document.querySelector(".todoComentarios");
-
-
-    const response = await fetch('http://localhost:3002/api/post', {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
-    });
-
-
-    if (!response.ok) {
-      throw new Error(`Error en la solicitud: ${response.status}`);
-    }
-
-
-    const data = await response.json();
-
-
-    let contenidocomentarios = "";
-    console.log(data)
-    
-    for (var first of data) {
-      contenidocomentarios.innerHTML += `
-            <div class="centradorComentarios">
-              <div class="resultadoComentarios">
-                <div class="etiquetasCommentario">
-                  <h4>${first.idComment}</h4>
-                  <p>${first.text}</p>
-                </div>
-              </div>
-            </div>`
-    }
-    contenido.innerHTML = contenidocomentarios
-  } catch (error) {
-    console.error('Hubo un problema con la solicitud:', error);
-  }
-}
 
