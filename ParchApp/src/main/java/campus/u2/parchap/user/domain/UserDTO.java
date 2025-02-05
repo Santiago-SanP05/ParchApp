@@ -191,11 +191,11 @@ public class UserDTO {
         this.followered = followered;
     }
 
-    public String getPasword() {
+    public String getPassword() {
         return Password;
     }
 
-    public void setPasword(String Pasword) {
+    public void setPassword(String Pasword) {
         this.Password = Pasword;
     }
     

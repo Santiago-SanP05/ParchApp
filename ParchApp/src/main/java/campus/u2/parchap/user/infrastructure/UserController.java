@@ -41,11 +41,12 @@ public class UserController {
         return ResponseEntity.ok(posts);
     }
 
-    @PostMapping
+     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         UserDTO createdUser = userServiceImpl.save(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
+    
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {

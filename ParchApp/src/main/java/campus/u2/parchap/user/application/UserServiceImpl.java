@@ -44,22 +44,30 @@ public class UserServiceImpl {
     }
 
     public UserDTO save(UserDTO userDTO) {
-        User user = new User();
+        User user;
+
+        if (userDTO.getIdUser() != null) { // Si el ID no es nulo, buscar el usuario existente
+            user = userRepository.findById(userDTO.getIdUser()).orElse(new User());
+        } else {
+            user = new User(); // Si no hay ID, crear un nuevo usuario
+            user.setCreateDate(LocalDateTime.now());
+        }
+
         user.setName(userDTO.getName());
         user.setNameUser(userDTO.getNameUser());
         user.setEmail(userDTO.getEmail());
         user.setBiography(userDTO.getBiography());
         user.setUrlPhoto(userDTO.getUrlPhoto());
 
-        // Asignar valores adicionales
-        user.setPassword(passwordEncoder.encode(userDTO.getPasword())); // Debe venir del frontend
-        user.setCreateDate(LocalDateTime.now());
+        // Si es un nuevo usuario o si la contraseña fue enviada, actualizarla
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+
         user.setUpdateDate(LocalDateTime.now());
 
-        // Guardar usuario en la base de datos
         user = userRepository.save(user);
 
-        // Retornar un UserDTO sin la contraseña
         return new UserDTO(user.getId_User(), user.getName(), user.getNameUser(), user.getEmail(), user.getBiography(), user.getUrlPhoto());
     }
 
@@ -104,39 +112,37 @@ public class UserServiceImpl {
     }
 
     public List<PostDTO> getPostsByUserId(Long userId) {
-    // Buscar al usuario por su ID
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        // Buscar al usuario por su ID
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-    // Obtener los posts del usuario
-    return user.getPost().stream()
-            .map(post -> new PostDTO(
-                    post.getIdPost(),                                // ID del post
-                    post.getImageUrl(),                              // URL de la imagen
-                    post.getPublicationDate(),                       // Fecha de publicación
-                    post.getCaption(),                               // Descripción del post
-                    post.getComments().stream()                       // Convertir comentarios a DTOs
-                            .map(comment -> new CommentDTO(
-                                    comment.getIdComment(),
-                                    comment.getText(),
-                                    comment.getPublicationDate(),
-                                    comment.getCommentUser().getId_User(),  // ID del usuario que hizo el comentario
-                                    comment.getCommentPost().getIdPost()))  // ID del post comentado
-                            .collect(Collectors.toList()),
-
-                    // Convertir reacciones a DTOs
-                    post.getLike1().stream()
-                            .map(reaction -> new ReactionDTO(
-                                    reaction.getIdLike(),
-                                    reaction.getLikeUser().getId_User(),        // ID del usuario que hizo la reacción
-                                    reaction.getLikePost().getIdPost(),          // ID del post en el que se hizo la reacción
-                                    reaction.getPublication_date()))         // Fecha de publicación de la reacción
-                            .collect(Collectors.toList()),
-
-                    // ID del usuario que publicó el post
-                    post.getUserPublication().getId_User()))
-            .collect(Collectors.toList());
-}
+        // Obtener los posts del usuario
+        return user.getPost().stream()
+                .map(post -> new PostDTO(
+                post.getIdPost(), // ID del post
+                post.getImageUrl(), // URL de la imagen
+                post.getPublicationDate(), // Fecha de publicación
+                post.getCaption(), // Descripción del post
+                post.getComments().stream() // Convertir comentarios a DTOs
+                        .map(comment -> new CommentDTO(
+                        comment.getIdComment(),
+                        comment.getText(),
+                        comment.getPublicationDate(),
+                        comment.getCommentUser().getId_User(), // ID del usuario que hizo el comentario
+                        comment.getCommentPost().getIdPost())) // ID del post comentado
+                        .collect(Collectors.toList()),
+                // Convertir reacciones a DTOs
+                post.getLike1().stream()
+                        .map(reaction -> new ReactionDTO(
+                        reaction.getIdLike(),
+                        reaction.getLikeUser().getId_User(), // ID del usuario que hizo la reacción
+                        reaction.getLikePost().getIdPost(), // ID del post en el que se hizo la reacción
+                        reaction.getPublication_date())) // Fecha de publicación de la reacción
+                        .collect(Collectors.toList()),
+                // ID del usuario que publicó el post
+                post.getUserPublication().getId_User()))
+                .collect(Collectors.toList());
+    }
 
     public List<FollowerDTO> getFollowersByUserId(Long userId) {
         User user = userRepository.findById(userId)

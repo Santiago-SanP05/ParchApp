@@ -1,25 +1,19 @@
 package campus.u2.parchap;
 
 import campus.u2.parchap.comment.application.CommentServiceImpl;
-import campus.u2.parchap.comment.domain.Comment;
 import campus.u2.parchap.comment.domain.CommentDTO;
 import campus.u2.parchap.follower.application.FollowerServiceImpl;
-import campus.u2.parchap.follower.domain.Follower;
 import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.like.application.ReactionServiceImpl;
-import campus.u2.parchap.like.domain.Reaction;
 import campus.u2.parchap.like.domain.ReactionDTO;
 import campus.u2.parchap.post.application.PostServiceImpl;
-import campus.u2.parchap.post.domain.Post;
 import campus.u2.parchap.post.domain.PostDTO;
 import campus.u2.parchap.user.application.UserServiceImpl;
-import campus.u2.parchap.user.domain.User;
 import campus.u2.parchap.user.domain.UserDTO;
 import java.time.LocalDateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class ParchapApplication {
@@ -45,7 +39,7 @@ public class ParchapApplication {
         u1.setEmail("juan.perez@example.com");
         u1.setBiography("Desarrollador de software");
         u1.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
-        u1.setPasword("noraaaa");
+        u1.setPassword("noraaaa");
 
         UserDTO u2 = new UserDTO();
         u2.setName("enrique");
@@ -53,7 +47,7 @@ public class ParchapApplication {
         u2.setEmail("grrr@example.com");
         u2.setBiography("Desarrollador de software");
         u2.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
-        u2.setPasword("Alpha");
+        u2.setPassword("Alpha");
 
         UserDTO u3 = new UserDTO();
         u3.setName("NigaMan");
@@ -61,7 +55,7 @@ public class ParchapApplication {
         u3.setEmail("AliasMocoLargo@example.com");
         u3.setBiography("Desarrollador de software");
         u3.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
-        u3.setPasword("Alpha");
+        u3.setPassword("Alpha");
 
         // Guardar usuarios
         userServiceImpl.save(u1);

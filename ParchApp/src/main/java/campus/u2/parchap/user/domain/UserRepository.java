@@ -4,7 +4,6 @@
  */
 package campus.u2.parchap.user.domain;
 
-import campus.u2.parchap.post.domain.Post;
 import java.util.List;
 import java.util.Optional;
 
