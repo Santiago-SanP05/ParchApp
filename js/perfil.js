@@ -11,33 +11,60 @@ function getCurrentDateTime() {
 }
 
 
-const perfil = document.querySelector('#perfil'); 
+const perfil = document.querySelector('#perfil');
 
 perfil.addEventListener("click", mostrarPerfil);
 
-async function mostrarPerfil(){
+async function mostrarPerfil() {
   var identifiacador = localStorage.getItem("email");
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch('http://localhost:3002/api/users',{
+    const response = await fetch('http://localhost:3002/api/users', {
       method: "GET",
       headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       }
-  });
+    });
 
+    const respuestaSeguidores = await fetch('http://localhost:3002/api/users/' + localStorage.getItem("id") + '/followers', {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    const respuestaSiguiendo = await fetch('http://localhost:3002/api/users/' + localStorage.getItem("id") + '/followed', {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!respuestaSiguiendo.ok) {
+      throw new Error(`Error en la solicitud: ${response.status}`);
+    }
+
+    if (!respuestaSeguidores.ok) {
+      throw new Error(`Error en la solicitud: ${response.status}`);
+    }
 
     if (!response.ok) {
       throw new Error(`Error en la solicitud: ${response.status}`);
     }
 
-
+    const seguiendo = await respuestaSiguiendo.json();
+    const seguidores = await respuestaSeguidores.json();
     const data = await response.json();
+
+
+
     for (const element of data) {
       if (element.email === identifiacador) {
         const publicacion = document.querySelector(".publicacion");
-      publicacion.innerHTML=`
+        publicacion.innerHTML = `
             <div class="contenedorUsuario">
               <div class="usuarioImagen">
                   <img src="${element.urlPhoto}" alt="Imagen de perfil del usuario">
@@ -53,46 +80,55 @@ async function mostrarPerfil(){
                   <h2>Seguidos</h2>
                 </div>
                 <div class="numero">
-                  <h2>${"aqui va el numero de seguidores"}</h2>
-                  <h2>${"aqui va el numero de seguidos"}</h2>
+                  <h2>${seguidores.length}</h2>
+                  <h2>${seguiendo.length}</h2>
                 </div>
                 <div class="bio">
                   <h1>${element.biography}</h1>
                 </div>
                 <div class="editPerfil">
+                  <button class="hacerPublicacion"> Hacer Publicacion </button>
                   <button class="botoneditar">Editar Perfil</button>
+                  <button class="eliminaUsuario"> Eliminar Perfil </button>
+                  <button class="cerrarSesion"> Cerrar sesion </button>
                 </div>
               </div>
             </div>
             <div class="publicacion-item"></div>
 
       `
-      await publicacionUsuario();
+        await publicacionUsuario();
       }
     }
     var editarRegistrar = document.querySelector(".botoneditar");
+    editarRegistrar.addEventListener("click", editarUsuario);
+    var cerrandoSesion = document.querySelector(".cerrarSesion");
+    cerrandoSesion.addEventListener("click", cerrarSesion);
+    var apartadohacerPublicacion = document.querySelector(".hacerPublicacion");
+    apartadohacerPublicacion.addEventListener("click", apartadoPublicacion);
+    var eliminaUsuario = document.querySelector(".eliminaUsuario");
+    eliminaUsuario.addEventListener("click", eliminarUsuario);
 
-editarRegistrar.addEventListener("click",editarUsuario);
-} catch (error) {
-  console.error('Hubo un problema con la solicitud:', error);
+  } catch (error) {
+    console.error('Hubo un problema con la solicitud:', error);
+  }
 }
-}
 
 
 
 
 
-async function editarUsuario(){
+async function editarUsuario() {
   try {
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id")
-    const response = await fetch('http://localhost:3002/api/users/'+id,{
+    const response = await fetch('http://localhost:3002/api/users/' + id, {
       method: "GET",
       headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       }
-  });
+    });
 
 
     if (!response.ok) {
@@ -100,7 +136,7 @@ async function editarUsuario(){
     }
     const data = await response.json();
     var aparecerEditar = document.querySelector(".publicacion");
-    aparecerEditar.innerHTML=`
+    aparecerEditar.innerHTML = `
     <div class="datosRegistrar">
             <p>Nombre usuario: <input id="editnombreusuario" type="text" placeholder="${data.name}"></p>
             <p>Usuario: <input id="editusuario" type="text" placeholder="@${data.nameUser}"></p>
@@ -114,20 +150,20 @@ async function editarUsuario(){
     
     `;
     var enviarDatosEditadosUser = document.querySelector(".enviarEditar");
-enviarDatosEditadosUser.addEventListener("click", enviareditarususario)
+    enviarDatosEditadosUser.addEventListener("click", enviareditarususario)
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
   }
-    
+
 }
 
 
-async function enviareditarususario(){
+async function enviareditarususario() {
   const editnombreusuario = document.querySelector("#editnombreusuario").value.trim();
   const editusuario = document.querySelector("#editusuario").value.trim();
   const editemail = document.querySelector("#editemail").value.trim();
   const editBio = document.querySelector("#editBio").value.trim();
-  const editUrlImagen= document.querySelector("#editUrlImagen").value.trim();
+  const editUrlImagen = document.querySelector("#editUrlImagen").value.trim();
   const editcontraseña = document.querySelector("#editcontraseña").value.trim();
   const editcontraseñaConfirmar = document.querySelector("#editcontraseñaConfirmar").value.trim();
   console.log(editnombreusuario);
@@ -140,16 +176,16 @@ async function enviareditarususario(){
 
   if (!editnombreusuario || !editusuario || !editemail || !editcontraseña || !editcontraseñaConfirmar || !editBio) {
     alert("Por favor, completa todos los campos obligatorios.");
-}
+  }
   const validaemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validaurl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i;
- 
+
   if (editemail && !validaemail.test(editemail)) {
     alert("El email no concide con los parametros necesario recuerda el formato hola@gmail.com");
     return;
   }
-  if (editUrlImagen  && !validaurl.test(editUrlImagen)) {
-    alert("Recuerda que para la imagen debe ser una url.");    
+  if (editUrlImagen && !validaurl.test(editUrlImagen)) {
+    alert("Recuerda que para la imagen debe ser una url.");
     return;
   }
   if (editcontraseña !== editcontraseñaConfirmar) {
@@ -157,44 +193,44 @@ async function enviareditarususario(){
     return;
   }
 
-  const url = 'http://localhost:3002/api/users/'+localStorage.getItem("id");
+  const url = 'http://localhost:3002/api/users/' + localStorage.getItem("id");
 
-    const datosActualizados = {
-      name: editnombreusuario,
-      nameUser: editusuario,
-      urlPhoto: editUrlImagen,
-      email: editemail,
-      password: editcontraseña,
-      biography: editBio,
-      updateDate: getCurrentDateTime()
-      
-    };
+  const datosActualizados = {
+    name: editnombreusuario,
+    nameUser: editusuario,
+    urlPhoto: editUrlImagen,
+    email: editemail,
+    password: editcontraseña,
+    biography: editBio,
+    updateDate: getCurrentDateTime()
 
-    try {
-      let tooken = localStorage.getItem("token");
-        const respuesta = await fetch(url, {
-            method: 'PUT', // Método HTTP PUT
-            headers: {
-              "Authorization": `Bearer ${tooken}`,
-                'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
-            },
-            body: JSON.stringify(datosActualizados) // Convierte el objeto a JSON
-        });
+  };
 
-        if (respuesta.ok) {
-            const datos = await respuesta.json();
-            console.log('Datos actualizados:', datos);
-            localStorage.setItem("email",editemail);
-        } else {
-            console.error('Error al actualizar:', respuesta.status);
-        }
-        
-        const perfil = document.querySelector('.enviarEditar'); 
+  try {
+    let tooken = localStorage.getItem("token");
+    const respuesta = await fetch(url, {
+      method: 'PUT', // Método HTTP PUT
+      headers: {
+        "Authorization": `Bearer ${tooken}`,
+        'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
+      },
+      body: JSON.stringify(datosActualizados) // Convierte el objeto a JSON
+    });
 
-        perfil.addEventListener("click", mostrarPerfil);
-    } catch (error) {
-        console.error('Error de red:', error);
+    if (respuesta.ok) {
+      const datos = await respuesta.json();
+      console.log('Datos actualizados:', datos);
+      localStorage.setItem("email", editemail);
+    } else {
+      console.error('Error al actualizar:', respuesta.status);
     }
+
+    let perfil = document.querySelector('.enviarEditar');
+
+    perfil.addEventListener("click", mostrarPerfil);
+  } catch (error) {
+    console.error('Error de red:', error);
+  }
 
 }
 
@@ -234,13 +270,13 @@ async function publicacionUsuario() {
 
     const data = await response.json();
     const publicacionesUsuario = document.querySelector(".publicacion-item");
-    
+
     // Limpiar el contenedor antes de agregar nuevas publicaciones
     publicacionesUsuario.innerHTML = "";
 
     for (const element of data) {
-  
-      
+
+
 
       // Agregar cada publicación sin borrar las anteriores
       publicacionesUsuario.insertAdjacentHTML('beforeend', `
@@ -295,7 +331,7 @@ async function publicacionUsuario() {
 function insertarComentarios(comments, contenedor) {
   // Limpiar el contenedor de comentarios antes de agregar nuevos
   contenedor.innerHTML = "";
-  
+
   // Iterar sobre los comentarios y agregarlos al contenedor
   for (const comment of comments) {
     console.log(comment.text);
@@ -308,5 +344,125 @@ function insertarComentarios(comments, contenedor) {
           
 
     `;
+  }
+}
+
+
+
+function cerrarSesion() {
+  localStorage.removeItem("email");
+  localStorage.removeItem("id");
+  localStorage.removeItem("token");
+  window.location.href = "/html/main.html";
+}
+
+
+function apartadoPublicacion() {
+  var encabezadoPublicacion = document.querySelector(".encabezado");
+  encabezadoPublicacion.innerHTML = "";
+  encabezadoPublicacion.innerHTML = "<h1>Publicacion</h1>";
+  var aparecerEditar = document.querySelector(".publicacion");
+  aparecerEditar.innerHTML = `
+    <style>
+        .publicacion {
+            justify-content: space-around;
+            text-align: center;
+            align-items: center;
+            height: 80%;
+        }
+
+
+    </style>
+    <div class="datosPublicacion">
+            <p>Descripcion: <input id="descripcion" type="text" placeholder="Descripcion"></p>
+            <p>Url de la imagen: <input id="urlImagen" type="text" placeholder="https://www.ejemplo.com/imagen.jpg"></p>
+            <button class="enviarPublicacion"> Hacer publicacion </button>
+          </div>
+    
+    `;
+  var envio = document.querySelector(".enviarPublicacion");
+  envio.addEventListener("click", enviaPulicacion)
+
+}
+
+async function enviaPulicacion() {
+  const envioDescripcion = document.querySelector("#descripcion").value.trim();
+  const envioImagen = document.querySelector("#urlImagen").value.trim();
+  console.log(envioDescripcion);
+  console.log(envioImagen);
+
+
+  if (!envioDescripcion || !envioImagen) {
+    alert("Por favor, completa todos los campos obligatorios.");
+  }
+
+  const validaurl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i;
+
+  if (envioImagen && !validaurl.test(envioImagen)) {
+    alert("Recuerda que para la imagen debe ser una url.");
+    return;
+  }
+
+  const url = 'http://localhost:3002/api/post';
+
+  const datosEnvioPublicacion = {
+    userId: localStorage.getItem("id"),
+    caption: envioDescripcion,
+    imageUrl: envioImagen,
+
+  };
+
+  try {
+    let tooken = localStorage.getItem("token");
+    const respuesta = await fetch(url, {
+      method: 'POST', // Método HTTP PUT
+      headers: {
+        "Authorization": `Bearer ${tooken}`,
+        'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
+      },
+      body: JSON.stringify(datosEnvioPublicacion) // Convierte el objeto a JSON
+    });
+
+    if (respuesta.ok) {
+      const datos = await respuesta.json();
+      console.log('Datos actualizados:', datos);
+
+    } else {
+      console.error('Error al actualizar:', respuesta.status);
+    }
+
+
+  } catch (error) {
+    console.error('Error de red:', error);
+  }
+
+}
+
+async function eliminarUsuario() {
+  let url = 'http://localhost:3002/api/users/' + localStorage.getItem("id");
+  try {
+    let token = localStorage.getItem("token");
+    let response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (response.ok) {
+      // Solo intentar hacer .json() si la respuesta tiene cuerpo
+      if (response.status !== 204) {
+        const datos = await response.json();
+        console.log('Usuario eliminado:', datos);
+      } else {
+        console.log('Usuario eliminado exitosamente, sin contenido de respuesta.');
+      }
+    } else {
+      console.error('Error al eliminar el usuario:', response.status);
+    }
+    cerrarSesion();
+  } catch (error) {
+    console.error('Error de red:', error);
   }
 }

@@ -170,7 +170,7 @@ a{
 }
 .editPerfil button{
     height: 8vh;
-    width: 30%;
+    width: 16%;
     border-radius: 8vh;
     font-size: 1.2rem;
 }
@@ -179,6 +179,7 @@ a{
     display: flex;
     justify-content: center;
     width: 100%;
+    gap: 2vh;
 }
 .nombre{
     display: flex;
@@ -267,5 +268,33 @@ a{
     font-size: 1.3rem;
 }
 .enviarEditar:hover{
+    background-color: rgb(71, 255, 25);
+}
+.datosPublicacion{
+    margin-top: 2vh;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+}
+
+.datosPublicacion input{
+    width: 100%;
+    border-radius: 4vh;
+    text-align: center;
+    height: 4vh;
+    border: solid 4px rgb(58, 58, 58);
+    font-size: 0.8em;
+}
+.enviarPublicacion{
+    width: auto;
+    border-radius: 4vh;
+    height: 7vh;
+    font-size: 0.8em;
+}
+.enviarPublicacion:hover{
     background-color: rgb(71, 255, 25);
 }
