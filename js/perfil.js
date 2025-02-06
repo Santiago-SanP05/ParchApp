@@ -275,8 +275,7 @@ async function publicacionUsuario() {
 
     for (const element of data) {
 
-
-
+      
       // Agregar cada publicación sin borrar las anteriores
       publicacionesUsuario.insertAdjacentHTML('beforeend', `
         <div class="publicacion">
@@ -287,8 +286,8 @@ async function publicacionUsuario() {
               <time datetime="${element.publicationDate}">${new Date(element.publicationDate).toLocaleString()}</time>
             </div>
             <div class="OrdenarEditarEliminarBotones">
-            <button class="editarPublicacion"> Editar </button>
-            <button class="eliminarPublicacion"> Eliminar </button>
+            <button class="editarPublicacion" > Editar </button>
+            <button class="eliminarPublicacion" > Eliminar </button>
             </div>
           </header>
 
@@ -318,7 +317,22 @@ async function publicacionUsuario() {
           </div>
           
         </div>
-      `);
+      `
+      
+    );
+    let nuevaPublicacion = publicacionesUsuario.lastElementChild;
+
+      // Obtener el botón de eliminación dentro de la publicación
+      let eventoEliminar = nuevaPublicacion.querySelector(".eliminarPublicacion");
+      let eventoEditar = nuevaPublicacion.querySelector(".editarPublicacion");
+      eventoEditar.addEventListener("click", function(){
+        editarPublicacion(element.idPost, element.caption, element.imageUrl, element.publicationDate)
+      })
+      // Asignar evento al botón de eliminar
+      eventoEliminar.addEventListener("click", function() {
+        eliminarPost(element.idPost, nuevaPublicacion)})
+
+    
 
       const contenedorComentarios = publicacionesUsuario.lastElementChild.querySelector(".resultadoComentarios");
 
@@ -468,4 +482,101 @@ async function eliminarUsuario() {
   } catch (error) {
     console.error('Error de red:', error);
   }
+}
+
+async function eliminarPost(obteniendoIdPost,publicacionElemento){
+  console.log(obteniendoIdPost);
+  let url = 'http://localhost:3002/api/post/' + obteniendoIdPost;
+  try {
+    let token = localStorage.getItem("token");
+    let response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (response.ok) {
+      // Verifica si hay contenido antes de intentar leer el JSON
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("application/json")) {
+        const datos = await response.json();
+        console.log('Publicación eliminada:', datos);
+      } else {
+        console.log('Publicación eliminada exitosamente, sin contenido de respuesta.');
+      }
+    } else {
+      console.error('Error al eliminar la publicación:', response.status);
+    }
+    publicacionElemento.remove();
+  } catch (error) {
+    console.error('Error de red:', error);
+  }
+}
+
+function editarPublicacion(obteniendoIdPost, obteniendoCaption, obteniendoimagenurl, obteniendodate) {
+  var encabezadoPublicacion = document.querySelector(".encabezado");
+  encabezadoPublicacion.innerHTML = "";
+  encabezadoPublicacion.innerHTML = "<h1>Editar Post</h1>";
+  var aparecerEditar = document.querySelector(".publicacion");
+  aparecerEditar.innerHTML = `
+    <style>
+        .publicacion {
+            justify-content: space-around;
+            text-align: center;
+            align-items: center;
+            height: 80%;
+        }
+
+
+    </style>
+    <div class="datosPublicacion">
+            <p>Descripcion: <input id="caption" type="text" placeholder="Descripcion" value="${obteniendoCaption}"></p>
+            <button class="enviarPublicacion" id="envioPost"> Editar Publicacion </button>
+          </div>
+    
+    `;
+  var envio = document.querySelector("#envioPost");
+  envio.addEventListener("click", function(){
+    envioEditPost(obteniendoIdPost,obteniendoimagenurl);
+  })
+
+}
+async function envioEditPost(obteniendoIdPost,obteniendoimagenurl,obteniendodate) {
+  let nuevaCaption = document.querySelector("#caption").value.trim()
+
+  const postActualizado = {
+    imageUrl: obteniendoimagenurl,
+    publicationDate: obteniendodate,
+    caption: nuevaCaption,
+    userId: Number(localStorage.getItem("id"))
+  };
+  console.log(postActualizado);
+  console.log(obteniendoIdPost);
+  try {
+    let token  = localStorage.getItem("token");
+    console.log("Token:", token);
+    const respuesta = await fetch('http://localhost:3002/api/post/'+obteniendoIdPost, {
+      method: 'PUT', // Método HTTP PUT
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
+      },
+      body: JSON.stringify(postActualizado) // Convierte el objeto a JSON
+    });
+
+    if (respuesta.ok) {
+      const datos = await respuesta.json();
+      console.log('Datos actualizados:', datos);
+      mostrarPerfil();
+    } else {
+      console.error('Error al actualizar:', respuesta.status);
+    }
+
+
+    
+  } catch (error) {
+   
+}
 }
