@@ -108,6 +108,12 @@ public class ParchapApplication {
         p6.setCaption("I like coffe witn bread in the morning");
         p6.setPublicationDate(LocalDateTime.now());
         p6.setUserId(2L); // Asignar al usuario con ID 2
+        
+        PostDTO p7 = new PostDTO();
+        p7.setImageUrl("https://pressover.news/wp-content/uploads/2021/11/5-57022_halo-3-hd-wallpaper-backgrounds-halo-2-scaled.jpg");
+        p7.setCaption("Post Prueba");
+        p7.setPublicationDate(LocalDateTime.now());
+        p7.setUserId(3L);
         // Guardar posts
         postServiceImpl.save(p1);
         postServiceImpl.save(p2);
@@ -115,6 +121,7 @@ public class ParchapApplication {
         postServiceImpl.save(p4);
         postServiceImpl.save(p5);
         postServiceImpl.save(p6);
+        postServiceImpl.save(p7);
 
         // Crear comentarios
         CommentDTO c1 = new CommentDTO();
