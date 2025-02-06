@@ -1,9 +1,47 @@
+function getCurrentDateTime() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+var mostrarLaBienvenida = document.querySelector(".central")
+mostrarLaBienvenida.addEventListener("click", mostrarBienvenida());
+
+
+function mostrarBienvenida(){
+    mostrarLaBienvenida.innerHTML = `
+    <nav class="login">
+                <section class="contLogin">
+                    
+                    <h1 id="titulo">ParchApp</h1>
+                    <h1>Bienvenido</h1>
+                    <div class="inputLogin">
+                    <input id="usuario" type="text" placeholder="Usuario">
+                    <input id="email" type="email" placeholder="usuario@gmail.com">
+                    <input id="contraseña" type="password" placeholder="***********">
+                    </div>
+                    
+                   <button id="principal">Entrar</button>
+                    <a href="#" id="registrar">Registrarme</a>
+
+                </section>
+            </nav>
+
+    `;
+    const entrar = document.querySelector('#principal'); 
+entrar.addEventListener("click", loginUsuario);
+}
 
 
 
-
-const loginUsuario = async () => {
-    const token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYW1wdXNjbCIsInN1YiI6Imp1YW4ucGVyZXpAZXhhbXBsZS5jb20iLCJpYXQiOjE3Mzg2MzkyNDUsImV4cCI6MTczOTUwMzI0NX0.hdqEnZ7xfHLC_oagBkwjsHcIE4OKltFGt5sjstr2DMDN1WqtZH6WQhHCXomkCHvLZvJhKD2QRRtHOGVQ7Lbalw";
+  
+async function loginUsuario(){
+    
     try {
         var username = document.querySelector("#usuario").value;
     var email = document.querySelector("#email").value;
@@ -31,6 +69,7 @@ const loginUsuario = async () => {
         }
 
         const data = await respuesta.json();
+        console.log(data)
         localStorage.setItem("token", data.token);
         localStorage.setItem("email", data.email);
         localStorage.setItem("id", data.idUser);
@@ -49,8 +88,7 @@ const loginUsuario = async () => {
 };
 
 
-const entrar = document.querySelector('#principal'); 
-entrar.addEventListener("click", loginUsuario);
+
 
 
 
@@ -83,24 +121,93 @@ function vistaregistrar(){
                     <h1>Registrar</h1>
         </div>
                     <div class="inputRegister">
-                    <p>Nombre usuario: <input id="editnombreusuario" type="text" placeholder="${"data.name"}"></p>
-                    <p>Usuario: <input id="editusuario" type="text" placeholder="${"data.nameUser"}"></p>
-                    <p>Correo: <input id="editemail" type="email" placeholder="${"data.email"}"></p>
-                    <p>Biografia: <input id="editBio" type="text" placeholder="${"data.biography"}"></p>
-                    <p>Url foto: <input id="editUrlImagen" type="url" placeholder="${"data.urlPhoto"}"> </p>
+                    <p>Nombre usuario: <input id="editnombreusuario" type="text" placeholder="Digita tus nombres"></p>
+                    <p>Usuario: <input id="editusuario" type="text" placeholder="coloca tu usuario"></p>
+                    <p>Correo: <input id="editemail" type="email" placeholder="digita tu corre"></p>
+                    <p>Biografia: <input id="editBio" type="text" placeholder="Digite su biografia"></p>
                     <p>Contraseña: <input id="editcontraseña" type="password" placeholder="**********"></p>
                     <p>Confiramar Contraseña: <input id="editcontraseñaConfirmar" type="password" placeholder="confirmar contraseña"></p>
                     </div>
                     
-                   <button id="principal">Entrar</button>
-                    <a href="#" id="registrar">Registrarme</a>
+                   <button id="registroUsuario">Registrarme</button>
     `;
+    const registrar = document.querySelector("#registroUsuario");
+registrar.addEventListener("click", registrarUsuario);
 }
 
 const registrar = document.querySelector("#registrar");
 registrar.addEventListener("click", vistaregistrar);
 
 
+
+
+async function registrarUsuario(){
+    const token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYW1wdXNjbCIsInN1YiI6Imp1YW4ucGVyZXpAZXhhbXBsZS5jb20iLCJpYXQiOjE3Mzg2MzkyNDUsImV4cCI6MTczOTUwMzI0NX0.hdqEnZ7xfHLC_oagBkwjsHcIE4OKltFGt5sjstr2DMDN1WqtZH6WQhHCXomkCHvLZvJhKD2QRRtHOGVQ7Lbalw";
+    const editnombreusuario = document.querySelector("#editnombreusuario").value.trim();
+    const editusuario = document.querySelector("#editusuario").value.trim();
+    const editemail = document.querySelector("#editemail").value.trim();
+    const editBio = document.querySelector("#editBio").value.trim();
+    const editcontraseña = document.querySelector("#editcontraseña").value.trim();
+    const editcontraseñaConfirmar = document.querySelector("#editcontraseñaConfirmar").value.trim();
+    console.log(editnombreusuario);
+    console.log(editusuario);
+    console.log(editemail);
+    console.log(editBio);
+    console.log(editcontraseña);
+    console.log(editcontraseñaConfirmar);
+  
+    if (!editnombreusuario || !editusuario || !editemail || !editcontraseña || !editcontraseñaConfirmar || !editBio) {
+      alert("Por favor, completa todos los campos obligatorios.");
+      return;
+  }
+    const validaemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   
+    if (editemail && !validaemail.test(editemail)) {
+      alert("El email no concide con los parametros necesario recuerda el formato hola@gmail.com");
+      return;
+    }
+    if (editcontraseña !== editcontraseñaConfirmar) {
+      alert("La contraseña de confirmación no coincide con la contraseña ingresada.");
+      return;
+    }
+  
+    const url = 'http://localhost:3002/api/users';
+  
+      const datosActualizados = {
+        name: editnombreusuario,
+        nameUser: editusuario,
+        email: editemail,
+        password: editcontraseña,
+        urlPhoto: "https://cdn-icons-png.flaticon.com/512/6326/6326055.png",
+        biography: editBio
+        
+      };
+  
+      try {
+          const respuesta = await fetch(url, {
+              method: 'POST',
+              headers: {
+                "Authorization": `Bearer ${token}`,
+                  'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
+              },
+              body: JSON.stringify(datosActualizados) // Convierte el objeto a JSON
+          });
+          
+          const respuestaTexto = await respuesta.text(); // Captura la respuesta completa
+        console.log("Respuesta del servidor:", respuestaTexto);
+
+          if (respuesta.ok) {
+              const datos = await respuesta.json();
+              console.log('Datos registrados:', datos);
+          } else {
+              console.error('Error al actualizar:', respuesta.status);
+          }
+          
+      } catch (error) {
+          console.error('Error de red:', error);
+      }
+  
+  }
 /*
 <h1 id="titulo">ParchApp</h1>
                     <h1>Bienvenido</h1>
@@ -130,3 +237,7 @@ registrar.addEventListener("click", vistaregistrar);
                     <a href="#" id="registrar">Registrarme</a>
 
 */
+
+/*,
+        updateDate: getCurrentDateTime(),
+        createDate: getCurrentDateTime()*/

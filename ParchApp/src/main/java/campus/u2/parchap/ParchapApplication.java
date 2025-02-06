@@ -56,7 +56,7 @@ public class ParchapApplication {
         u3.setBiography("Desarrollador de software");
         u3.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
         u3.setPassword("Alpha");
-
+             
         // Guardar usuarios
         userServiceImpl.save(u1);
         userServiceImpl.save(u2);

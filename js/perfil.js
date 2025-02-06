@@ -103,7 +103,7 @@ async function editarUsuario(){
     aparecerEditar.innerHTML=`
     <div class="datosRegistrar">
             <p>Nombre usuario: <input id="editnombreusuario" type="text" placeholder="${data.name}"></p>
-            <p>Usuario: <input id="editusuario" type="text" placeholder="@nombre"></p>
+            <p>Usuario: <input id="editusuario" type="text" placeholder="@${data.nameUser}"></p>
             <p>Correo: <input id="editemail" type="email" placeholder="${data.email}"></p>
             <p>Biografia: <input id="editBio" type="text" placeholder="${data.biography}"></p>
             <p>Url foto: <input id="editUrlImagen" type="url" placeholder="${data.urlPhoto}"> </p>
@@ -139,7 +139,7 @@ async function enviareditarususario(){
   console.log(editcontraseñaConfirmar);
 
   if (!editnombreusuario || !editusuario || !editemail || !editcontraseña || !editcontraseñaConfirmar || !editBio) {
-    throw new Error("Por favor, completa todos los campos obligatorios.");
+    alert("Por favor, completa todos los campos obligatorios.");
 }
   const validaemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validaurl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i;
@@ -188,6 +188,10 @@ async function enviareditarususario(){
         } else {
             console.error('Error al actualizar:', respuesta.status);
         }
+        
+        const perfil = document.querySelector('.enviarEditar'); 
+
+        perfil.addEventListener("click", mostrarPerfil);
     } catch (error) {
         console.error('Error de red:', error);
     }
