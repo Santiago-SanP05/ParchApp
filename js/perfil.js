@@ -138,11 +138,11 @@ async function editarUsuario() {
     var aparecerEditar = document.querySelector(".publicacion");
     aparecerEditar.innerHTML = `
     <div class="datosRegistrar">
-            <p>Nombre usuario: <input id="editnombreusuario" type="text" placeholder="${data.name}"></p>
-            <p>Usuario: <input id="editusuario" type="text" placeholder="@${data.nameUser}"></p>
-            <p>Correo: <input id="editemail" type="email" placeholder="${data.email}"></p>
-            <p>Biografia: <input id="editBio" type="text" placeholder="${data.biography}"></p>
-            <p>Url foto: <input id="editUrlImagen" type="url" placeholder="${data.urlPhoto}"> </p>
+            <p>Nombre usuario: <input id="editnombreusuario" type="text" value="${data.name}" value="${data.name}"></p>
+            <p>Usuario: <input id="editusuario" type="text" value="@${data.nameUser}"></p>
+            <p>Correo: <input id="editemail" type="email" value="${data.email}"></p>
+            <p>Biografia: <input id="editBio" type="text" value="${data.biography}"></p>
+            <p>Url foto: <input id="editUrlImagen" type="url" value="${data.urlPhoto}"></p>
             <p>Contraseña: <input id="editcontraseña" type="password" placeholder="**********"></p>
             <p>Confiramar Contraseña: <input id="editcontraseñaConfirmar" type="password" placeholder="confirmar contraseña"></p>
             <button class="enviarEditar"> Enviar </button>
@@ -202,7 +202,7 @@ async function enviareditarususario() {
     email: editemail,
     password: editcontraseña,
     biography: editBio,
-    updateDate: getCurrentDateTime()
+
 
   };
 
@@ -225,9 +225,8 @@ async function enviareditarususario() {
       console.error('Error al actualizar:', respuesta.status);
     }
 
-    let perfil = document.querySelector('.enviarEditar');
 
-    perfil.addEventListener("click", mostrarPerfil);
+    mostrarPerfil();
   } catch (error) {
     console.error('Error de red:', error);
   }
@@ -286,6 +285,10 @@ async function publicacionUsuario() {
             <div>
               <h2>@${data2.nameUser}</h2>
               <time datetime="${element.publicationDate}">${new Date(element.publicationDate).toLocaleString()}</time>
+            </div>
+            <div class="OrdenarEditarEliminarBotones">
+            <button class="editarPublicacion"> Editar </button>
+            <button class="eliminarPublicacion"> Eliminar </button>
             </div>
           </header>
 
@@ -430,7 +433,7 @@ async function enviaPulicacion() {
     } else {
       console.error('Error al actualizar:', respuesta.status);
     }
-
+    mostrarPerfil();
 
   } catch (error) {
     console.error('Error de red:', error);

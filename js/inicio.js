@@ -35,7 +35,7 @@ async function fetchData() {
           "Content-Type": "application/json"
         }
       });
-      const data2 = await responseUser.json(); 
+      const data2 = await responseUser.json();
 
       // Ahora creamos la publicación con el nombre del usuario
       const comentariosConNombres = await Promise.all(first.coments.map(async (comment) => {
@@ -47,7 +47,7 @@ async function fetchData() {
           }
         });
         const data3 = await response2.json();
-        
+
         return `
           <div class="etiquetasCommentario">
             <h4>${data3.nameUser}</h4> <!-- Nombre del usuario del comentario -->
@@ -65,6 +65,7 @@ async function fetchData() {
               <h2>${data2.nameUser}</h2> <!-- Ahora mostramos el nombre del usuario de la publicación -->
               <time datetime="${first.publicationDate}">${new Date(first.publicationDate).toLocaleString()}</time>
             </div>
+            
           </header>
 
           <section class="cuerpoPubli">
@@ -84,7 +85,12 @@ async function fetchData() {
               </div>
             </div>
           </footer>
-
+          <div class="hacerComentario">
+          <div class="inputComentario">
+          <input id="envioComentario" type="text" placeholder="Comentar">
+          <button class="enviarComentario"> Enviar </button>
+          </div>
+          </div>
           <div class="todoComentarios">
             <div class="centradorComentarios">
               <div class="resultadoComentarios">

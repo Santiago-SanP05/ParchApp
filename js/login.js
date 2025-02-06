@@ -131,8 +131,10 @@ function vistaregistrar(){
                     
                    <button id="registroUsuario">Registrarme</button>
     `;
-    const registrar = document.querySelector("#registroUsuario");
+    var registrar = document.querySelector("#registroUsuario");
 registrar.addEventListener("click", registrarUsuario);
+
+
 }
 
 const registrar = document.querySelector("#registrar");
@@ -193,15 +195,15 @@ async function registrarUsuario(){
               body: JSON.stringify(datosActualizados) // Convierte el objeto a JSON
           });
           
-          const respuestaTexto = await respuesta.text(); // Captura la respuesta completa
-        console.log("Respuesta del servidor:", respuestaTexto);
 
           if (respuesta.ok) {
               const datos = await respuesta.json();
               console.log('Datos registrados:', datos);
+              alert('Datos registrados:', datos);
           } else {
               console.error('Error al actualizar:', respuesta.status);
           }
+          mostrarBienvenida();
           
       } catch (error) {
           console.error('Error de red:', error);
