@@ -109,6 +109,8 @@ function vistaregistrar(){
         }
         .login {
             width: 80%;
+            height: auto;
+            
         }
         .contLogin{
             width: 80%;
@@ -118,7 +120,7 @@ function vistaregistrar(){
     </style>
         <div class="columnTitulo">
         <h1 id="titulo">ParchApp</h1>
-                    <h1>Registrar</h1>
+                    <h1 id="registrar">Registrar</h1>
         </div>
                     <div class="inputRegister">
                     <p>Nombre usuario: <input id="editnombreusuario" type="text" placeholder="Digita tus nombres"></p>
@@ -130,6 +132,8 @@ function vistaregistrar(){
                     </div>
                     
                    <button id="registroUsuario">Registrarme</button>
+                   <a href="/html/main.html" id="return">Return</a>
+
     `;
     var registrar = document.querySelector("#registroUsuario");
 registrar.addEventListener("click", registrarUsuario);

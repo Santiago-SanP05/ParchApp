@@ -65,12 +65,21 @@ public class ParchapApplication {
         u4.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
         u4.setPassword("Alpha");
         
+        UserDTO u5 = new UserDTO();
+        u5.setName("Santiago Santacruz");
+        u5.setNameUser("sassant_Oof");
+        u5.setEmail("santiago@gmail.com");
+        u5.setBiography("Hola, mi nombre es santiago y me gusta la pepsi");
+        u5.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
+        u5.setPassword("20052305");
+        
         
         // Guardar usuarios
         userServiceImpl.save(u1);
         userServiceImpl.save(u2);
         userServiceImpl.save(u3);
         userServiceImpl.save(u4);
+        userServiceImpl.save(u5);
 
         // Crear posts
         PostDTO p1 = new PostDTO();
@@ -110,10 +119,28 @@ public class ParchapApplication {
         p6.setUserId(2L); // Asignar al usuario con ID 2
         
         PostDTO p7 = new PostDTO();
-        p7.setImageUrl("https://pressover.news/wp-content/uploads/2021/11/5-57022_halo-3-hd-wallpaper-backgrounds-halo-2-scaled.jpg");
-        p7.setCaption("Post Prueba");
+        p7.setImageUrl("https://png.pngtree.com/background/20231222/original/pngtree-modern-black-joysticks-set-on-abstract-light-wallpaper-perfect-for-gaming-picture-image_6936211.jpg");
+        p7.setCaption("Una partida??");
         p7.setPublicationDate(LocalDateTime.now());
-        p7.setUserId(3L);
+        p7.setUserId(5L);
+        
+        PostDTO p8 = new PostDTO();
+        p8.setImageUrl("https://www.shutterstock.com/image-illustration/80s-retro-futuristic-scifi-background-260nw-1678324570.jpg");
+        p8.setCaption("Mira, uuuuuun planeta, soy terraplanista");
+        p8.setPublicationDate(LocalDateTime.now());
+        p8.setUserId(5L);
+        
+        PostDTO p9 = new PostDTO();
+        p9.setImageUrl("https://c4.wallpaperflare.com/wallpaper/575/318/511/assassin-s-creed-ii-video-games-assassin-s-creed-assassin-s-creed-brotherhood-wallpaper-preview.jpg");
+        p9.setCaption("este es el mejor juego de mundo abierto");
+        p9.setPublicationDate(LocalDateTime.now());
+        p9.setUserId(5L);
+        
+        PostDTO p10 = new PostDTO();
+        p10.setImageUrl("https://i.ytimg.com/vi/_JPaZvp-_rc/maxresdefault.jpg");
+        p10.setCaption("I'm Volanding");
+        p10.setPublicationDate(LocalDateTime.now());
+        p10.setUserId(5L);
         // Guardar posts
         postServiceImpl.save(p1);
         postServiceImpl.save(p2);
@@ -122,6 +149,9 @@ public class ParchapApplication {
         postServiceImpl.save(p5);
         postServiceImpl.save(p6);
         postServiceImpl.save(p7);
+        postServiceImpl.save(p8);
+        postServiceImpl.save(p9);
+        postServiceImpl.save(p10);
 
         // Crear comentarios
         CommentDTO c1 = new CommentDTO();
@@ -263,12 +293,36 @@ public class ParchapApplication {
         f3.setFollowDate(LocalDateTime.now());
         f3.setUserFollowerId(1L); // Usuario con ID 2 sigue a
         f3.setUserFollowedId(3L); // Usuario con ID 3
+        
+        FollowerDTO f4 = new FollowerDTO();
+        f4.setFollowDate(LocalDateTime.now());
+        f4.setUserFollowerId(1L); // Usuario con ID 2 sigue a
+        f4.setUserFollowedId(5L); // Usuario con ID 3
+        
+        FollowerDTO f5 = new FollowerDTO();
+        f5.setFollowDate(LocalDateTime.now());
+        f5.setUserFollowerId(2L); // Usuario con ID 2 sigue a
+        f5.setUserFollowedId(5L); // Usuario con ID 3
+        
+        
+        FollowerDTO f6 = new FollowerDTO();
+        f6.setFollowDate(LocalDateTime.now());
+        f6.setUserFollowerId(3L); // Usuario con ID 2 sigue a
+        f6.setUserFollowedId(5L); // Usuario con ID 3
+        
+        FollowerDTO f7 = new FollowerDTO();
+        f7.setFollowDate(LocalDateTime.now());
+        f7.setUserFollowerId(4L); // Usuario con ID 2 sigue a
+        f7.setUserFollowedId(5L); // Usuario con ID 3
 
         // Guardar seguidores
         followerServiceImpl.save(f1);
         followerServiceImpl.save(f2);
         followerServiceImpl.save(f3);
-        
-        
+        followerServiceImpl.save(f4);
+        followerServiceImpl.save(f5);
+        followerServiceImpl.save(f6);
+        followerServiceImpl.save(f7);
+
     }
 }
