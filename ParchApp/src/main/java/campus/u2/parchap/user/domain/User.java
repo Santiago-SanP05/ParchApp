@@ -10,6 +10,7 @@ import campus.u2.parchap.follower.domain.Follower;
 
 import campus.u2.parchap.like.domain.Reaction;
 import campus.u2.parchap.post.domain.Post;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -44,19 +45,19 @@ public class User {
     
     private LocalDateTime updateDate;
     
-    @OneToMany(mappedBy = "userFollower", fetch = FetchType.LAZY)
-    private List<Follower> followers  =new ArrayList<>();
+    @OneToMany(mappedBy = "userFollower", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Follower> followers  = new ArrayList<>();
     
-    @OneToMany (mappedBy = "userFollowed", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userFollowed", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follower> followeds = new ArrayList<>();
     
-    @OneToMany(mappedBy = "userPublication", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userPublication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
     
-    @OneToMany(mappedBy = "userComment",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
     
-    @OneToMany(mappedBy = "userLike")
+    @OneToMany(mappedBy = "userLike", cascade = CascadeType.ALL)
     private List<Reaction> like1 = new ArrayList<>();
     
     public User() {

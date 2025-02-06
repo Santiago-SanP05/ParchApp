@@ -22,4 +22,7 @@ public interface FollowerRepository {
     List<Follower> findByUserFollowed(User userFollowed);
     Optional<Follower> findByUserFollowerAndUserFollowed(User userFollower, User userFollowed);
     Optional<Follower> findByUserFollower_IdUserAndUserFollowed_IdUser(Long followerId, Long followedId);
+
+    void deleteByUserFollower(User user);
+    void deleteByUserFollowed(User user);
 }

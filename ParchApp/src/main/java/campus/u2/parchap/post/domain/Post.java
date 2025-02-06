@@ -3,6 +3,7 @@ package campus.u2.parchap.post.domain;
 import campus.u2.parchap.comment.domain.Comment;
 import campus.u2.parchap.like.domain.Reaction;
 import campus.u2.parchap.user.domain.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -35,10 +36,10 @@ public class Post {
     
     private LocalDateTime publicationDate;
     
-    @OneToMany(mappedBy = "commentPost")
+    @OneToMany(mappedBy = "commentPost", cascade = CascadeType.ALL)
     private List<Comment> comment1 = new ArrayList<>();
     
-    @OneToMany(mappedBy = "likePost")
+    @OneToMany(mappedBy = "likePost", cascade = CascadeType.ALL)
     private List<Reaction> like1 = new ArrayList<>();
     
     public Post() {

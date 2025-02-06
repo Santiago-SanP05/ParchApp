@@ -51,7 +51,7 @@ public class CommentServiceImpl {
         // Guardar el comentario
         Comment savedComment = commentRepository.save(comment);
 
-        // Convertir la entidad Comment de nuevo a CommentDTO
+        // Convertir la entidad Comment de nuevo a CommentDTO y devolverla
         return convertToDTO(savedComment);
     }
 

@@ -16,4 +16,5 @@ public interface CommentRepository {
     Comment save(Comment comment);
     Optional <Comment> findById(Long id);
     void deleteById(Long Id);
+    void delete(Comment comment);
 }

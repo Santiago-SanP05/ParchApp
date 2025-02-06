@@ -56,11 +56,21 @@ public class ParchapApplication {
         u3.setBiography("Desarrollador de software");
         u3.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
         u3.setPassword("Alpha");
-             
+        
+        UserDTO u4 = new UserDTO();
+        u4.setName("NigaMan");
+        u4.setNameUser("xXx");
+        u4.setEmail("AliasMocoLargo@example.com");
+        u4.setBiography("Desarrollador de software");
+        u4.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
+        u4.setPassword("Alpha");
+        
+
         // Guardar usuarios
         userServiceImpl.save(u1);
         userServiceImpl.save(u2);
         userServiceImpl.save(u3);
+        userServiceImpl.save(u4);
 
         // Crear posts
         PostDTO p1 = new PostDTO();

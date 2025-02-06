@@ -1,6 +1,8 @@
 package campus.u2.parchap.user.application;
 
+import campus.u2.parchap.comment.domain.Comment;
 import campus.u2.parchap.comment.domain.CommentDTO;
+import campus.u2.parchap.comment.domain.CommentRepository;
 import campus.u2.parchap.follower.domain.Follower;
 import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.follower.domain.FollowerRepository;
@@ -9,6 +11,7 @@ import campus.u2.parchap.post.domain.PostDTO;
 import campus.u2.parchap.user.domain.User;
 import campus.u2.parchap.user.domain.UserDTO;
 import campus.u2.parchap.user.domain.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +28,16 @@ public class UserServiceImpl {
 
     private final UserRepository userRepository;
     private final FollowerRepository followerRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, FollowerRepository followerRepository) {
+    public UserServiceImpl(UserRepository userRepository, FollowerRepository followerRepository, campus.u2.parchap.comment.domain.CommentRepository commentRepository) {
         this.userRepository = userRepository;
         this.followerRepository = followerRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<UserDTO> findAll() {
@@ -51,7 +56,7 @@ public class UserServiceImpl {
         if (userDTO.getIdUser() != null) { // Si el ID no es nulo, buscar el usuario existente
             user = userRepository.findById(userDTO.getIdUser()).orElse(new User());
         } else {
-            user = new User(); // Si no hay ID, crear un nuevo usuario
+            user = new User();
             user.setCreateDate(LocalDateTime.now());
         }
 
@@ -61,7 +66,6 @@ public class UserServiceImpl {
         user.setBiography(userDTO.getBiography());
         user.setUrlPhoto(userDTO.getUrlPhoto());
 
-        // Si es un nuevo usuario o si la contraseña fue enviada, actualizarla
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
@@ -73,8 +77,25 @@ public class UserServiceImpl {
         return new UserDTO(user.getId_User(), user.getName(), user.getNameUser(), user.getEmail(), user.getBiography(), user.getUrlPhoto());
     }
 
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
+    @Transactional
+    public void deleteUser(Long userId) {
+        // Primero, obtener todos los comentarios asociados al usuario
+        List<Comment> comments = commentRepository.findAll()
+                .stream()
+                .filter(comment -> comment.getCommentUser().getId_User().equals(userId))
+                .collect(Collectors.toList());
+
+        // Eliminar cada comentario asociado al usuario
+        for (Comment comment : comments) {
+            commentRepository.delete(comment);
+        }
+
+        // Eliminar los seguidores donde el usuario es el seguidor o seguido
+        followerRepository.deleteByUserFollower(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
+        followerRepository.deleteByUserFollowed(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
+
+        // Luego eliminamos al usuario
+        userRepository.deleteById(userId);
     }
 
     private UserDTO convertToDTO(User user) {
@@ -147,39 +168,39 @@ public class UserServiceImpl {
     }
 
     public List<UserDTO> getFollowersByUserId(Long userId) {
-    // Obtener el usuario desde la base de datos
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        // Obtener el usuario desde la base de datos
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-    // Filtrar los seguidores buscando en los seguidores del usuario en la columna 'userFollowed'
-    List<Follower> followers = followerRepository.findByUserFollowed(user);
+        // Filtrar los seguidores buscando en los seguidores del usuario en la columna 'userFollowed'
+        List<Follower> followers = followerRepository.findByUserFollowed(user);
 
-    // Usar un Set para evitar duplicados
-    Set<Long> seenUsers = new HashSet<>();
+        // Usar un Set para evitar duplicados
+        Set<Long> seenUsers = new HashSet<>();
 
-    // Convertir las entidades a DTO y devolver la lista
-    return followers.stream()
-            .filter(follower -> seenUsers.add(follower.getUserFollower().getId_User())) // Evitar duplicados
-            .map(follower -> convertToDTO(follower.getUserFollower()))
-            .collect(Collectors.toList());
+        // Convertir las entidades a DTO y devolver la lista
+        return followers.stream()
+                .filter(follower -> seenUsers.add(follower.getUserFollower().getId_User())) // Evitar duplicados
+                .map(follower -> convertToDTO(follower.getUserFollower()))
+                .collect(Collectors.toList());
     }
 
     public List<UserDTO> getFollowedByUserId(Long userId) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-    // Filtrar los usuarios a los que sigue buscando en la columna 'userFollower'
-    List<Follower> followed = followerRepository.findByUserFollower(user);
+        // Filtrar los usuarios a los que sigue buscando en la columna 'userFollower'
+        List<Follower> followed = followerRepository.findByUserFollower(user);
 
-    // Usar un Set para evitar duplicados
-    Set<Long> seenUsers = new HashSet<>();
+        // Usar un Set para evitar duplicados
+        Set<Long> seenUsers = new HashSet<>();
 
-    // Convertir las entidades a DTO y devolver la lista
-    return followed.stream()
-            .filter(follower -> seenUsers.add(follower.getUserFollowed().getId_User())) // Evitar duplicados
-            .map(follower -> convertToDTO(follower.getUserFollowed()))
-            .collect(Collectors.toList());
-}
+        // Convertir las entidades a DTO y devolver la lista
+        return followed.stream()
+                .filter(follower -> seenUsers.add(follower.getUserFollowed().getId_User())) // Evitar duplicados
+                .map(follower -> convertToDTO(follower.getUserFollowed()))
+                .collect(Collectors.toList());
+    }
 
 //    public List<FollowerDTO> getFollowersByUserId(Long userId) {
 //        User user = userRepository.findById(userId)
@@ -204,7 +225,6 @@ public class UserServiceImpl {
 //                followed.getUserFollowed().getId_User()))
 //                .collect(Collectors.toList());
 //    }
-
     public UserDTO updateBiography(Long userId, String newBiography) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -229,4 +249,5 @@ public class UserServiceImpl {
 
         followerRepository.delete(follow);
     }
+
 }

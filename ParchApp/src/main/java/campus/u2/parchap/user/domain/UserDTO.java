@@ -2,6 +2,7 @@ package campus.u2.parchap.user.domain;
 
 import campus.u2.parchap.follower.domain.FollowerDTO;
 import campus.u2.parchap.post.domain.PostDTO;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserDTO {
@@ -14,6 +15,8 @@ public class UserDTO {
     private String urlPhoto;
     private String Password;
     private String token;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
     private List<PostDTO> posts;
     private List<FollowerDTO> followers;
     private List<FollowerDTO> followered;
@@ -198,4 +201,22 @@ public class UserDTO {
     public void setPassword(String Pasword) {
         this.Password = Pasword;
     }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+    
+    
 }

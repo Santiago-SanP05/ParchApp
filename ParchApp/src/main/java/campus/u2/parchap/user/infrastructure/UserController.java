@@ -57,8 +57,8 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userServiceImpl.deleteById(id);
-        return ResponseEntity.noContent().build();
+        userServiceImpl.deleteUser(id);
+        return ResponseEntity.noContent().build();  // Retorna 204 No Content si todo fue exitoso
     }
 
     @GetMapping("/{id}/followers")
