@@ -1,10 +1,8 @@
 
-const email = "juan.perez@example.com";
-const username = "juanp";
-const password = "noraaaa";
 
 
-const loginUsuario = async (username, email, password) => {
+
+const loginUsuario = async () => {
     const token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYW1wdXNjbCIsInN1YiI6Imp1YW4ucGVyZXpAZXhhbXBsZS5jb20iLCJpYXQiOjE3Mzg2MzkyNDUsImV4cCI6MTczOTUwMzI0NX0.hdqEnZ7xfHLC_oagBkwjsHcIE4OKltFGt5sjstr2DMDN1WqtZH6WQhHCXomkCHvLZvJhKD2QRRtHOGVQ7Lbalw";
     try {
         var username = document.querySelector("#usuario").value;

@@ -64,7 +64,8 @@ a{
 }
 #imagen{
     height: 50%;
-    border-radius: 8vh 8vh 8vh 8vh;
+    width: 7%;
+    border-radius: 8vh;
 }
 .encabezadoPubli{
     height: 20vh;
@@ -141,11 +142,12 @@ a{
     width: 30%;
     
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
 }
 .usuarioImagen img{
     height: 30vh;
+    width: 65%;
     border-radius: 20vh;
 }
 .usuarionombre{

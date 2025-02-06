@@ -103,7 +103,7 @@ async function editarUsuario(){
     aparecerEditar.innerHTML=`
     <div class="datosRegistrar">
             <p>Nombre usuario: <input id="editnombreusuario" type="text" placeholder="${data.name}"></p>
-            <p>Usuario: <input id="editusuario" type="text" placeholder="${data.nameUser}"></p>
+            <p>Usuario: <input id="editusuario" type="text" placeholder="@nombre"></p>
             <p>Correo: <input id="editemail" type="email" placeholder="${data.email}"></p>
             <p>Biografia: <input id="editBio" type="text" placeholder="${data.biography}"></p>
             <p>Url foto: <input id="editUrlImagen" type="url" placeholder="${data.urlPhoto}"> </p>
@@ -158,10 +158,10 @@ async function enviareditarususario(){
   }
 
   const url = 'http://localhost:3002/api/users/'+localStorage.getItem("id");
-  console.log(url)
+
     const datosActualizados = {
       name: editnombreusuario,
-      nameUSer: editusuario,
+      nameUser: editusuario,
       urlPhoto: editUrlImagen,
       email: editemail,
       password: editcontraseña,
@@ -184,6 +184,7 @@ async function enviareditarususario(){
         if (respuesta.ok) {
             const datos = await respuesta.json();
             console.log('Datos actualizados:', datos);
+            localStorage.setItem("email",editemail);
         } else {
             console.error('Error al actualizar:', respuesta.status);
         }
@@ -234,7 +235,8 @@ async function publicacionUsuario() {
     publicacionesUsuario.innerHTML = "";
 
     for (const element of data) {
-      console.log(element);
+  
+      
 
       // Agregar cada publicación sin borrar las anteriores
       publicacionesUsuario.insertAdjacentHTML('beforeend', `
@@ -265,11 +267,20 @@ async function publicacionUsuario() {
             </div>
           </footer>
 
-          <div class="todoComentarios"></div>
+          <div class="todoComentarios">
+            <div class="centradorComentarios">
+              <div class="resultadoComentarios">
+              </div>
+            </div>
+          </div>
+          
         </div>
       `);
 
-      await abrircomentarios();
+      const contenedorComentarios = publicacionesUsuario.lastElementChild.querySelector(".resultadoComentarios");
+
+      // Llamar a la función para insertar comentarios, pasando los comentarios de la publicación actual
+      insertarComentarios(element.coments, contenedorComentarios);
     }
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
@@ -277,44 +288,21 @@ async function publicacionUsuario() {
 }
 
 
-async function abrircomentarios() {
+function insertarComentarios(comments, contenedor) {
+  // Limpiar el contenedor de comentarios antes de agregar nuevos
+  contenedor.innerHTML = "";
+  
+  // Iterar sobre los comentarios y agregarlos al contenedor
+  for (const comment of comments) {
+    console.log(comment.text);
+    contenedor.innerHTML += `
+        <div class="">
+        <h4>${comment.idComment}</h4>
+          <p>${comment.text}</p>
+          <p>${comment.publicationDate}</p>
+        </div>
+          
 
-  try {
-    var contenido = document.querySelector(".todoComentarios");
-    const token = localStorage.getItem("token");
-    const urluser = 'http://localhost:3002/api/users/';
-
-    const response = await fetch(urluser+localStorage.getItem("id")+'/posts',{
-      method: "GET",
-      headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-      }
-  });
-
-
-    if (!response.ok) {
-      throw new Error(`Error en la solicitud: ${response.status}`);
-    }
-
-
-    const data = await response.json();
-
-
-    
-    
-    for (var first of data) {
-      console.log(first.coments);
-      contenido.innerHTML= `
-            <div class="centradorComentarios">
-              <div class="resultadoComentarios">
-                  <h4>${first.idComment}</h4>
-                  <p>${first.text}</p>
-                  <p>${first.publicationDate}</p>
-              </div>
-            </div>`
-    }
-  } catch (error) {
-    console.error('Hubo un problema con la solicitud:', error);
+    `;
   }
 }
