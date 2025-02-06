@@ -11,6 +11,7 @@ import campus.u2.parchap.follower.domain.Follower;
 import campus.u2.parchap.like.domain.Reaction;
 import campus.u2.parchap.post.domain.Post;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,10 +32,12 @@ public class User {
     
     private String name;
     
+    @Column(unique = true)
     private String nameUser;
     
     private String urlPhoto;
     
+    @Column(unique = true)
     private String email;
     
     private String password;

@@ -50,7 +50,7 @@ public class ParchapApplication {
         u2.setPassword("Alpha");
 
         UserDTO u3 = new UserDTO();
-        u3.setName("NigaMan");
+        u3.setName("NigaMan");       
         u3.setNameUser("sassant");
         u3.setEmail("AliasMocoLargo@example.com");
         u3.setBiography("Desarrollador de software");
@@ -59,13 +59,13 @@ public class ParchapApplication {
         
         UserDTO u4 = new UserDTO();
         u4.setName("NigaMan");
-        u4.setNameUser("xXx");
-        u4.setEmail("AliasMocoLargo@example.com");
+        u4.setNameUser("SS");
+        u4.setEmail("AliasElena@example.com");
         u4.setBiography("Desarrollador de software");
         u4.setUrlPhoto("https://cdn-icons-png.flaticon.com/512/6326/6326055.png");
         u4.setPassword("Alpha");
         
-
+        
         // Guardar usuarios
         userServiceImpl.save(u1);
         userServiceImpl.save(u2);
