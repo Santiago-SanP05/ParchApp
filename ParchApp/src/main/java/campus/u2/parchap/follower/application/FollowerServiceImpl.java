@@ -27,13 +27,11 @@ public class FollowerServiceImpl {
     }
 
     public List<FollowerDTO> findAll() {
-        List<Follower> followers = followerRepository.findAll();
-        Set<Long> seenUsers = new HashSet<>();
-        return followers.stream()
-                .filter(follower -> seenUsers.add(follower.getUserFollower().getId_User()))
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
+    List<Follower> followers = followerRepository.findAll();
+    return followers.stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+}
 
     public FollowerDTO save(FollowerDTO followerDTO) {
         // Convertimos el DTO a entidad

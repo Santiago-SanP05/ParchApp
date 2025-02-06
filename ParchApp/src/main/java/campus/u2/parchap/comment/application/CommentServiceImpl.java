@@ -7,6 +7,7 @@ import campus.u2.parchap.post.domain.Post;
 import campus.u2.parchap.user.domain.UserRepository;
 import campus.u2.parchap.post.domain.PostRepository;
 import campus.u2.parchap.user.domain.User;
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,15 +46,36 @@ public class CommentServiceImpl {
 
     // Guardar un comentario
     public CommentDTO save(CommentDTO commentDTO) {
-        // Convertir CommentDTO a Comment
-        Comment comment = convertToEntity(commentDTO);
+    Comment comment;
 
-        // Guardar el comentario
-        Comment savedComment = commentRepository.save(comment);
-
-        // Convertir la entidad Comment de nuevo a CommentDTO y devolverla
-        return convertToDTO(savedComment);
+    if (commentDTO.getIdComment() != null) {
+        // Verificar si el comentario ya existe en la base de datos
+        Optional<Comment> existingComment = commentRepository.findById(commentDTO.getIdComment());
+        if (existingComment.isPresent()) {
+            // Si existe, actualizamos los campos
+            comment = existingComment.get();
+            comment.setText(commentDTO.getText());
+            comment.setPublicationDate(LocalDateTime.now());
+        } else {
+            // Si no existe, creamos un nuevo comentario
+            comment = convertToEntity(commentDTO);
+            if (comment.getPublicationDate() == null) {
+                comment.setPublicationDate(LocalDateTime.now());
+            }
+        }
+    } else {
+        // Si no tiene ID, es un nuevo comentario
+        comment = convertToEntity(commentDTO);
+        if (comment.getPublicationDate() == null) {
+            comment.setPublicationDate(LocalDateTime.now());
+        }
     }
+
+    // Guardamos el comentario en la BD
+    Comment savedComment = commentRepository.save(comment);
+
+    return convertToDTO(savedComment);
+}
 
     // Eliminar un comentario por ID
     public void deleteById(Long id) {
