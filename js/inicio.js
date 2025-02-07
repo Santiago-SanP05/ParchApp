@@ -2,6 +2,17 @@ function getCurrentDateTime() {
   return new Date().toISOString();
 }
 
+function getCurrentDateTime2() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 
 console.log("hola mundo")
 
@@ -53,35 +64,54 @@ async function fetchData() {
 
       const userData = await responseUser.json();
 
-      // Obtener información de los usuarios que comentaron
-      const comentariosConNombres = await Promise.all(post.coments.map(async (comment) => {
-        const responseCommentUser = await fetch(urlUser + comment.idUser, {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        });
-      
-        const userCommentData = await responseCommentUser.json();
-      
-        // Verificar si el usuario actual es el dueño del comentario
-        const usuarioActualId = Number(localStorage.getItem("id"));
-        const esPropietario = usuarioActualId === comment.idUser;
-      
-        return `
-          <div class="etiquetasComentario">
-            <h4>${userCommentData.nameUser}</h4>
-            <p>${comment.text}</p>
-            <p>${new Date(comment.publicationDate).toLocaleString()}</p>
-      
-            ${esPropietario ? `
-              <button class="editarComentario" data-commentid="${comment.idComment}">Editar</button>
-              <button class="eliminarComentario" data-commentid="${comment.idComment}">Eliminar</button>
-            ` : ""}
-          </div>
-        `;
-      }));
+// 🔥 Agregar event listener solo una vez para eliminar comentarios
+if (!window.eventListenerEliminarAgregado) {
+  document.addEventListener("click", function(event) {
+      if (event.target.classList.contains("eliminarComentario")) {
+          const commentId = event.target.getAttribute("data-commentid");
+          eliminarComentario(commentId);
+      }
+  });
+  
+
+  document.addEventListener("click", function(event) {
+    if (event.target.classList.contains("editarComentario")) {
+        const commentId = event.target.getAttribute("data-commentid");
+        editarComentario(commentId);
+    }
+});
+
+  // Marcamos que ya se agregó el evento para evitar duplicados
+  window.eventListenerEliminarAgregado = true;
+}
+
+// Obtener información de los usuarios que comentaron
+const comentariosConNombres = await Promise.all(post.coments.map(async (comment) => {
+  const responseCommentUser = await fetch(urlUser + comment.idUser, {
+      method: "GET",
+      headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+      }
+  });
+
+  const userCommentData = await responseCommentUser.json();
+  const usuarioActualId = Number(localStorage.getItem("id"));
+  const esPropietario = usuarioActualId === comment.idUser;
+
+  return `
+    <div class="etiquetasComentario" data-commentid="${comment.idComment}">
+      <h4>${userCommentData.nameUser}</h4>
+      <p>${comment.text}</p>
+      <p>${new Date(comment.publicationDate).toLocaleString()}</p>
+
+      ${esPropietario ? `
+        <button class="editarComentario" data-commentid="${comment.idComment}">Editar</button>
+        <button class="eliminarComentario" data-commentid="${comment.idComment}">Eliminar</button>
+      ` : ""}
+    </div>
+  `;
+}));
       // Agregar la publicación al DOM
       publicacionContainer.insertAdjacentHTML('beforeend', `
         <div class="publicacion-item" data-postid="${post.idPost}">
@@ -105,7 +135,7 @@ async function fetchData() {
                 <p>${post.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
-                <a href="#"><img src="/Images/Comentarios.png" alt="Icono de comentarios"></a>
+                <img src="/Images/Comentarios.png" alt="Icono de comentarios">
                 <p>${post.coments.length}</p>
               </div>
             </div>
@@ -136,7 +166,7 @@ async function fetchData() {
         const postId = this.getAttribute("data-postid"); // Obtener ID único del post
         hacerComentario(postId);
       });
-    });
+    }); 
     
     const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
    likeImages.forEach((likeImage) => {
@@ -233,4 +263,63 @@ async function hacerComentario(postId) {
     console.error("Error de red:", error);
   }
 }
+var urlCommentario = 'http://localhost:3002/api/comment/';
+async function eliminarComentario(idComentario){
+  try {
+    let token = localStorage.getItem("token");
+    let response = await fetch(urlCommentario + idComentario, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
 
+    if (response.ok) {
+      if (response.status !== 204) {
+        const datos = await response.json();
+        console.log('Usuario eliminado:', datos);
+      } else {
+        alert('Comentario eliminado exitosamente.');
+      }
+    } else {
+      console.error('Error al eliminar el usuario:', response.status);
+    }
+    fetchData();
+  } catch (error) {
+    console.error('Error de red:', error);
+  }
+}
+
+async function editarComentario(idComentario){
+  const estructuraComentario = {
+    text : "HOLA MUNDO",
+    idUser: localStorage.getItem("id")
+ 
+
+  }
+  try {
+    let token = localStorage.getItem("token");
+    const respuesta = await fetch(urlCommentario + idComentario, {
+      method: 'PUT', // Método HTTP PUT
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
+      },
+      body: JSON.stringify(estructuraComentario) // Convierte el objeto a JSON
+    });
+
+    if (respuesta.ok) {
+      const datos = await respuesta.json();
+      console.log('Datos actualizados:', datos);
+
+    } else {
+      console.error('Error al actualizar:', respuesta.status);
+    }
+    mostrarPerfil();
+
+  } catch (error) {
+    console.error('Error de red:', error);
+  }
+
+}

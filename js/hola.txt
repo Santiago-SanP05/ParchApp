@@ -1,3 +1,0 @@
-falta mostrar comentarios en el perfil
-
-arreglar el apartado de registrar usuario y hacer la funcion para que lea y registre usuario

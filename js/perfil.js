@@ -236,16 +236,16 @@ async function enviareditarususario() {
 async function publicacionUsuario() {
   try {
     const token = localStorage.getItem("token");
-    const id = localStorage.getItem("id");
-    const urluser = 'http://localhost:3002/api/users/';
+    const id = Number(localStorage.getItem("id"));
+    const urluser = "http://localhost:3002/api/users/";
 
     // Obtener datos del usuario
     const response2 = await fetch(urluser + id, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response2.ok) {
@@ -255,12 +255,12 @@ async function publicacionUsuario() {
     const data2 = await response2.json();
 
     // Obtener publicaciones del usuario
-    const response = await fetch(urluser + id + '/posts', {
+    const response = await fetch(urluser + id + "/posts", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {
@@ -274,10 +274,21 @@ async function publicacionUsuario() {
     publicacionesUsuario.innerHTML = "";
 
     for (const element of data) {
+      // Solo mostrar botones si el usuario es el dueño de la publicación
+      const esPropietario = id === element.userId;
+      const botonesEdicion = esPropietario
+        ? `
+        <div class="OrdenarEditarEliminarBotones">
+          <button class="editarPublicacion">Editar</button>
+          <button class="eliminarPublicacion">Eliminar</button>
+        </div>
+        `
+        : "";
 
-      
       // Agregar cada publicación sin borrar las anteriores
-      publicacionesUsuario.insertAdjacentHTML('beforeend', `
+      publicacionesUsuario.insertAdjacentHTML(
+        "beforeend",
+        `
         <div class="publicacion">
           <header class="encabezadoPubli">
             <img src="${data2.urlPhoto}" alt="Imagen de perfil del usuario" id="imagen">
@@ -285,10 +296,7 @@ async function publicacionUsuario() {
               <h2>@${data2.nameUser}</h2>
               <time datetime="${element.publicationDate}">${new Date(element.publicationDate).toLocaleString()}</time>
             </div>
-            <div class="OrdenarEditarEliminarBotones">
-            <button class="editarPublicacion" > Editar </button>
-            <button class="eliminarPublicacion" > Eliminar </button>
-            </div>
+            ${botonesEdicion}
           </header>
 
           <section class="cuerpoPubli">
@@ -310,74 +318,85 @@ async function publicacionUsuario() {
           </footer>
 
           <div class="hacerComentario">
-          <div class="inputComentario">
-          <input id="envioComentario" type="text" placeholder="Comentar">
-          <button class="enviarComentario"> Enviar </button>
-          </div>
+            <div class="inputComentario">
+              <input class="envioComentario" type="text" placeholder="Comentar">
+              <button class="enviarComentario">Enviar</button>
+            </div>
           </div>
 
           <div class="todoComentarios">
             <div class="centradorComentarios">
-              <div class="resultadoComentarios">
-              </div>
+              <div class="resultadoComentarios"></div>
             </div>
           </div>
-          
         </div>
       `
-      
-    );
-    let nuevaPublicacion = publicacionesUsuario.lastElementChild;
+      );
 
-      // Obtener el botón de eliminación dentro de la publicación
-      let eventoEliminar = nuevaPublicacion.querySelector(".eliminarPublicacion");
+      let nuevaPublicacion = publicacionesUsuario.lastElementChild;
 
+      if (esPropietario) {
+        // Agregar eventos para editar y eliminar si el usuario es el dueño
+        let eventoEditar = nuevaPublicacion.querySelector(".editarPublicacion");
+        let eventoEliminar = nuevaPublicacion.querySelector(".eliminarPublicacion");
 
+        eventoEditar.addEventListener("click", function () {
+          editarPublicacion(element.idPost, element.caption, element.imageUrl, element.publicationDate);
+        });
 
-      let eventoEditar = nuevaPublicacion.querySelector(".editarPublicacion");
-      eventoEditar.addEventListener("click", function(){
-        editarPublicacion(element.idPost, element.caption, element.imageUrl, element.publicationDate)
-      })
+        eventoEliminar.addEventListener("click", function () {
+          eliminarPost(element.idPost, nuevaPublicacion);
+        });
+      }
 
+      const contenedorComentarios = nuevaPublicacion.querySelector(".resultadoComentarios");
 
-
-
-      // Asignar evento al botón de eliminar
-      eventoEliminar.addEventListener("click", function() {
-        eliminarPost(element.idPost, nuevaPublicacion)})
-
-    
-
-      const contenedorComentarios = publicacionesUsuario.lastElementChild.querySelector(".resultadoComentarios");
-
-      // Llamar a la función para insertar comentarios, pasando los comentarios de la publicación actual
-      insertarComentarios(element.coments, contenedorComentarios);
+      // Llamar a la función para insertar comentarios
+      insertarComentarios(element.coments, contenedorComentarios, data2.nameUser);
     }
   } catch (error) {
-    console.error('Hubo un problema con la solicitud:', error);
+    console.error("Hubo un problema con la solicitud:", error);
   }
 }
-
 
 function insertarComentarios(comments, contenedor) {
   // Limpiar el contenedor de comentarios antes de agregar nuevos
   contenedor.innerHTML = "";
 
+  const usuarioActualId = Number(localStorage.getItem("id"));
+
   // Iterar sobre los comentarios y agregarlos al contenedor
   for (const comment of comments) {
-    console.log(comment.text);
-    contenedor.innerHTML += `
-        <div class="">
-        <h4>${comment.idComment}</h4>
-          <p>${comment.text}</p>
-          <p>${comment.publicationDate}</p>
-        </div>
-          
+    const esPropietario = usuarioActualId === comment.idUser;
+    const botonesEdicion = esPropietario
+      ? `
+      <button class="editarComentario" data-commentid="${comment.idComment}">Editar</button>
+      <button class="eliminarComentario" data-commentid="${comment.idComment}">Eliminar</button>
+      `
+      : "";
 
-    `;
+    contenedor.insertAdjacentHTML(
+      "beforeend",
+      `
+        <div class="comentario">
+          <h4>${comment.idUser}</h4>
+          <p>${comment.text}</p>
+          <p>${new Date(comment.publicationDate).toLocaleString()}</p>
+          ${botonesEdicion}
+        </div>
+      `
+      
+    );/*
+    var eventoEliminarComentarioPerfil = document.querySelector(".eliminarComentario");
+    eventoEliminarComentarioPerfil.addEventListener("click", function(){
+      eliminarComentario(comment.idComment);
+    })*/
   }
 }
-
+/*
+function eliminarComentario(idComment){
+  console.log("hola"+ idComment)
+}*/
 
 
 function cerrarSesion() {
