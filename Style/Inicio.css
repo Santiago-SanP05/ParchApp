@@ -236,7 +236,7 @@ a{
 
 .todoComentarios {
     margin-bottom: 20px;
-    max-height: 70vh;
+    max-height: 50vh;
     display: flex;
     flex-direction: column;
     overflow-y: scroll; 
@@ -247,33 +247,75 @@ a{
     background-color: rgba(0, 238, 255, 0);
     display: flex;
     flex-direction: column;
-
 }
 
-.etiquetasComentario{
+.etiquetasComentario {
     display: flex;
     flex-direction: column;
-    border: 2px solid rgb(255, 255, 255);
+    border: 2px solid #00fff236;
     border-radius: 20px;
+    background: transparent;
     width: 80%;
-    padding: 0.5vh;
+    padding-bottom: 2vh;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+
+.etiquetasComentario::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    background: linear-gradient(45deg, #00fff236 20%, transparent 0%, transparent 80%, #00fff236 80%);
+    z-index: -1;
+    box-shadow: 0 0 10px #00fff28c; /* Resplandor en el borde */
+}
+
+
+
 .etiquetasComentario h4{
+    margin-bottom: 0;
     margin-left: 3vh;
+    color:aqua;
+    text-shadow: 0 0 5px aqua, 0 0 7px rgb(0, 170, 170);
 }
 
 .etiquetasComentario p{
+    color:white;
     text-align: center;
+    margin-bottom: 0;
     margin-right: 3vh;
     margin-left: 3vh;
 }
 
-.etiquetasComentario button{
+.Btn-SaveDelete button{
     margin-left: 3vh;
-    background-color: aqua;
+    margin-right: 3vh;
+    background-color: rgb(4, 234, 250);
     border-radius:0.9vh;
     height: 3vh;
     width: 30%;
+    border:transparent;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.Btn-SaveDelete button:hover{
+    color:rgb(0, 0, 0);
+    text-shadow: 0 0 1px black;
+    border:transparent;
+    box-shadow:
+     0 1px 12px rgb(0, 116, 116),
+     0 2px 5px aqua
+     ;
+}
+.Btn-SaveDelete{
+    margin-top: 3vh;
+    display: flex;
+    justify-content: space-between;
 }
 /*------------------------------------------------------------------------------->*/
 
@@ -352,12 +394,11 @@ a{
 .inputComentario{
     display: flex;
     justify-content: center;
+    border:4px solid white;
     width: 60%;
     height: 9vh;
-    border-left: 4px solid rgb(255, 255, 255);
-    border-right: 4px solid white;
+    border-top: none;
     gap: 2vh;
-    border-bottom: solid 4px white;
     align-items: center;
 }
 #envioComentario{
@@ -387,7 +428,5 @@ a{
  
  .active-border:hover{
     background-color: rgba(0, 195, 255, 0.575);
- 
- 
- }
+  }
  

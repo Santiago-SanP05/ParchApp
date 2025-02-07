@@ -326,6 +326,8 @@ async function publicacionUsuario() {
           <div class="todoComentarios">
             <div class="centradorComentarios">
               <div class="resultadoComentarios"></div>
+
+
             </div>
           </div>
         </div>
@@ -375,15 +377,17 @@ function insertarComentarios(comments, contenedor) {
     const esPropietario = usuarioActualId === comment.idUser;
     const botonesEdicion = esPropietario
       ? `
-      <button class="editarComentario" data-commentid="${comment.idComment}">Editar</button>
-      <button class="eliminarComentario" data-commentid="${comment.idComment}">Eliminar</button>
+      <div class="Btn-SaveDelete">
+        <button class="editarComentario" data-commentid="${comment.idComment}">Editar</button>
+        <button class="eliminarComentario" data-commentid="${comment.idComment}">Eliminar</button>
+      </div>
       `
       : "";
 
     contenedor.insertAdjacentHTML(
       "beforeend",
       `
-        <div class="comentario">
+        <div class="etiquetasComentario">
           <h4>${comment.idUser}</h4>
           <p>${comment.text}</p>
           <p>${new Date(comment.publicationDate).toLocaleString()}</p>
