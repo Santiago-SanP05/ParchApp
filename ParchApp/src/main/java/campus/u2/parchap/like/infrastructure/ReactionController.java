@@ -28,27 +28,32 @@ public class ReactionController {
         this.reactionServiceImpl = reactionServiceImpl;
     }
 
+    // Obtener todas las reacciones
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ReactionDTO> findAllReactions() {
         return reactionServiceImpl.findAll();
     }
 
+    // Obtener una reacción por ID
     @GetMapping("/{id}")
     public Optional<ReactionDTO> getReactionById(@PathVariable Long id) {
         return reactionServiceImpl.findById(id);
     }
 
+    // Crear una nueva reacción
     @PostMapping
     public ReactionDTO createReaction(@RequestBody ReactionDTO reactionDTO) {
         return reactionServiceImpl.save(reactionDTO);
     }
 
+    // Eliminar una reacción
     @DeleteMapping("/{id}")
     public void deleteReaction(@PathVariable Long id) {
         reactionServiceImpl.deleteById(id);
     }
 
+    // Actualizar una reacción
     @PutMapping("/{id}")
     public ReactionDTO updateReaction(@PathVariable Long id, @RequestBody ReactionDTO reactionDTO) {
         reactionDTO.setIdLike(id); // Asegurar que el ID del DTO coincide con el de la URL

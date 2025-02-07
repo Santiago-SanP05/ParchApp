@@ -72,9 +72,4 @@ public class UserController {
         List<UserDTO> followed = userServiceImpl.getFollowedByUserId(id);
         return ResponseEntity.ok(followed);
     }
-
-    @GetMapping("/user/{nameUser}")
-    public ResponseEntity<UserDTO> getUserByName(@PathVariable String nameUser) {
-        return ResponseEntity.ok(userServiceImpl.findByNameUser(nameUser));
-    }
 }
