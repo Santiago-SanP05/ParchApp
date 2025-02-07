@@ -318,14 +318,15 @@ a{
     display: flex;
     justify-content: center;
     width: 60%;
-    height: auto;
+    height: 9vh;
     border-left: 4px solid white;
     border-right: 4px solid white;
     gap: 2vh;
+    border-bottom: solid 4px white;
+    align-items: center;
 }
 #envioComentario{
     height: 4vh;
     width: 60%;
     border-radius: 2vh;
 }
-.enviarComentario{}

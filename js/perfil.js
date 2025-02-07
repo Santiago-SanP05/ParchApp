@@ -97,7 +97,7 @@ async function mostrarPerfil() {
             <div class="publicacion-item"></div>
 
       `
-        await publicacionUsuario();
+        publicacionUsuario();
       }
     }
     var editarRegistrar = document.querySelector(".botoneditar");
@@ -139,7 +139,7 @@ async function editarUsuario() {
     aparecerEditar.innerHTML = `
     <div class="datosRegistrar">
             <p>Nombre usuario: <input id="editnombreusuario" type="text" value="${data.name}" value="${data.name}"></p>
-            <p>Usuario: <input id="editusuario" type="text" value="@${data.nameUser}"></p>
+            <p>Usuario: <input id="editusuario" type="text" value="${data.nameUser}"></p>
             <p>Correo: <input id="editemail" type="email" value="${data.email}"></p>
             <p>Biografia: <input id="editBio" type="text" value="${data.biography}"></p>
             <p>Url foto: <input id="editUrlImagen" type="url" value="${data.urlPhoto}"></p>
@@ -309,6 +309,13 @@ async function publicacionUsuario() {
             </div>
           </footer>
 
+          <div class="hacerComentario">
+          <div class="inputComentario">
+          <input id="envioComentario" type="text" placeholder="Comentar">
+          <button class="enviarComentario"> Enviar </button>
+          </div>
+          </div>
+
           <div class="todoComentarios">
             <div class="centradorComentarios">
               <div class="resultadoComentarios">
@@ -324,10 +331,17 @@ async function publicacionUsuario() {
 
       // Obtener el botón de eliminación dentro de la publicación
       let eventoEliminar = nuevaPublicacion.querySelector(".eliminarPublicacion");
+
+
+
       let eventoEditar = nuevaPublicacion.querySelector(".editarPublicacion");
       eventoEditar.addEventListener("click", function(){
         editarPublicacion(element.idPost, element.caption, element.imageUrl, element.publicationDate)
       })
+
+
+
+
       // Asignar evento al botón de eliminar
       eventoEliminar.addEventListener("click", function() {
         eliminarPost(element.idPost, nuevaPublicacion)})
@@ -580,3 +594,4 @@ async function envioEditPost(obteniendoIdPost,obteniendoimagenurl,obteniendodate
    
 }
 }
+
