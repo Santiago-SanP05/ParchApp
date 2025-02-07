@@ -93,8 +93,8 @@ async function fetchData() {
           <footer class="contenedorComentarios">
             <div class="comentarios">
               <div class="contenedorReaccion">
-                <a href="#"><img src="/Images/Me encanta.png" alt="Reacción de me encanta"></a>
-                <p>${post.reactions.length}</p>
+                <img src="/Images/Me encanta.png" alt="Reacción de me encanta" class="like-img">
+                <p>${first.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
                 <a href="#"><img src="/Images/Comentarios.png" alt="Icono de comentarios"></a>
@@ -121,14 +121,18 @@ async function fetchData() {
       `);
     }
 
-    // 🔥 Ahora agregamos los eventos de los botones después de renderizar todo
-    document.querySelectorAll(".enviarComentario").forEach(boton => {
-      boton.addEventListener("click", function() {
-        const postId = this.getAttribute("data-postid"); // Obtener ID único del post
-        hacerComentario(postId);
-      });
+    // Insertamos el contenido generado en el HTML
+    publicacion.innerHTML = contenidoPublicaciones;
+
+    // Manejamos el evento de los comentarios
+
+    const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
+    likeImages.forEach((likeImage) => {
+    likeImage.addEventListener("click", function () {
+       this.classList.toggle("active-border");
+        });
     });
-    
+
 
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
@@ -141,7 +145,6 @@ async function fetchData() {
 
 var principal = document.querySelector("#principal");
 principal.addEventListener("click", fetchData);
-
 
 
 

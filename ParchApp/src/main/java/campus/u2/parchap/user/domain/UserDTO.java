@@ -36,7 +36,8 @@ public class UserDTO {
         this.followers = followers;
         this.followered = followered;
     }
-
+    
+    // este es el que se odtiene al buscar por Name
     public UserDTO(Long idUser, String name, String nameUser, String email, String biography, String urlPhoto) {
         this.idUser = idUser;
         this.name = name;
@@ -113,6 +114,8 @@ public class UserDTO {
         this.email = email;
         this.token = token;
     }
+    
+    
 
     public Long getIdUser() {
         return idUser;
