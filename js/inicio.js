@@ -62,18 +62,26 @@ async function fetchData() {
             "Content-Type": "application/json"
           }
         });
-
+      
         const userCommentData = await responseCommentUser.json();
-
+      
+        // Verificar si el usuario actual es el dueño del comentario
+        const usuarioActualId = Number(localStorage.getItem("id"));
+        const esPropietario = usuarioActualId === comment.idUser;
+      
         return `
           <div class="etiquetasComentario">
             <h4>${userCommentData.nameUser}</h4>
             <p>${comment.text}</p>
             <p>${new Date(comment.publicationDate).toLocaleString()}</p>
+      
+            ${esPropietario ? `
+              <button class="editarComentario" data-commentid="${comment.idComment}">Editar</button>
+              <button class="eliminarComentario" data-commentid="${comment.idComment}">Eliminar</button>
+            ` : ""}
           </div>
         `;
       }));
-
       // Agregar la publicación al DOM
       publicacionContainer.insertAdjacentHTML('beforeend', `
         <div class="publicacion-item" data-postid="${post.idPost}">
@@ -105,7 +113,7 @@ async function fetchData() {
 
           <div class="hacerComentario">
             <div class="inputComentario">
-              <input id="leerComentario" type="text" placeholder="Comentar">
+              <input class="leerComentario" type="text" placeholder="Comentar">
               <button class="enviarComentario" data-postid="${post.idPost}">Enviar</button>
             </div>
           </div>
@@ -114,6 +122,7 @@ async function fetchData() {
             <div class="centradorComentarios">
               <div class="resultadoComentarios">
                 ${comentariosConNombres.join('')}
+                
               </div>
             </div>
           </div>
@@ -149,81 +158,49 @@ principal.addEventListener("click", fetchData);
 
 
 
-async function hacerComentario(postId){
-  console.log(postId)
-  let leercommentario = document.querySelector("#leerComentario").value; 
-  const idUser = Number(localStorage.getItem("id"));
-  const datosEnvioComentario = {
-    text: leercommentario,
-    publicationDate: new Date().toISOString(),
-    idUser: idUser,
-    idPost: postId,
-  }
 
-  try {
-    let urlPost = "http://localhost:3002/api/comment"
-    let token = localStorage.getItem("token");
-    const respuesta = await fetch(urlPost, {
-      method: 'POST', // Método HTTP PUT
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
-      },
-      body: JSON.stringify(datosEnvioComentario) // Convierte el objeto a JSON
-    });
 
-    if (respuesta.ok) {
-      const datos = await respuesta.json();
-      console.log('Datos actualizados:', datos);
-
-    } else {
-      console.error('Error al actualizar:', respuesta.status);
-    }
-
-    fetchData()
-  } catch (error) {
-    console.error('Error de red:', error);
-  }
-
-}
-/*
 async function hacerComentario(postId) {
   console.log("ID del post:", postId);
 
-  // Obtener el comentario del input correctamente
-  let leerComentario = document.querySelector("#leerComentario").value;
+  // Seleccionar el contenedor de la publicación específica
+  let publicacionItem = document.querySelector(`[data-postid="${postId}"]`);
+
+  if (!publicacionItem) {
+    console.error("No se encontró la publicación correspondiente");
+    return;
+  }
+
+  // Obtener el input dentro de esa publicación
+  let leerComentarioInput = publicacionItem.querySelector(".leerComentario");
+
+  if (!leerComentarioInput) {
+    console.error("No se encontró el campo de comentario");
+    return;
+  }
+
+  let leerComentario = leerComentarioInput.value.trim();
 
   // Verificar que el comentario no esté vacío
-  if (!leerComentario.trim()) {
+  if (!leerComentario) {
     console.error("El comentario está vacío");
     return;
   }
 
-  // Obtener ID de usuario
   const idUser = Number(localStorage.getItem("id"));
-  if (isNaN(idUser)) {
-    console.error("ID de usuario no válido");
-    return;
-  }
-
-  // Obtener token de autenticación
-  let token = localStorage.getItem("token");
-  if (!token) {
-    console.error("No hay token en localStorage");
-    return;
-  }
-
-  // Construir el objeto con los datos correctos
   const datosEnvioComentario = {
     text: leerComentario,
-    publicationDate: new Date().toISOString(), // Formato ISO 8601
+    publicationDate: new Date().toISOString(),
     idUser: idUser,
     idPost: postId,
   };
 
+  console.log("Enviando comentario:", datosEnvioComentario);
+
   try {
     let urlPost = "http://localhost:3002/api/comment";
-    
+    let token = localStorage.getItem("token");
+
     const respuesta = await fetch(urlPost, {
       method: "POST",
       headers: {
@@ -236,11 +213,17 @@ async function hacerComentario(postId) {
     if (respuesta.ok) {
       const datos = await respuesta.json();
       console.log("Comentario enviado con éxito:", datos);
+      
+      // Limpiar el campo de comentario después de enviar
+      leerComentarioInput.value = "";
+
+      // Recargar las publicaciones para mostrar el nuevo comentario
+      fetchData();
     } else {
-      console.error("Error al enviar comentario:", respuesta.status, await respuesta.text());
+      console.error("Error al enviar comentario:", respuesta.status);
     }
   } catch (error) {
     console.error("Error de red:", error);
   }
 }
-*/
+
