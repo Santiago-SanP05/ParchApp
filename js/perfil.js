@@ -117,7 +117,6 @@ async function mostrarPerfil() {
 
 
 
-
 async function editarUsuario() {
   try {
     const token = localStorage.getItem("token");
@@ -307,7 +306,7 @@ async function publicacionUsuario() {
           <footer class="contenedorComentarios">
             <div class="comentarios">
               <div class="contenedorReaccion">
-                <a href="#"><img src="/Images/Me encanta.png" alt="Reacción de me encanta"></a>
+                <img src="/Images/Me encanta.png" alt="Reacción de me encanta" class="like-img">
                 <p>${element.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
@@ -354,6 +353,12 @@ async function publicacionUsuario() {
       // Llamar a la función para insertar comentarios
       insertarComentarios(element.coments, contenedorComentarios, data2.nameUser);
     }
+    const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
+      likeImages.forEach((likeImage) => {
+      likeImage.addEventListener("click", function () {
+         this.classList.toggle("active-border");
+          });
+      });
   } catch (error) {
     console.error("Hubo un problema con la solicitud:", error);
   }
