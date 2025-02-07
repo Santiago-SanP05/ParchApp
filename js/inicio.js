@@ -46,8 +46,7 @@ async function fetchData() {
 
     // Limpiar el contenedor antes de agregar nuevas publicaciones
     publicacionContainer.innerHTML = "";
-
-    for (const post of posts) {
+    for (const post of posts.reverse()) {
       // Obtener información del usuario que hizo la publicación
       const responseUser = await fetch(urlUser + post.userId, {
         method: "GET",
@@ -131,7 +130,7 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
           <footer class="contenedorComentarios">
             <div class="comentarios">
               <div class="contenedorReaccion">
-                <img src="/Images/Me encanta.png" alt="Reacción de me encanta" class="like-img">
+                <img src="/Images/Me encanta.png" alt="Reacción de me encanta" class="like-img" data-postid="${post.idPost}"> 
                 <p>${post.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
@@ -166,12 +165,16 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
         const postId = this.getAttribute("data-postid"); // Obtener ID único del post
         hacerComentario(postId);
       });
-    }); 
+    });
+
     
     const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
    likeImages.forEach((likeImage) => {
    likeImage.addEventListener("click", function () {
       this.classList.toggle("active-border");
+      let postId2 = this.getAttribute("data-postid");
+         
+        hacerLike(postId2);
        });
    });
 
@@ -197,72 +200,7 @@ principal.addEventListener("click", fetchData);
 
 
 
-async function hacerComentario(postId) {
-  console.log("ID del post:", postId);
 
-  // Seleccionar el contenedor de la publicación específica
-  let publicacionItem = document.querySelector(`[data-postid="${postId}"]`);
-
-  if (!publicacionItem) {
-    console.error("No se encontró la publicación correspondiente");
-    return;
-  }
-
-  // Obtener el input dentro de esa publicación
-  let leerComentarioInput = publicacionItem.querySelector(".leerComentario");
-
-  if (!leerComentarioInput) {
-    console.error("No se encontró el campo de comentario");
-    return;
-  }
-
-  let leerComentario = leerComentarioInput.value.trim();
-
-  // Verificar que el comentario no esté vacío
-  if (!leerComentario) {
-    console.error("El comentario está vacío");
-    return;
-  }
-
-  const idUser = Number(localStorage.getItem("id"));
-  const datosEnvioComentario = {
-    text: leerComentario,
-    publicationDate: new Date().toISOString(),
-    idUser: idUser,
-    idPost: postId,
-  };
-
-  console.log("Enviando comentario:", datosEnvioComentario);
-
-  try {
-    let urlPost = "http://localhost:3002/api/comment";
-    let token = localStorage.getItem("token");
-
-    const respuesta = await fetch(urlPost, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(datosEnvioComentario),
-    });
-
-    if (respuesta.ok) {
-      const datos = await respuesta.json();
-      console.log("Comentario enviado con éxito:", datos);
-      
-      // Limpiar el campo de comentario después de enviar
-      leerComentarioInput.value = "";
-
-      // Recargar las publicaciones para mostrar el nuevo comentario
-      fetchData();
-    } else {
-      console.error("Error al enviar comentario:", respuesta.status);
-    }
-  } catch (error) {
-    console.error("Error de red:", error);
-  }
-}
 var urlCommentario = 'http://localhost:3002/api/comment/';
 async function eliminarComentario(idComentario){
   try {
@@ -316,7 +254,7 @@ async function editarComentario(idComentario){
     } else {
       console.error('Error al actualizar:', respuesta.status);
     }
-    mostrarPerfil();
+    fetchData();
 
   } catch (error) {
     console.error('Error de red:', error);

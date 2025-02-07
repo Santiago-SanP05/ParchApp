@@ -247,6 +247,27 @@ async function publicacionUsuario() {
       },
     });
 
+
+    if (!window.eventListenerEliminarAgregado) {
+      document.addEventListener("click", function(event) {
+          if (event.target.classList.contains("eliminarComentarioPerfil")) {
+              const commentId = event.target.getAttribute("data-commentid");
+              eliminarComentario2(commentId);
+          }
+      });
+      
+    
+      document.addEventListener("click", function(event) {
+        if (event.target.classList.contains("editarComentarioPerfil")) {
+            const commentId = event.target.getAttribute("data-commentid");
+            editarComentario2(commentId);
+        }
+    });
+    
+      // Marcamos que ya se agregó el evento para evitar duplicados
+      window.eventListenerEliminarAgregado = true;
+    }
+
     if (!response2.ok) {
       throw new Error(`Error en la solicitud del usuario: ${response2.status}`);
     }
@@ -318,8 +339,8 @@ async function publicacionUsuario() {
 
           <div class="hacerComentario">
             <div class="inputComentario">
-              <input class="envioComentario" type="text" placeholder="Comentar">
-              <button class="enviarComentario">Enviar</button>
+              <input class="leerComentarioPerfil" type="text" placeholder="Comentar">
+              <button class="enviarComentario" data-postid="${element.idPost}">Enviar</button>
             </div>
           </div>
 
@@ -340,6 +361,8 @@ async function publicacionUsuario() {
         // Agregar eventos para editar y eliminar si el usuario es el dueño
         let eventoEditar = nuevaPublicacion.querySelector(".editarPublicacion");
         let eventoEliminar = nuevaPublicacion.querySelector(".eliminarPublicacion");
+        let eventoReaccion = nuevaPublicacion.querySelector(".like-img");
+        let eventoComentario = nuevaPublicacion.querySelector(".enviarComentario")
 
         eventoEditar.addEventListener("click", function () {
           editarPublicacion(element.idPost, element.caption, element.imageUrl, element.publicationDate);
@@ -348,7 +371,16 @@ async function publicacionUsuario() {
         eventoEliminar.addEventListener("click", function () {
           eliminarPost(element.idPost, nuevaPublicacion);
         });
+        eventoReaccion.addEventListener("click", function(){
+          
+          hacerLikePerfil(element.idPost);
+          
+        })
+        eventoComentario.addEventListener("click", function(){
+          hacerComentarioPerfil(element.idPost);
+        })
       }
+      
 
       const contenedorComentarios = nuevaPublicacion.querySelector(".resultadoComentarios");
 
@@ -366,46 +398,8 @@ async function publicacionUsuario() {
   }
 }
 
-function insertarComentarios(comments, contenedor) {
-  // Limpiar el contenedor de comentarios antes de agregar nuevos
-  contenedor.innerHTML = "";
 
-  const usuarioActualId = Number(localStorage.getItem("id"));
 
-  // Iterar sobre los comentarios y agregarlos al contenedor
-  for (const comment of comments) {
-    const esPropietario = usuarioActualId === comment.idUser;
-    const botonesEdicion = esPropietario
-      ? `
-      <div class="Btn-SaveDelete">
-        <button class="editarComentario" data-commentid="${comment.idComment}">Editar</button>
-        <button class="eliminarComentario" data-commentid="${comment.idComment}">Eliminar</button>
-      </div>
-      `
-      : "";
-
-    contenedor.insertAdjacentHTML(
-      "beforeend",
-      `
-        <div class="etiquetasComentario">
-          <h4>${comment.idUser}</h4>
-          <p>${comment.text}</p>
-          <p>${new Date(comment.publicationDate).toLocaleString()}</p>
-          ${botonesEdicion}
-        </div>
-      `
-      
-    );/*
-    var eventoEliminarComentarioPerfil = document.querySelector(".eliminarComentario");
-    eventoEliminarComentarioPerfil.addEventListener("click", function(){
-      eliminarComentario(comment.idComment);
-    })*/
-  }
-}
-/*
-function eliminarComentario(idComment){
-  console.log("hola"+ idComment)
-}*/
 
 
 function cerrarSesion() {
@@ -622,4 +616,6 @@ async function envioEditPost(obteniendoIdPost,obteniendoimagenurl,obteniendodate
    
 }
 }
+
+
 

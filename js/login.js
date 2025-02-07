@@ -214,36 +214,3 @@ async function registrarUsuario(){
       }
   
   }
-/*
-<h1 id="titulo">ParchApp</h1>
-                    <h1>Bienvenido</h1>
-                    <div class="inputLogin">
-                    <input id="usuario" type="text" placeholder="Usuario">
-                    <input id="email" type="email" placeholder="usuario@gmail.com">
-                    <input id="contraseña" type="password" placeholder="***********">
-                    </div>
-                    
-                   <button id="principal">Entrar</button>
-                    <a href="#" id="registrar">Registrarme</a>
-*/
-
-
-
-/*
-
-<h1 id="titulo">ParchApp</h1>
-                    <h1>Registrar</h1>
-                    <div class="inputRegister">
-                    <input id="usuario" type="text" placeholder="Usuario">
-                    <input id="email" type="email" placeholder="usuario@gmail.com">
-                    <input id="contraseña" type="password" placeholder="***********">
-                    </div>
-                    
-                   <button id="principal">Entrar</button>
-                    <a href="#" id="registrar">Registrarme</a>
-
-*/
-
-/*,
-        updateDate: getCurrentDateTime(),
-        createDate: getCurrentDateTime()*/
