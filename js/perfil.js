@@ -109,6 +109,13 @@ async function mostrarPerfil() {
     var eliminaUsuario = document.querySelector(".eliminaUsuario");
     eliminaUsuario.addEventListener("click", eliminarUsuario);
 
+    const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
+    likeImages.forEach((likeImage) => {
+    likeImage.addEventListener("click", function () {
+       this.classList.toggle("active-border");
+        });
+    });
+
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
   }
@@ -299,7 +306,7 @@ async function publicacionUsuario() {
           <footer class="contenedorComentarios">
             <div class="comentarios">
               <div class="contenedorReaccion">
-                <a href="#"><img src="/Images/Me encanta.png" alt="Reacción de me encanta"></a>
+                <img src="/Images/Me encanta.png" alt="Reacción de me encanta" class="like-img">
                 <p>${element.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
@@ -363,8 +370,6 @@ function insertarComentarios(comments, contenedor) {
     `;
   }
 }
-
-
 
 function cerrarSesion() {
   localStorage.removeItem("email");
