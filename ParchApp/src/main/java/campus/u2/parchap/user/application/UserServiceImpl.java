@@ -249,5 +249,11 @@ public class UserServiceImpl {
 
         followerRepository.delete(follow);
     }
+    
+    public UserDTO findByNameUser(String nameUser) {
+    User user = userRepository.findByNameUser(nameUser)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    return new UserDTO(user.getId_User(),user.getName(),user.getNameUser(),user.getEmail(),user.getBiography(),user.getUrlPhoto());
+}
 
 }

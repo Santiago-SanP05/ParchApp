@@ -101,7 +101,7 @@ async function fetchData() {
           <footer class="contenedorComentarios">
             <div class="comentarios">
               <div class="contenedorReaccion">
-                <a href="#"><img src="/Images/Me encanta.png" alt="Reacción de me encanta"></a>
+                <img src="/Images/Me encanta.png" alt="Reacción de me encanta" class="like-img">
                 <p>${post.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
@@ -138,6 +138,13 @@ async function fetchData() {
       });
     });
     
+    const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
+   likeImages.forEach((likeImage) => {
+   likeImage.addEventListener("click", function () {
+      this.classList.toggle("active-border");
+       });
+   });
+
 
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
