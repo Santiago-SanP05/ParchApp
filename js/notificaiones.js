@@ -4,6 +4,7 @@ notificaiones.addEventListener("click", apartadoNotificaiones)
 var urlUser2 = "http://localhost:3002/api/users"
 var token2 = localStorage.getItem("token");
 var id = localStorage.getItem("id");
+var urlfollowers = "http://localhost:3002/api/follower"
 
 
 function apartadoNotificaiones() {
@@ -31,11 +32,13 @@ function apartadoNotificaiones() {
     })
     var eventoNotiicacionesReacciones = document.querySelector(".notificacionesReacciones")
     eventoNotiicacionesReacciones.addEventListener("click",verNotificacionesReacciones)
+    var eventoNotiicacionesSeguidores = document.querySelector(".notificacionesSeguimiento")
+    eventoNotiicacionesSeguidores.addEventListener("click",verNotificacionesSeguidores)
 }
 
 
 async function verNotificacionesComentarios() {
-    console.log(urlUser2)
+
     let limpiar = document.querySelector(".etiquetasNotificaciones");
     limpiar.innerHTML = "";
     try {
@@ -60,7 +63,10 @@ async function verNotificacionesComentarios() {
                         },
                     });
                     const contenidousuario = await respuestaUser.json();
-
+                    if (element2.idUser == id) {
+                        console.log("tu no apareces aca")
+                        continue
+                    }
                     limpiar.innerHTML += `
                         <div class="etiquetasNotificaciones">
                             <p>Te ha dado comentado tu publicacion</p>
@@ -113,6 +119,11 @@ async function verNotificacionesReacciones() {
                             'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
                         },
                     });
+                    
+                    if (element2.idUser == id) {
+                        console.log("tu no apareces aca")
+                        continue
+                    }
                     const contenidousuario = await respuestaUser.json();
 
                     limpiar.innerHTML += `
@@ -140,7 +151,7 @@ async function verNotificacionesSeguidores() {
     let limpiar = document.querySelector(".etiquetasNotificaciones");
     limpiar.innerHTML = "";
     try {
-        const respuesta = await fetch(urlUser2 + "/" + id + "/followers", {
+        const respuesta3 = await fetch(urlUser2 + "/" + id + "/followers", {
             method: 'GET', // Método HTTP PUT
             headers: {
                 "Authorization": `Bearer ${token2}`,
@@ -148,31 +159,25 @@ async function verNotificacionesSeguidores() {
             },
         });
 
-        if (respuesta.ok) {
-            const notificacionesComentarios = await respuesta.json();
-            console.log('Notificaiones:', notificacionesComentarios);
-            for (const element of notificacionesComentarios) {
-                for (const element2 of element.reactions) {
-                    const respuestaUser = await fetch(urlUser2 + "/" + element2.idUser , {
-                        method: 'GET', // Método HTTP PUT
-                        headers: {
-                            "Authorization": `Bearer ${token2}`,
-                            'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
-                        },
-                    });
-                    const contenidousuario = await respuestaUser.json();
-
+        if (respuesta3.ok) {
+            const notificacionesSeguidores= await respuesta3.json();
+            
+          
+            for (const element of notificacionesSeguidores) {
+                
+                    if (element.idUser == id) {
+                        continue
+                    }
                     limpiar.innerHTML += `
                         <div class="etiquetasNotificaciones">
-                            <p>Te ha dado comentado tu publicacion</p>
+                            <p>Te ha empezado seguir</p>
                             <div class="foto">
-                            <img src="${contenidousuario.urlPhoto}" alt="Foto de usuario">
-                            <h1>El usuario: ${contenidousuario.nameUser}</h1>
+                            <img src="${element.urlPhoto}" alt="Foto de usuario">
+                            <h1>El usuario: ${element.nameUser}</h1>
                             </div>
-                            <p>${element2.publicationDate}</p>
                         </div>
     `;
-                }
+                
             }
         } else {
             console.error('Error al mostrar:', respuesta.status);
