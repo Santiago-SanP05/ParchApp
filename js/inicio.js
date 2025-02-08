@@ -109,8 +109,10 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
       <p>${new Date(comment.publicationDate).toLocaleString()}</p>
 
       ${esPropietario ? `
+      <div class="Btn-SaveDelete">
         <button class="editarComentario" data-commentid="${comment.idComment}">Editar</button>
         <button class="eliminarComentario" data-commentid="${comment.idComment}">Eliminar</button>
+      </div>
       ` : ""}
     </div>
   `;
@@ -147,7 +149,7 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
           <div class="hacerComentario">
             <div class="inputComentario">
               <input class="leerComentario" type="text" placeholder="Comentar">
-              <button class="enviarComentario" data-postid="${post.idPost}">Enviar</button>
+              <button class="enviarComentario" data-postid="${post.idPost}"><i class='bx bx-send'></i></button>
             </div>
           </div>
 
