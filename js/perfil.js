@@ -307,8 +307,8 @@ async function publicacionUsuario() {
       const botonesEdicion = esPropietario
         ? `
         <div class="OrdenarEditarEliminarBotones">
-          <button class="editarPublicacion">Editar</button>
-          <button class="eliminarPublicacion">Eliminar</button>
+          <button class="editarPublicacion"><i class='bx bx-edit' ></i></button>
+          <button class="eliminarPublicacion"><i class='bx bx-comment-x' ></i></button>
         </div>
         `
         : "";
@@ -348,7 +348,7 @@ async function publicacionUsuario() {
           <div class="hacerComentario">
             <div class="inputComentario">
               <input class="leerComentarioPerfil" type="text" placeholder="Comentar">
-              <button class="enviarComentario" data-postid="${element.idPost}">Enviar</button>
+              <button class="enviarComentario" data-postid="${element.idPost}"><i class='bx bx-send'></button>
             </div>
           </div>
 

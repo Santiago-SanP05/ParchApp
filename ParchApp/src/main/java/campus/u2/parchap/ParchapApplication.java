@@ -158,13 +158,13 @@ public class ParchapApplication {
         c1.setText("¡Gran post!");
         c1.setPublicationDate(LocalDateTime.now());
         c1.setIdUser(1L); // Comentario hecho por el usuario con ID 2
-        c1.setIdPost(2L); // Comentario en el post con ID 1
+        c1.setIdPost(7L); // Comentario en el post con ID 1
 
         CommentDTO c2 = new CommentDTO();
         c2.setText("Amigo busca vida social");
         c2.setPublicationDate(LocalDateTime.now());
         c2.setIdUser(2L); // Comentario hecho por el usuario con ID 3
-        c2.setIdPost(2L); // Comentario en el post con ID 1
+        c2.setIdPost(8L); // Comentario en el post con ID 1
         
         CommentDTO c3 = new CommentDTO();
         c3.setText("Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat?????");
@@ -176,7 +176,7 @@ public class ParchapApplication {
         c4.setText("Para entender la historia de Five Nights at Freddy's, necesitas entender la historia de Five Nights at Freddy's. ");
         c4.setPublicationDate(LocalDateTime.now());
         c4.setIdUser(1L); // Comentario hecho por el usuario con ID 3
-        c4.setIdPost(1L); // Comentario en el post con ID 1
+        c4.setIdPost(8L); // Comentario en el post con ID 1
         
         CommentDTO c5 = new CommentDTO();
         c5.setText("I im super happy wow");
@@ -230,7 +230,7 @@ public class ParchapApplication {
         ReactionDTO r1 = new ReactionDTO();
         r1.setPublicationDate(LocalDateTime.now());
         r1.setIdUser(1L); // Reacción hecha por el usuario con ID 1
-        r1.setIdPost(2L); // Reacción en el post con ID 2
+        r1.setIdPost(10L); // Reacción en el post con ID 2
 
         ReactionDTO r2 = new ReactionDTO();
         r2.setPublicationDate(LocalDateTime.now());
@@ -240,7 +240,7 @@ public class ParchapApplication {
         ReactionDTO r3 = new ReactionDTO();
         r3.setPublicationDate(LocalDateTime.now());
         r3.setIdUser(1L); // Reacción hecha por el usuario con ID 3
-        r3.setIdPost(2L); // Reacción en el post con ID 2
+        r3.setIdPost(8L); // Reacción en el post con ID 2
         
         ReactionDTO r4 = new ReactionDTO();
         r4.setPublicationDate(LocalDateTime.now());
@@ -265,7 +265,7 @@ public class ParchapApplication {
         ReactionDTO r8 = new ReactionDTO();
         r8.setPublicationDate(LocalDateTime.now());
         r8.setIdUser(3L); // Reacción hecha por el usuario con ID 3
-        r8.setIdPost(1L); // Reacción en el post con ID 2
+        r8.setIdPost(8L); // Reacción en el post con ID 2
 
 
         // Guardar reacciones

@@ -68,7 +68,7 @@ async function verNotificacionesComentarios() {
                         continue
                     }
                     limpiar.innerHTML += `
-                        <div class="etiquetasNotificaciones">
+                        <div class="etiquetasNotificacion">
                             <p>Te ha dado comentado tu publicacion</p>
                             <div class="foto">
                             <img src="${contenidousuario.urlPhoto}" alt="Foto de usuario">
@@ -127,7 +127,7 @@ async function verNotificacionesReacciones() {
                     const contenidousuario = await respuestaUser.json();
 
                     limpiar.innerHTML += `
-                        <div class="etiquetasNotificaciones">
+                        <div class="etiquetasNotificacion">
                             <p>Te ha dado comentado tu publicacion</p>
                             <div class="foto">
                             <img src="${contenidousuario.urlPhoto}" alt="Foto de usuario">
@@ -169,7 +169,7 @@ async function verNotificacionesSeguidores() {
                         continue
                     }
                     limpiar.innerHTML += `
-                        <div class="etiquetasNotificaciones">
+                        <div class="etiquetasNotificacion">
                             <p>Te ha empezado seguir</p>
                             <div class="foto">
                             <img src="${element.urlPhoto}" alt="Foto de usuario">

@@ -279,14 +279,19 @@ a{
     display: flex;
     justify-content: space-evenly;
     width: 100%;
+    max-height: 5vh;
 }
 
 .editPerfil button{
+    background-color: transparent;
     border:none; 
     width: 17%;
     border-radius: 3vh;
     font-size: 1.2em;
     transition: .4s;
+    color:white;
+    border-bottom:1px solid aqua;
+    border-top:2px solid aqua;
 }
 
 .usuarionombre{
@@ -297,7 +302,10 @@ a{
 }
 
 .editPerfil button:hover{
-    background-color: aqua;
+    background-color: rgba(0, 255, 255, 0.767);
+    color:black;
+    border-bottom: 5px solid rgba(0, 80, 49, 0.459);
+    border-top: 5px solid rgba(0, 80, 49, 0.459);
 }
 
 .resultadoComentarios{
@@ -476,18 +484,21 @@ a{
 .enviarPublicacion:hover{
     background-color: rgb(71, 255, 25);
 }
+
 .OrdenarEditarEliminarBotones{
     width: 100%;
     display: flex;
-    justify-content: flex-end;
-    padding: 2vh;
-    gap: 2vh;
+    align-items: flex-end;
+    gap:1vh;
 }
 .OrdenarEditarEliminarBotones button{
-    width: 15%;
-    height: 5vh;
+    background-color: aqua;
+    width: 20%;
     border-radius: 4vh; 
+    text-align: center;
+    font-size: 1em;
 }
+
 /*Styles de comentar una puvlicacion*/
 
 .hacerComentario{
@@ -578,7 +589,24 @@ a{
 
 
 
- 
+ /* Aqui va las notificaciones----------------------------------------------------------------------------------> */
+ .etiquetasNotificaciones{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.etiquetasNotificaciones .etiquetasNotificacion p{
+    font-size: 1em;
+}
+
+.etiquetasNotificacion{
+    border-bottom: 1px solid rgba(163, 163, 163, 0.479);
+}
+
+.foto img{
+    height: 5vh;
+}
+
 .botonesNotificacionesCR{
     height: 100%;
     display: flex;
@@ -591,15 +619,20 @@ a{
 .botonesNotificacionesCR button{
     height: 5vh;
     border-radius: 4vh;
+    background: rgba(255, 255, 255, 0.801);
+    border:none;
+    border-bottom:3px solid aqua;
+    color:black;
 }
+
 .botonesNotificacionesCR button:hover{
-    background-color: greenyellow;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 4px 13px aqua;
+    text-shadow: 0 0 10px black;
+
 }
 .foto{
     display: flex;
     align-items: center;
     gap: 2vh;
-}
-.etiquetasNotificaciones{
-    border-bottom: 2px solid white;
 }
