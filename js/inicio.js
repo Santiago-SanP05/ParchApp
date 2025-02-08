@@ -22,6 +22,10 @@ var principal = document.querySelector("#principal");
 principal.addEventListener("click", fetchData());
 
 async function fetchData() {
+  let encabezadoPublicacion = document.querySelector(".encabezado");
+  encabezadoPublicacion.innerHTML = "";
+  encabezadoPublicacion.innerHTML = `<i class='bx bx-search-alt-2'></i>
+          <input type="text" placeholder="Buscar en ParchApp" aria-label="Buscar publicaciones">`;
   try {
     const token = localStorage.getItem("token");
     const urlPost = "http://localhost:3002/api/post";

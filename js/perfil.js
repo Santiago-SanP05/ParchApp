@@ -63,6 +63,11 @@ async function mostrarPerfil() {
 
     for (const element of data) {
       if (element.email === identifiacador) {
+        let encabezadoPublicacion = document.querySelector(".encabezado");
+        encabezadoPublicacion.innerHTML = "";
+        encabezadoPublicacion.innerHTML = `
+        <i class='bx bx-search-alt-2'></i>
+          <input type="text" placeholder="Buscar en ParchApp" aria-label="Buscar publicaciones">`;
         const publicacion = document.querySelector(".publicacion");
         publicacion.innerHTML = `
             <div class="contenedorUsuario">
@@ -134,6 +139,9 @@ async function editarUsuario() {
       throw new Error(`Error en la solicitud: ${response.status}`);
     }
     const data = await response.json();
+    let encabezadoPublicacion = document.querySelector(".encabezado");
+        encabezadoPublicacion.innerHTML = "";
+        encabezadoPublicacion.innerHTML = "Editar Usuario";
     var aparecerEditar = document.querySelector(".publicacion");
     aparecerEditar.innerHTML = `
     <div class="datosRegistrar">
@@ -249,21 +257,21 @@ async function publicacionUsuario() {
 
 
     if (!window.eventListenerEliminarAgregado) {
-      document.addEventListener("click", function(event) {
-          if (event.target.classList.contains("eliminarComentarioPerfil")) {
-              const commentId = event.target.getAttribute("data-commentid");
-              eliminarComentario2(commentId);
-          }
-      });
-      
-    
-      document.addEventListener("click", function(event) {
-        if (event.target.classList.contains("editarComentarioPerfil")) {
-            const commentId = event.target.getAttribute("data-commentid");
-            editarComentario2(commentId);
+      document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("eliminarComentarioPerfil")) {
+          const commentId = event.target.getAttribute("data-commentid");
+          eliminarComentario2(commentId);
         }
-    });
-    
+      });
+
+
+      document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("editarComentarioPerfil")) {
+          const commentId = event.target.getAttribute("data-commentid");
+          editarComentario2(commentId);
+        }
+      });
+
       // Marcamos que ya se agregó el evento para evitar duplicados
       window.eventListenerEliminarAgregado = true;
     }
@@ -371,16 +379,16 @@ async function publicacionUsuario() {
         eventoEliminar.addEventListener("click", function () {
           eliminarPost(element.idPost, nuevaPublicacion);
         });
-        eventoReaccion.addEventListener("click", function(){
-          
+        eventoReaccion.addEventListener("click", function () {
+
           hacerLikePerfil(element.idPost);
-          
+
         })
-        eventoComentario.addEventListener("click", function(){
+        eventoComentario.addEventListener("click", function () {
           hacerComentarioPerfil(element.idPost);
         })
       }
-      
+
 
       const contenedorComentarios = nuevaPublicacion.querySelector(".resultadoComentarios");
 
@@ -388,11 +396,11 @@ async function publicacionUsuario() {
       insertarComentarios(element.coments, contenedorComentarios, data2.nameUser);
     }
     const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
-      likeImages.forEach((likeImage) => {
+    likeImages.forEach((likeImage) => {
       likeImage.addEventListener("click", function () {
-         this.classList.toggle("active-border");
-          });
+        this.classList.toggle("active-border");
       });
+    });
   } catch (error) {
     console.error("Hubo un problema con la solicitud:", error);
   }
@@ -411,7 +419,7 @@ function cerrarSesion() {
 
 
 function apartadoPublicacion() {
-  var encabezadoPublicacion = document.querySelector(".encabezado");
+  let encabezadoPublicacion = document.querySelector(".encabezado");
   encabezadoPublicacion.innerHTML = "";
   encabezadoPublicacion.innerHTML = "<h1>Publicacion</h1>";
   var aparecerEditar = document.querySelector(".publicacion");
@@ -520,7 +528,7 @@ async function eliminarUsuario() {
   }
 }
 
-async function eliminarPost(obteniendoIdPost,publicacionElemento){
+async function eliminarPost(obteniendoIdPost, publicacionElemento) {
   console.log(obteniendoIdPost);
   let url = 'http://localhost:3002/api/post/' + obteniendoIdPost;
   try {
@@ -574,12 +582,12 @@ function editarPublicacion(obteniendoIdPost, obteniendoCaption, obteniendoimagen
     
     `;
   var envio = document.querySelector("#envioPost");
-  envio.addEventListener("click", function(){
-    envioEditPost(obteniendoIdPost,obteniendoimagenurl);
+  envio.addEventListener("click", function () {
+    envioEditPost(obteniendoIdPost, obteniendoimagenurl);
   })
 
 }
-async function envioEditPost(obteniendoIdPost,obteniendoimagenurl,obteniendodate) {
+async function envioEditPost(obteniendoIdPost, obteniendoimagenurl, obteniendodate) {
   let nuevaCaption = document.querySelector("#caption").value.trim()
 
   const postActualizado = {
@@ -591,9 +599,9 @@ async function envioEditPost(obteniendoIdPost,obteniendoimagenurl,obteniendodate
   console.log(postActualizado);
   console.log(obteniendoIdPost);
   try {
-    let token  = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
     console.log("Token:", token);
-    const respuesta = await fetch('http://localhost:3002/api/post/'+obteniendoIdPost, {
+    const respuesta = await fetch('http://localhost:3002/api/post/' + obteniendoIdPost, {
       method: 'PUT', // Método HTTP PUT
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -611,10 +619,10 @@ async function envioEditPost(obteniendoIdPost,obteniendoimagenurl,obteniendodate
     }
 
 
-    
+
   } catch (error) {
-   
-}
+
+  }
 }
 
 

@@ -1,6 +1,7 @@
 const urlComentario = "http://localhost:3002/api/comment";
 const token = localStorage.getItem("token");
 async function hacerComentarioPerfil(postId) {
+    console.log(new Date().toISOString())
     console.log("ID del post:", postId);
     
     // Buscar la publicación específica por su atributo data-postid
@@ -133,7 +134,8 @@ async function hacerComentarioPerfil(postId) {
   }
 
 
-  function insertarComentarios(comments, contenedor) {
+ async function insertarComentarios(comments, contenedor) {
+    
     // Limpiar el contenedor de comentarios antes de agregar nuevos
     contenedor.innerHTML = "";
   
@@ -141,6 +143,23 @@ async function hacerComentarioPerfil(postId) {
   
     // Iterar sobre los comentarios y agregarlos al contenedor
     for (const comment of comments) {
+    let urlUser = "http://localhost:3002/api/users/"+comment.idUser;
+    console.log(urlUser)
+    // Obtener todas las publicaciones
+    const responseUser = await fetch(urlUser, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!responseUser.ok) {
+      throw new Error(`Error en la solicitud de usuario`);
+    }
+
+    let users = await responseUser.json();
+    console.log(users.nameUser)
       const esPropietario = usuarioActualId === comment.idUser;
       const botonesEdicion = esPropietario
         ? `
@@ -155,7 +174,7 @@ async function hacerComentarioPerfil(postId) {
       const comentarioHTML = document.createElement("div");
       comentarioHTML.classList.add("etiquetasComentario");
       comentarioHTML.innerHTML = `
-        <h4>${comment.idUser}</h4>
+        <h4>${users.nameUser}</h4>
         <p>${comment.text}</p>
         <p>${new Date(comment.publicationDate).toLocaleString()}</p>
         ${botonesEdicion}

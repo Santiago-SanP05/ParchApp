@@ -39,7 +39,7 @@ async function hacerLikePerfil(postId) {
   
         if (respuestaDelete.ok) {
           console.log("Reacción eliminada");
-          mostrarPerfil(); // Recargar datos
+          publicacionUsuario();; // Recargar datos
         } else {
           console.error("Error al eliminar la reacción:", respuestaDelete.status);
         }
@@ -62,7 +62,7 @@ async function hacerLikePerfil(postId) {
   
         if (respuestaPost.ok) {
           alert("Reacción agregada");
-          mostrarPerfil()
+          publicacionUsuario();
         } else {
           console.error("Error al agregar la reacción:", respuestaPost.status);
         }
