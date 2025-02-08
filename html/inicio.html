@@ -5,29 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ParchApp</title>
     <link rel="stylesheet" href="/Style/Inicio.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   </head>
 
   <body>
     <div class="divide">
       <nav class="menu">
         <div class="logo">
-          <a href="#">
             <img id="logoParchApp" src="/Images/parchaap-removebg-preview.png" alt="ParchApp Logo">
-          </a>
         </div>
         <div class="atributos">
-          <a id="principal" href="#"><img src="/Images/casa.png" alt="logoCasa"><p>Principal</p></a>
-          <a href="#"><img src="/Images/notificaciones.png" alt="logoNotificaciones"><p>Notificaciones</p></a>
-          <a id="perfil" href="#"><img src="/Images/perfil.png" alt="logoPerfil"><p>Perfil</p></a>
+          <a id="principal" href="#"><i class='bx bx-home'></i><p>Principal</p></a>
+          <a href="#"><i class='bx bx-bell'></i><p>Notificaciones</p></a>
+          <a id="perfil" href="#"><i class='bx bx-user' ></i><p>Perfil</p></a>
         </div>
       </nav>
 
       <main class="publicaciones">
         <header class="encabezado">
-          <input type="text" placeholder="Buscar" aria-label="Buscar publicaciones">
+          <i class='bx bx-search-alt-2'></i>
+          <input type="text" placeholder="Buscar en ParchApp" aria-label="Buscar publicaciones">
         </header>
 
         <article class="publicacion">
+          <div class="modal"></div>
 
           
 
@@ -39,6 +40,8 @@
         </article>
       </main>
     </div>
+    <script src="/js/reaccion.js"></script>
+    <script src="/js/comentarios.js" defer></script>
     <script src="/js/inicio.js" defer></script>
     <script src="/js/perfil.js" defer></script>
   </body>

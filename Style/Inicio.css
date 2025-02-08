@@ -1,3 +1,4 @@
+@import url('https://fonts.cdnfonts.com/css/cycle');
 body{
     margin: 0;
     padding: 0;
@@ -6,20 +7,23 @@ body{
 .divide{
     display: flex;
     height: 100%;
- 
 }
+/*Aqui va lo del menu ---------------------------------------------------------------------->*/
+
 .logo{
-    height: 30vh;
+    height: 15%;
     width: 100%;
+    margin-top: 2vh;
     display: flex;
-    justify-content: center;
-    align-items: end;
+    justify-content: flex-start;
+    align-items: center;
 }
 .menu {
+    padding: 1.9vh;
     display: flex;
-    width: 25%;
-    align-items: center;
-    border-right: 4px white solid;
+    width: 12%;
+    align-items: flex-start;
+    border-right: 1px white solid;
     height: 100vh;
     flex-direction: column;
     position: sticky;
@@ -28,39 +32,100 @@ body{
     font-size: 2rem;
 }
 
-.publicaciones{
-    border-right: white 4px solid;
-    width: 75%;
-    color: rgb(65, 249, 255);
-}
+
 a{
     text-decoration: none;
     color: white;
 }
 #logoParchApp{
-    height: 10vh;
+    height: 4vh;
 }
 .atributos{
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8vh;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     height: 100%;
     text-align: center;
+    gap: 2.2vh;
 }
+.atributos a{
+    color:white;
+    transition: 0.3s;
+}
+.atributos a:hover{
+    color:rgb(65, 249, 255);
+}
+
+.atributos a p{
+    font-size: 0.6em;
+    font-family: 'CYCLE', sans-serif;
+    letter-spacing: 1.3px;
+}
+.atributos a i{
+    font-size: 1em;
+}
+
+.atributos a{
+    display: flex;
+    align-items: center;
+    gap: 1vh;
+}
+
+.atributos p{
+    margin: 0;
+    margin-top: 8px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------->*/
+
+.publicaciones{
+    border-right: white 1px solid;
+    width: 50%;
+    color: rgb(65, 249, 255);
+}
+
 .encabezado{
-    height: 13vh;
+    height: 10vh;
     justify-content: center;
     align-items: center;
     display: flex;
-    border-bottom: 4px solid white;
+    border-bottom: 2px solid rgb(255, 255, 255);
 }
-.encabezado input{
-    height: 5vh;
-    width: 80%;
+.encabezado input {
+    height: 3vh;
+    width: 60%;
+    border: 1.5px solid white;
     border-radius: 2vh;
+    color:rgba(255, 255, 255, 0.877);
+    font-size: 0.9em;
+    text-shadow: 0 0 3px aqua;
+    background: rgba(255, 255, 255, 0.37);
     text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .encabezado input:focus{
+    border: 5px double rgb(0, 247, 255);
+  }
+  
+  .encabezado input::placeholder {
+    color: rgb(0, 247, 255); /* Color gris claro */
+    font-style: italic; /* Italicizar el texto */
+    text-align: center;
+  }
+  
+  .encabezado input:focus::placeholder {
+    color: rgb(255, 255, 255); /* Cambiar el color cuando se enfoca */
+  }
+
+.encabezado input::placeholder{
+    color:rgb(255, 255, 255);
+}
+.encabezado i{
+    font-size: 1.5em;
+    margin-right: 0.9vh;
 }
 #imagen{
     height: 50%;
@@ -114,22 +179,7 @@ a{
     display: flex;
     align-items: center;
 }
-.atributos img{
-    height: 6vh;
-}
-.atributos a{
-    display: flex;
-    align-items: center;
-    gap: 1vh;
-}
 
-.atributos p{
-    margin: 0;
-    margin-top: 8px;
-}
-.atributos a:hover{
-    color: rgb(65, 249, 255);
-}
 #perfil img{
     height: 9vh;
 }
