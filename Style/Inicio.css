@@ -480,3 +480,27 @@ a{
     background-color: rgba(0, 195, 255, 0.575);
   }
  
+.botonesNotificacionesCR{
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 2px solid white;
+    flex-wrap: wrap;
+    padding: 2vh;
+}
+.botonesNotificacionesCR button{
+    height: 5vh;
+    border-radius: 4vh;
+}
+.botonesNotificacionesCR button:hover{
+    background-color: greenyellow;
+}
+.foto{
+    display: flex;
+    align-items: center;
+    gap: 2vh;
+}
+.etiquetasNotificaciones{
+    border-bottom: 2px solid white;
+}
