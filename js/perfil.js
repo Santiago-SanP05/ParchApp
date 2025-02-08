@@ -348,7 +348,7 @@ async function publicacionUsuario() {
           <div class="hacerComentario">
             <div class="inputComentario">
               <input class="leerComentarioPerfil" type="text" placeholder="Comentar">
-              <button class="enviarComentario" data-postid="${element.idPost}"><i class='bx bx-send'></button>
+              <button class="enviarComentario" data-postid="${element.idPost}"><i class='bx bx-send'></i></button>
             </div>
           </div>
 
