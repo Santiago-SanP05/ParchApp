@@ -636,3 +636,57 @@ a{
     align-items: center;
     gap: 2vh;
 }
+
+/*cuadro emergente------------------------------------------------------------------------------------------------>*/
+
+#modal-editor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-left: 14%;
+    margin-top: 10%;
+    width: 50%;
+    height: 70%;
+    border-radius: 0 3vh 3vh 0;
+    background-color: rgb(255, 255, 255);
+    display: none; /* Ocultar inicialmente */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+/* Botón para abrir el modal */
+.open-modal {
+    padding: 10px 20px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 20px;
+}
+
+/* Estilos de los inputs y botón */
+input {
+    display: block;
+    margin: 10px 0;
+    padding: 8px;
+    width: 80%;
+}
+
+button {
+    padding: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+
+
+
+

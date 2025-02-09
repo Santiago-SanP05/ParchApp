@@ -67,42 +67,42 @@ async function fetchData() {
 
       const userData = await responseUser.json();
 
-// 🔥 Agregar event listener solo una vez para eliminar comentarios
-if (!window.eventListenerEliminarAgregado) {
-  document.addEventListener("click", function(event) {
-      if (event.target.classList.contains("eliminarComentario")) {
-          const commentId = event.target.getAttribute("data-commentid");
-          eliminarComentario(commentId);
+      // 🔥 Agregar event listener solo una vez para eliminar comentarios
+      if (!window.eventListenerEliminarAgregado) {
+        document.addEventListener("click", function (event) {
+          if (event.target.classList.contains("eliminarComentario")) {
+            const commentId = event.target.getAttribute("data-commentid");
+            eliminarComentario(commentId);
+          }
+        });
+
+
+        document.addEventListener("click", function (event) {
+          if (event.target.classList.contains("editarComentario")) {
+            const commentId = event.target.getAttribute("data-commentid");
+            editarComentario(commentId);
+          }
+        });
+
+        // Marcamos que ya se agregó el evento para evitar duplicados
+        window.eventListenerEliminarAgregado = true;
       }
-  });
-  
 
-  document.addEventListener("click", function(event) {
-    if (event.target.classList.contains("editarComentario")) {
-        const commentId = event.target.getAttribute("data-commentid");
-        editarComentario(commentId);
-    }
-});
+      // Obtener información de los usuarios que comentaron
+      const comentariosConNombres = await Promise.all(post.coments.map(async (comment) => {
+        const responseCommentUser = await fetch(urlUser + comment.idUser, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
 
-  // Marcamos que ya se agregó el evento para evitar duplicados
-  window.eventListenerEliminarAgregado = true;
-}
+        const userCommentData = await responseCommentUser.json();
+        const usuarioActualId = Number(localStorage.getItem("id"));
+        const esPropietario = usuarioActualId === comment.idUser;
 
-// Obtener información de los usuarios que comentaron
-const comentariosConNombres = await Promise.all(post.coments.map(async (comment) => {
-  const responseCommentUser = await fetch(urlUser + comment.idUser, {
-      method: "GET",
-      headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-      }
-  });
-
-  const userCommentData = await responseCommentUser.json();
-  const usuarioActualId = Number(localStorage.getItem("id"));
-  const esPropietario = usuarioActualId === comment.idUser;
-
-  return `
+        return `
     <div class="etiquetasComentario" data-commentid="${comment.idComment}">
       <h4>${userCommentData.nameUser}</h4>
       <p>${comment.text}</p>
@@ -116,7 +116,7 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
       ` : ""}
     </div>
   `;
-}));
+      }));
       // Agregar la publicación al DOM
       publicacionContainer.insertAdjacentHTML('beforeend', `
         <div class="publicacion-item" data-postid="${post.idPost}">
@@ -167,22 +167,50 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
 
     // 🔥 Ahora agregamos los eventos de los botones después de renderizar todo
     document.querySelectorAll(".enviarComentario").forEach(boton => {
-      boton.addEventListener("click", function() {
+      boton.addEventListener("click", function () {
         const postId = this.getAttribute("data-postid"); // Obtener ID único del post
         hacerComentario(postId);
       });
     });
 
-    
+
     const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
-   likeImages.forEach((likeImage) => {
-   likeImage.addEventListener("click", function () {
-      this.classList.toggle("active-border");
-      let postId2 = this.getAttribute("data-postid");
-         
+    likeImages.forEach((likeImage) => {
+      likeImage.addEventListener("click", function () {
+        this.classList.toggle("active-border");
+        let postId2 = this.getAttribute("data-postid");
+
         hacerLike(postId2);
-       });
-   });
+      });
+    });
+
+    // Seleccionar el modal y el botón de cerrar
+    const modal = document.getElementById("modal-editor");
+    const closeModalBtn = document.querySelector(".close-modal");
+
+    // Función para abrir el modal con el comentario específico
+    function abrirModalEditarComentario(commentId) {
+      comentarioEditando = commentId; // Guardar el ID del comentario
+      modal.style.display = "flex";
+    }
+
+    // Función para cerrar el modal
+    function cerrarModal() {
+      modal.style.display = "none";
+      comentarioEditando = null; // Limpiar el ID del comentario al cerrar
+    }
+
+    // Agregar evento al botón "Cerrar"
+    closeModalBtn.addEventListener("click", cerrarModal);
+
+    // Agregar eventos a todos los botones "Editar"
+    document.addEventListener("click", function (event) {
+      if (event.target.classList.contains("editarComentario")) {
+        const commentId = event.target.getAttribute("data-commentid");
+        abrirModalEditarComentario(commentId);
+      }
+    });
+
 
 
   } catch (error) {
@@ -208,7 +236,7 @@ principal.addEventListener("click", fetchData);
 
 
 var urlCommentario = 'http://localhost:3002/api/comment/';
-async function eliminarComentario(idComentario){
+async function eliminarComentario(idComentario) {
   try {
     let token = localStorage.getItem("token");
     let response = await fetch(urlCommentario + idComentario, {
@@ -235,6 +263,7 @@ async function eliminarComentario(idComentario){
   }
 }
 
+/*
 async function editarComentario(idComentario){
   const estructuraComentario = {
     text : "HOLA MUNDO",
@@ -267,3 +296,4 @@ async function editarComentario(idComentario){
   }
 
 }
+*/

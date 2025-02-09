@@ -1,56 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ParchApp</title>
-    <link rel="stylesheet" href="/Style/Inicio.css" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  </head>
 
-  <body>
-    <div class="divide">
-      <nav class="menu">
-        <div class="logo">
-            <img id="logoParchApp" src="/Images/parchaap-removebg-preview.png" alt="ParchApp Logo">
-        </div>
-        <div class="atributos">
-          <a id="principal" href="#"><i class='bx bx-home'></i><p>Principal</p></a>
-          <a id="notificaiones" href="#"><i class='bx bx-bell'></i><p>Notificaciones</p></a>
-          <a id="perfil" href="#"><i class='bx bx-user' ></i><p>Perfil</p></a>
-        </div>
-      </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParchApp</title>
+  <link rel="stylesheet" href="/Style/Inicio.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
 
-      <main class="publicaciones">
-        <header class="encabezado">
-          <i class='bx bx-search-alt-2'></i>
-          <input type="text" placeholder="Buscar en ParchApp" aria-label="Buscar publicaciones" class="buscador">
-        </header>
+<body>
+  <div class="divide">
+    <nav class="menu">
+      <div class="logo">
+        <img id="logoParchApp" src="/Images/parchaap-removebg-preview.png" alt="ParchApp Logo">
+      </div>
+      <div class="atributos">
+        <a id="principal" href="#"><i class='bx bx-home'></i>
+          <p>Principal</p>
+        </a>
+        <a id="notificaiones" href="#"><i class='bx bx-bell'></i>
+          <p>Notificaciones</p>
+        </a>
+        <a id="perfil" href="#"><i class='bx bx-user'></i>
+          <p>Perfil</p>
+        </a>
+      </div>
+    </nav>
 
-        <article class="publicacion">
-          
-          <div class="modal"></div>
+    <main class="publicaciones">
+      <header class="encabezado">
+        <i class='bx bx-search-alt-2'></i>
+        <input type="text" placeholder="Buscar en ParchApp" aria-label="Buscar publicaciones" class="buscador">
+      </header>
 
-          
-
-
-          
-
+      <article class="publicacion">
 
 
-        </article>
 
-        
-      </main>
-      <div class="section"></div>
-    </div>
-    <script src="/js/Seguir.js"></script>
-    <script src="/js/notificaiones.js" defer></script>
-    <script src="/js/reaccion.js"></script>
-    <script src="/js/comentarios.js" defer></script>
-    <script src="/js/inicio.js" defer></script>
-    <script src="/js/perfil.js" defer></script>
 
-    
-  </body>
+
+
+
+
+
+      </article>
+
+
+    </main>
+    <div class="section"></div>
+    <div id="modal-editor">
+      <h1>Editar comentario</h1>
+      <label for="Editar texto">
+          <input type="text" placeholder="Editar">
+          <input type="text" placeholder="Editar">
+          <input type="text" placeholder="Editar">
+          <button class="close-modal">Editar</button>
+      </label>
+  </div>
+
+  </div>
+
+  <script src="/js/Seguir.js"></script>
+  <script src="/js/notificaiones.js" defer></script>
+  <script src="/js/reaccion.js"></script>
+  <script src="/js/comentarios.js" defer></script>
+  <script src="/js/inicio.js" defer></script>
+  <script src="/js/perfil.js" defer></script>
+
+
+</body>
+
 </html>
