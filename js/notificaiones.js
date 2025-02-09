@@ -17,13 +17,7 @@ function apartadoNotificaiones() {
           <button class="notificacionesSeguimiento">Notificaiones Seguidores</button>
           </div>
           <div class="etiquetasNotificaciones">
-            <p>Te ha dado Reaccionado tu publicacion</p>
-            <div class="foto">
-              <img src="${"https://c0.klipartz.com/pngpicture/81/570/gratis-png-perfil-logo-iconos-de-computadora-usuario-usuario-thumbnail.png"}" alt="Foto de usuario">
-              <h1>El usuario: ${"aqui el nombre del usuario"}</h1>
-            </div>
-            
-            <p>${"aqui va la fecha de reaccion"}</p>
+
           </div>
     `;
     var eventoNotiComentarios = document.querySelector(".notificacionesComentarios")
