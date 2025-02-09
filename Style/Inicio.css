@@ -60,7 +60,7 @@ a{
 }
 
 .atributos a p{
-    font-size: 0.6em;
+    font-size: 0.4em;
     font-family: 'CYCLE', sans-serif;
     letter-spacing: 1.3px;
 }
@@ -279,19 +279,23 @@ a{
     display: flex;
     justify-content: space-evenly;
     width: 100%;
-    max-height: 5vh;
 }
 
 .editPerfil button{
     background-color: transparent;
     border:none; 
     width: 17%;
+    height: 4vh;
     border-radius: 3vh;
-    font-size: 1.2em;
-    transition: .4s;
+    font-size: 0.6em;
+    transition: .5s;
     color:white;
     border-bottom:1px solid aqua;
     border-top:2px solid aqua;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .usuarionombre{
@@ -401,15 +405,18 @@ a{
     margin-left: 1.5vh;
 }
 .Btn-SaveDelete button{
-    margin-left: 3vh;
-    margin-right: 3vh;
     background-color: rgb(4, 234, 250);
     border-radius:0.9vh;
-    height: 2vh;
     width: 30%;
     border:transparent;
+    height: 1vh;
     cursor: pointer;
+    font-size: 0.7em;
     transition: .3s;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .Btn-SaveDelete button:hover{
@@ -424,7 +431,7 @@ a{
 .Btn-SaveDelete{
     margin-top: 1vh;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 /*------------------------------------------------------------------------------->*/
 
@@ -446,16 +453,31 @@ a{
     justify-content: center;
     align-items: center;
 }
-.enviarEditar{
+.enviarEditar {
     margin-top: 2vh;
     height: 5vh;
-    width: 20%;
+    width: 40%;
     border-radius: 4vh;
     font-size: 1.3rem;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    margin-bottom: 5vh;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.enviarEditar:hover{
-    background-color: rgb(71, 255, 25);
+
+.enviarEditar:hover {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+    box-shadow: 0px -4px 10px rgba(255, 255, 255, 0.8);
+    transform: scale(1.05); /* Hace que crezca un poco */
 }
+
 .datosPublicacion{
     margin-top: 2vh;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -476,27 +498,44 @@ a{
     font-size: 0.8em;
 }
 .enviarPublicacion{
+    background-color: transparent;
+    border:2px solid white;
     width: auto;
     border-radius: 4vh;
     height: 7vh;
     font-size: 0.8em;
+    transition: .2s;
 }
 .enviarPublicacion:hover{
-    background-color: rgb(71, 255, 25);
+    border:2px solid rgb(255, 255, 255);
+    background-color: aqua;
+    color :black;
+    box-shadow: 0 0 20px rgb(255, 255, 255);
+    text-shadow: 0 0 1px black;
 }
 
 .OrdenarEditarEliminarBotones{
     width: 100%;
     display: flex;
+    flex-direction: row;
     align-items: flex-end;
     gap:1vh;
 }
 .OrdenarEditarEliminarBotones button{
     background-color: aqua;
-    width: 20%;
+    width: 25%;
+    height: 2vh;
     border-radius: 4vh; 
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 1em;
+}
+
+.OrdenarEditarEliminarBotones button i{
+    color:black;
+    text-shadow: 0 0 0.5px black;
 }
 
 /*Styles de comentar una puvlicacion*/
@@ -612,6 +651,7 @@ a{
     display: flex;
     justify-content: space-around;
     align-items: center;
+    gap:5vh;
     border-bottom: 2px solid white;
     flex-wrap: wrap;
     padding: 2vh;
@@ -684,6 +724,29 @@ button {
     cursor: pointer;
     border-radius: 5px;
 }
+
+/*--------------------------------Responsive--------------------------------------------------------------------*/
+@media (max-width: 950px) {
+    .atributos a p{
+        display: none;
+    }
+    .atributos{
+        align-items: center;
+        font-size: 0.6em;
+        gap: 5vh;
+    }
+    .logo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #logoParchApp{
+        height: 3vh;
+    }
+
+}
+
+
 
 
 
