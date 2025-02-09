@@ -405,7 +405,7 @@ function cerrarSesion() {
   localStorage.removeItem("email");
   localStorage.removeItem("id");
   localStorage.removeItem("token");
-  window.location.href = "/html/main.html";
+  window.location.href = "/html/index.html";
 }
 
 

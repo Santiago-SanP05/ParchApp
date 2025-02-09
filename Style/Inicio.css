@@ -746,6 +746,12 @@ button {
 
 }
 
+@media (max-width: 550px){
+    .divide{
+        display: none;
+    }
+}
+
 
 
 
