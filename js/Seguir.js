@@ -55,12 +55,12 @@ async function buscarPublicaciones(texto) {
     }
   
     const datosBoton = await respuestaBoton.json();
-    console.log(datosBoton)
+
     // Verificar si el usuario ya reaccionó a esta publicación
     const SeguidorExistenteBoton = datosBoton.find((seguidor) => {
       if (seguidor.userFollowerId == id && seguidor.userFollowedId == busacrUser.idUser) {
-        console.log("Seguidor encontrado con ID:", seguidor.idFollower);
-        publicacionUsuarioSeguido(busacrUser.idUser);
+
+        publicacionUsuarioSeguido(busacrUser.idUser, texto);
 
         return true; // Retorna `true` para que `find()` devuelva este objeto
       }
@@ -86,7 +86,7 @@ async function buscarPublicaciones(texto) {
     }
     const Buscaralgo = await respuestaSeguidores.json();
     const Buscaralgo2 = await respuestaSeguidos.json();
-    console.log(Buscaralgo)
+
 
     let encabezadoPublicacion = document.querySelector(".encabezado");
     let cuerpo = document.querySelector(".publicacion");
@@ -166,7 +166,6 @@ async function hacerSeguimiento(idUser) {
     }
 
     const datos2 = await respuesta.json();
-    console.log(datos2)
     // Verificar si el usuario ya reaccionó a esta publicación
     const SeguidorExistente = datos2.find((seguidor) => {
       if (seguidor.userFollowerId == id && seguidor.userFollowedId == idUser) {
@@ -228,7 +227,9 @@ async function hacerSeguimiento(idUser) {
   // Obtener todas las reacciones
 
 
-async function publicacionUsuarioSeguido(id) {
+async function publicacionUsuarioSeguido(id, texto) {
+  console.log(";DSFSFSD"+texto)
+  console.log("assssssssssssssss")
   try {
 
     // Obtener datos del usuario
@@ -239,34 +240,25 @@ async function publicacionUsuarioSeguido(id) {
         "Content-Type": "application/json",
       },
     });
-
-
-    if (!window.eventListenerEliminarAgregado) {
-      document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("eliminarComentarioPerfil")) {
-          const commentId = event.target.getAttribute("data-commentid");
-          eliminarComentario2(commentId);
-        }
-      });
-
-
-      document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("editarComentarioPerfil")) {
-          const commentId = event.target.getAttribute("data-commentid");
-          editarComentario2(commentId);
-        }
-      });
-
-      // Marcamos que ya se agregó el evento para evitar duplicados
-      window.eventListenerEliminarAgregado = true;
-    }
-
     if (!response2.ok) {
       throw new Error(`Error en la solicitud del usuario: ${response2.status}`);
     }
 
     const data2 = await response2.json();
+    if (!window.eventListenerEliminarAgregado) {
+      document.body.addEventListener("click", (event) => {
+        if (event.target.classList.contains("eliminarComentarioPerfil")) {
+          const commentId = event.target.getAttribute("data-commentid");
+          console.log("Se hizo clic en eliminar. ID comentario:", texto);
+          eliminarComentario3(commentId, texto);
+        }
+      });
+    
+      window.eventListenerEliminarAgregado = true;
+    }
+    
 
+    
     // Obtener publicaciones del usuario
     const response = await fetch(urlUser3+ "/" + id + "/posts", {
       method: "GET",
@@ -295,14 +287,8 @@ async function publicacionUsuarioSeguido(id) {
     for (const element of data) {
       // Solo mostrar botones si el usuario es el dueño de la publicación
       const esPropietario = id === element.userId;
-      const botonesEdicion = esPropietario
-        ? `
-        <div class="OrdenarEditarEliminarBotones">
-          <button class="editarPublicacion"><i class='bx bx-edit' ></i></button>
-          <button class="eliminarPublicacion"><i class='bx bx-comment-x' ></i></button>
-        </div>
-        `
-        : "";
+
+
 
       // Agregar cada publicación sin borrar las anteriores
       publicacionesUsuario.insertAdjacentHTML(
@@ -315,7 +301,7 @@ async function publicacionUsuarioSeguido(id) {
               <h2>@${data2.nameUser}</h2>
               <time datetime="${element.publicationDate}">${new Date(element.publicationDate).toLocaleString()}</time>
             </div>
-            ${botonesEdicion}
+
           </header>
 
           <section class="cuerpoPubli">
@@ -366,11 +352,11 @@ async function publicacionUsuarioSeguido(id) {
 
         eventoReaccion.addEventListener("click", function () {
 
-          hacerLikePerfil(element.idPost);
+          hacerLikePerfil(element.idPost, texto);
 
         })
         eventoComentario.addEventListener("click", function () {
-          hacerComentarioPerfil(element.idPost);
+          hacerComentarioPerfil(element.idPost, texto);
         })
       }
 
@@ -378,7 +364,7 @@ async function publicacionUsuarioSeguido(id) {
       const contenedorComentarios = nuevaPublicacion.querySelector(".resultadoComentarios");
 
       // Llamar a la función para insertar comentarios
-      insertarComentarios(element.coments, contenedorComentarios, data2.nameUser);
+      insertarComentarios(element.coments, contenedorComentarios, texto);
     }
     const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
     likeImages.forEach((likeImage) => {
@@ -388,5 +374,39 @@ async function publicacionUsuarioSeguido(id) {
     });
   } catch (error) {
     console.error("Hubo un problema con la solicitud:", error);
+  }
+}
+
+async function eliminarComentario3( idComentario, texto){
+  console.log(texto)
+  console.log("holaaaaaaaaaaaaaaaaaaaaa "+ idComentario)
+  console.log(urlComentario+idComentario)
+  try {
+    let token = localStorage.getItem("token");
+    let response = await fetch(urlCommentario+idComentario, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (response.ok) {
+      if (response.status !== 204) {
+        const datos = await response.json();
+        console.log('comentario eliminado:', datos);
+
+          
+
+        
+      } else {
+        console.log('Comentario eliminado exitosamente.');
+        buscarPublicaciones(texto);
+      }
+    } else {
+      console.error('Error al eliminar el usuario:', response.status);
+    }
+  } catch (error) {
+    console.error('Error de red:', error);
   }
 }

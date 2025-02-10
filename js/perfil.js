@@ -231,11 +231,16 @@ async function enviareditarususario() {
 
 }
 
-async function publicacionUsuario() {
+async function publicacionUsuario(id) {
+  console.log(id)
   try {
     const token = localStorage.getItem("token");
     const id = Number(localStorage.getItem("id"));
     const urluser = "http://localhost:3002/api/users/";
+
+    // Definir obteniendoModulo FUERA del if
+    const obteniendoModulo = "perfil"; 
+    console.log("📌 PERFIL.JS - obteniendoModulo definido como:", obteniendoModulo);
 
     // Obtener datos del usuario
     const response2 = await fetch(urluser + id, {
@@ -246,24 +251,16 @@ async function publicacionUsuario() {
       },
     });
 
-
     if (!window.eventListenerEliminarAgregado) {
       document.addEventListener("click", function (event) {
         if (event.target.classList.contains("eliminarComentarioPerfil")) {
           const commentId = event.target.getAttribute("data-commentid");
-          eliminarComentario2(commentId);
+          eliminarComentario2(commentId, id);
         }
       });
 
 
-      document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("editarComentarioPerfil")) {
-          const commentId = event.target.getAttribute("data-commentid");
-          editarComentario2(commentId);
-        }
-      });
 
-      // Marcamos que ya se agregó el evento para evitar duplicados
       window.eventListenerEliminarAgregado = true;
     }
 
@@ -346,8 +343,6 @@ async function publicacionUsuario() {
           <div class="todoComentarios">
             <div class="centradorComentarios">
               <div class="resultadoComentarios"></div>
-
-
             </div>
           </div>
         </div>
@@ -372,20 +367,20 @@ async function publicacionUsuario() {
         });
         eventoReaccion.addEventListener("click", function () {
 
-          hacerLikePerfil(element.idPost);
+          hacerLikePerfil(element.idPost, id);
 
         })
         eventoComentario.addEventListener("click", function () {
-          hacerComentarioPerfil(element.idPost);
+          hacerComentarioPerfil(element.idPost, id);
         })
       }
-
 
       const contenedorComentarios = nuevaPublicacion.querySelector(".resultadoComentarios");
 
       // Llamar a la función para insertar comentarios
-      insertarComentarios(element.coments, contenedorComentarios, data2.nameUser);
+      insertarComentarios(element.coments, contenedorComentarios, id);
     }
+
     const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
     likeImages.forEach((likeImage) => {
       likeImage.addEventListener("click", function () {
@@ -401,11 +396,12 @@ async function publicacionUsuario() {
 
 
 
+
 function cerrarSesion() {
   localStorage.removeItem("email");
   localStorage.removeItem("id");
   localStorage.removeItem("token");
-  window.location.href = "/html/index.html";
+  window.location.href = "/html/main.html";
 }
 
 
@@ -618,3 +614,31 @@ async function envioEditPost(obteniendoIdPost, obteniendoimagenurl, obteniendoda
 
 
 
+function editarComentarioApartado(obteniendoIdPost, obteniendoModulo) {
+
+  var encabezadoPublicacion = document.querySelector(".encabezado");
+  encabezadoPublicacion.innerHTML = "";
+  encabezadoPublicacion.innerHTML = "<h1>Comentario</h1>";
+  var aparecerEditar = document.querySelector(".publicacion");
+  aparecerEditar.innerHTML = `
+    <style>
+        .publicacion {
+            justify-content: space-around;
+            text-align: center;
+            align-items: center;
+            height: 80%;
+        }
+
+
+    </style>
+    <div class="datosPublicacion">
+            <p>Descripcion: <input id="ComentarioUsuario" type="text" placeholder="Descripcion"></p>
+            <button class="envioEditComentario" id="envioEditComentario"> Editar comentario </button>
+          </div>
+    
+    `;
+  var envio = document.querySelector(".envioEditComentario");
+  envio.addEventListener("click", function () {
+    editarComentario(obteniendoIdPost, obteniendoModulo);
+  })
+}

@@ -1,5 +1,6 @@
 
-async function hacerLikePerfil(postId) {
+async function hacerLikePerfil(postId, texto) {
+  console.log(texto)
     let urlReaction = "http://localhost:3002/api/reaction";
     let token = localStorage.getItem("token");
     let userId = localStorage.getItem("id");
@@ -39,7 +40,10 @@ async function hacerLikePerfil(postId) {
   
         if (respuestaDelete.ok) {
           console.log("Reacción eliminada");
-          publicacionUsuario();; // Recargar datos
+          if (texto == localStorage.getItem("id")) {
+            publicacionUsuario(texto);
+          }
+          buscarPublicaciones(texto) // Recargar datos
         } else {
           console.error("Error al eliminar la reacción:", respuestaDelete.status);
         }
@@ -62,7 +66,10 @@ async function hacerLikePerfil(postId) {
   
         if (respuestaPost.ok) {
           alert("Reacción agregada");
-          publicacionUsuario();
+          if (texto == localStorage.getItem("id")) {
+            publicacionUsuario();
+          }
+          buscarPublicaciones(texto)
         } else {
           console.error("Error al agregar la reacción:", respuestaPost.status);
         }

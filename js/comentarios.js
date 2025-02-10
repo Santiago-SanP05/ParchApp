@@ -1,6 +1,7 @@
 const urlComentario = "http://localhost:3002/api/comment";
 const token = localStorage.getItem("token");
-async function hacerComentarioPerfil(postId) {
+async function hacerComentarioPerfil(postId, texto) {
+    console.log(texto)
     console.log(new Date().toISOString())
     console.log("ID del post:", postId);
     
@@ -36,7 +37,6 @@ async function hacerComentarioPerfil(postId) {
         idPost: postId,
     };
 
-    console.log("Enviando comentario:", datosEnvioComentarioPerfil);
 
     try {
         const token = localStorage.getItem("token");
@@ -56,7 +56,10 @@ async function hacerComentarioPerfil(postId) {
             inputComentario.value = "";
 
             // Recargar los comentarios solo de esta publicación
-            publicacionUsuario();
+            if (texto == localStorage.getItem("id")) {
+              publicacionUsuario();
+            }
+            buscarPublicaciones(texto)
         } else {
             console.error("Error al enviar comentario:", respuesta.status);
         }
@@ -134,8 +137,8 @@ async function hacerComentarioPerfil(postId) {
   }
 
 
- async function insertarComentarios(comments, contenedor) {
-    
+ async function insertarComentarios(comments, contenedor , prueba) {
+  console.log
     // Limpiar el contenedor de comentarios antes de agregar nuevos
     contenedor.innerHTML = "";
   
@@ -144,7 +147,7 @@ async function hacerComentarioPerfil(postId) {
     // Iterar sobre los comentarios y agregarlos al contenedor
     for (const comment of comments) {
     let urlUser = "http://localhost:3002/api/users/"+comment.idUser;
-    console.log(urlUser)
+
     // Obtener todas las publicaciones
     const responseUser = await fetch(urlUser, {
       method: "GET",
@@ -159,7 +162,6 @@ async function hacerComentarioPerfil(postId) {
     }
 
     let users = await responseUser.json();
-    console.log(users.nameUser)
       const esPropietario = usuarioActualId === comment.idUser;
       const botonesEdicion = esPropietario
         ? `
@@ -185,25 +187,42 @@ async function hacerComentarioPerfil(postId) {
       if (esPropietario) {
         let btnEliminar = comentarioHTML.querySelector(".eliminarComentarioPerfil");
         let btnEditar = comentarioHTML.querySelector(".editarComentarioPerfil");
-  
-        if (btnEliminar) {
+        var miId= localStorage.getItem("id")
+        if (btnEliminar && prueba == miId) {
+
           btnEliminar.addEventListener("click", function () {
-            eliminarComentario2(comment.idComment);
+            console.log("el 2")
+            eliminarComentario2(comment.idComment,prueba);
           });
         }
-  
-        if (btnEditar) {
+        if (btnEliminar && prueba != miId) {
+          console.log("el 3")
+          btnEditar.addEventListener("click", function(){
+            const seguido ="seguido"
+            editarComentarioApartado(comment.idComment,prueba)
+          })
+          btnEliminar.addEventListener("click", function(){
+            eliminarComentario3(comment.idComment, prueba)
+          })
+        }
+        
+        if (btnEditar && prueba == miId) {
           btnEditar.addEventListener("click", function () {
-            editarComentario2(comment.idComment);
+            const perfil = "perfil"
+            editarComentarioApartado(comment.idComment,perfil);
           });
         }
+
+        
+        
       }
     }
   }
 
   var urlCommentario = 'http://localhost:3002/api/comment/';
 
-async function eliminarComentario2( idComentario){
+async function eliminarComentario2( idComentario, texto){
+  console.log(texto)
   console.log("holaaaaaaaaaaaaaaaaaaaaa "+ idComentario)
   console.log(urlComentario+idComentario)
   try {
@@ -220,7 +239,10 @@ async function eliminarComentario2( idComentario){
       if (response.status !== 204) {
         const datos = await response.json();
         console.log('comentario eliminado:', datos);
-        publicacionUsuario()
+
+          publicacionUsuario(texto);
+
+        
       } else {
         console.log('Comentario eliminado exitosamente.');
       }
@@ -233,38 +255,3 @@ async function eliminarComentario2( idComentario){
   }
 }
 
-async function editarComentario2(idComentario){
-  console.log("holaaaaaaaaaaaaaaaaaaaaa");
-  const estructuraComentario = {
-    
-    text : "HOLA MUNDO",
-    idUser: localStorage.getItem("id")
-    
-
-  }
-  try {
-    let token = localStorage.getItem("token");
-    const respuesta = await fetch(urlCommentario+idComentario, {
-      method: 'PUT', // Método HTTP PUT
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
-      },
-      body: JSON.stringify(estructuraComentario) // Convierte el objeto a JSON
-    });
-
-    if (respuesta.ok) {
-      const datos = await respuesta.json();
-      console.log('Datos actualizados:', datos);
-      publicacionUsuario()
-
-    } else {
-      console.error('Error al actualizar:', respuesta.status);
-    }
-
-
-  } catch (error) {
-    console.error('Error de red:', error);
-  }
-
-}
