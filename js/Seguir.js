@@ -16,7 +16,10 @@ document.addEventListener("keypress", function (event) {
 
 
 async function buscarPublicaciones(texto) {
-
+  if (texto == localStorage.getItem("name")) {
+    mostrarPerfil()
+    return
+  }
   try {
     const response = await fetch(urlUser3 + "/user" + "/" + texto, {
       method: "GET",

@@ -1,4 +1,5 @@
 
+localStorage.clear();
 var mostrarLaBienvenida = document.querySelector(".central")
 mostrarLaBienvenida.addEventListener("click", mostrarBienvenida());
 
@@ -63,6 +64,7 @@ async function loginUsuario(){
         localStorage.setItem("token", data.token);
         localStorage.setItem("email", data.email);
         localStorage.setItem("id", data.idUser);
+        localStorage.setItem("name", data.nameUser);
         console.log("http://localhost:3002/api/comment");
         console.log(data);
         
