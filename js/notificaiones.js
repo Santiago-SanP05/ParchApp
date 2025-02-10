@@ -25,9 +25,9 @@ function apartadoNotificaiones() {
         verNotificacionesComentarios();
     })
     var eventoNotiicacionesReacciones = document.querySelector(".notificacionesReacciones")
-    eventoNotiicacionesReacciones.addEventListener("click",verNotificacionesReacciones)
+    eventoNotiicacionesReacciones.addEventListener("click", verNotificacionesReacciones)
     var eventoNotiicacionesSeguidores = document.querySelector(".notificacionesSeguimiento")
-    eventoNotiicacionesSeguidores.addEventListener("click",verNotificacionesSeguidores)
+    eventoNotiicacionesSeguidores.addEventListener("click", verNotificacionesSeguidores)
 }
 
 
@@ -46,10 +46,10 @@ async function verNotificacionesComentarios() {
 
         if (respuesta.ok) {
             const notificacionesComentarios = await respuesta.json();
-            
+
             for (const element of notificacionesComentarios) {
                 for (const element2 of element.coments) {
-                    const respuestaUser = await fetch(urlUser2 + "/" + element2.idUser , {
+                    const respuestaUser = await fetch(urlUser2 + "/" + element2.idUser, {
                         method: 'GET', // Método HTTP PUT
                         headers: {
                             "Authorization": `Bearer ${token2}`,
@@ -58,7 +58,7 @@ async function verNotificacionesComentarios() {
                     });
                     const contenidousuario = await respuestaUser.json();
                     if (element2.idUser == id) {
-                        
+
                         continue
                     }
                     limpiar.innerHTML += `
@@ -66,13 +66,23 @@ async function verNotificacionesComentarios() {
                             <p>Te ha dado comentado tu publicacion</p>
                             <div class="foto">
                             <img src="${contenidousuario.urlPhoto}" alt="Foto de usuario">
-                            <h1>El usuario: ${contenidousuario.nameUser}</h1>
+                            <h1 class="user" data-nameUser="${contenidousuario.nameUser}" >${contenidousuario.nameUser}</h1>
                             </div>
                             <p>${element2.text}</p>
                             <p>${element2.publicationDate}</p>
                         </div>
     `;
+                    const Username = document.querySelectorAll(".user");
+                    Username.forEach((Username) => {
+                        Username.addEventListener("click", function () {
+                            this.classList.toggle("active-border");
+                            let username = this.getAttribute("data-nameUser");
+
+                            buscarPublicaciones(username);
+                        });
+                    });
                 }
+
             }
         } else {
             console.error('Error al mostrar:', respuesta.status);
@@ -102,17 +112,17 @@ async function verNotificacionesReacciones() {
 
         if (respuesta.ok) {
             const notificacionesComentarios = await respuesta.json();
-            
+
             for (const element of notificacionesComentarios) {
                 for (const element2 of element.reactions) {
-                    const respuestaUser = await fetch(urlUser2 + "/" + element2.idUser , {
+                    const respuestaUser = await fetch(urlUser2 + "/" + element2.idUser, {
                         method: 'GET', // Método HTTP PUT
                         headers: {
                             "Authorization": `Bearer ${token2}`,
                             'Content-Type': 'application/json' // Indica que el cuerpo está en JSON
                         },
                     });
-                    
+
                     if (element2.idUser == id) {
                         continue
                     }
@@ -123,11 +133,20 @@ async function verNotificacionesReacciones() {
                             <p>Te ha dado comentado tu publicacion</p>
                             <div class="foto">
                             <img src="${contenidousuario.urlPhoto}" alt="Foto de usuario">
-                            <h1>El usuario: ${contenidousuario.nameUser}</h1>
+                            <h1 class="user" data-nameUser="${contenidousuario.nameUser}"> ${contenidousuario.nameUser}</h1>
                             </div>
                             <p>${element2.publicationDate}</p>
                         </div>
     `;
+                    const Username = document.querySelectorAll(".user");
+                    Username.forEach((Username) => {
+                        Username.addEventListener("click", function () {
+                            this.classList.toggle("active-border");
+                            let username = this.getAttribute("data-nameUser");
+
+                            buscarPublicaciones(username);
+                        });
+                    });
                 }
             }
         } else {
@@ -138,7 +157,10 @@ async function verNotificacionesReacciones() {
     }
 }
 
-async function verNotificacionesSeguidores() {
+async function verNotificacionesSeguidores(seguidoreeees) {
+    
+    console.log("Csacascsa")
+    console.log(seguidoreeees)
     let limpiar = document.querySelector(".etiquetasNotificaciones");
     limpiar.innerHTML = "";
     try {
@@ -151,24 +173,33 @@ async function verNotificacionesSeguidores() {
         });
 
         if (respuesta3.ok) {
-            const notificacionesSeguidores= await respuesta3.json();
-            
-          
+            const notificacionesSeguidores = await respuesta3.json();
+
+
             for (const element of notificacionesSeguidores) {
-                
-                    if (element.idUser == id) {
-                        continue
-                    }
-                    limpiar.innerHTML += `
+
+                if (element.idUser == id) {
+                    continue
+                }
+                limpiar.innerHTML += `
                         <div class="etiquetasNotificacion">
                             <p>Te ha empezado seguir</p>
                             <div class="foto">
                             <img src="${element.urlPhoto}" alt="Foto de usuario">
-                            <h1>El usuario: ${element.nameUser}</h1>
+                            <h1 class="user" data-nameUser="${element.nameUser}">${element.nameUser}</h1>
                             </div>
                         </div>
     `;
-                
+                const Username = document.querySelectorAll(".user");
+                Username.forEach((Username) => {
+                    Username.addEventListener("click", function () {
+                        this.classList.toggle("active-border");
+                        let username = this.getAttribute("data-nameUser");
+
+                        buscarPublicaciones(username);
+                    });
+                });
+
             }
         } else {
             console.error('Error al mostrar:', respuesta.status);

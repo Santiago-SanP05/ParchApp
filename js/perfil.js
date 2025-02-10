@@ -67,12 +67,12 @@ async function mostrarPerfil() {
               </div>
               <div class="usuarionombre">
                 <div class="nombre">
-                  <h2>@${element.nameUser}</h2>
+                  <h2 >@${element.nameUser}</h2>
                 <h2>${element.name}</h2>
                 </div>
                 
                 <div class="seguidores">
-                  <h2>Seguidores</h2>
+                  <h2 class="todosSeguidores">Seguidores</h2>
                   <h2>Seguidos</h2>
                 </div>
                 <div class="numero">
@@ -104,6 +104,11 @@ async function mostrarPerfil() {
     apartadohacerPublicacion.addEventListener("click", apartadoPublicacion);
     var eliminaUsuario = document.querySelector(".eliminaUsuario");
     eliminaUsuario.addEventListener("click", eliminarUsuario);
+    var todoSeguidos = document.querySelector(".todosSeguidores")
+    todoSeguidos.addEventListener("click", function(){
+      var seguidoreeees ="seguidores"
+      verNotificacionesSeguidores(seguidoreeees)
+    })
 
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
@@ -149,6 +154,7 @@ async function editarUsuario() {
     `;
     var enviarDatosEditadosUser = document.querySelector(".enviarEditar");
     enviarDatosEditadosUser.addEventListener("click", enviareditarususario)
+
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
   }
@@ -302,7 +308,7 @@ async function publicacionUsuario(id) {
           <header class="encabezadoPubli">
             <img src="${data2.urlPhoto}" alt="Imagen de perfil del usuario" id="imagen">
             <div>
-              <h2>@${data2.nameUser}</h2>
+              <h2 class="nombrePerfil" data-nameUser="${data2.nameUser}" >@${data2.nameUser}</h2>
               <time datetime="${element.publicationDate}">${new Date(element.publicationDate).toLocaleString()}</time>
             </div>
             ${botonesEdicion}
@@ -367,6 +373,11 @@ async function publicacionUsuario(id) {
           hacerComentarioPerfil(element.idPost, id);
         })
       }
+      var buscarUsuario =document.querySelector(".nombrePerfil")
+      buscarUsuario.addEventListener("click", function(){
+        let username2 = this.getAttribute("data-nameUser")
+        buscarPublicaciones(username2)
+      })
 
       const contenedorComentarios = nuevaPublicacion.querySelector(".resultadoComentarios");
 

@@ -16,6 +16,7 @@ document.addEventListener("keypress", function (event) {
 
 
 async function buscarPublicaciones(texto) {
+  console.log(texto)
   if (texto == localStorage.getItem("name")) {
     mostrarPerfil()
     return
