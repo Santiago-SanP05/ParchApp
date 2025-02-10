@@ -58,7 +58,7 @@ async function verNotificacionesComentarios() {
                     });
                     const contenidousuario = await respuestaUser.json();
                     if (element2.idUser == id) {
-                        console.log("tu no apareces aca")
+                        
                         continue
                     }
                     limpiar.innerHTML += `
@@ -89,7 +89,6 @@ async function verNotificacionesComentarios() {
 
 
 async function verNotificacionesReacciones() {
-    console.log("hola")
     let limpiar = document.querySelector(".etiquetasNotificaciones");
     limpiar.innerHTML = "";
     try {
@@ -115,7 +114,6 @@ async function verNotificacionesReacciones() {
                     });
                     
                     if (element2.idUser == id) {
-                        console.log("tu no apareces aca")
                         continue
                     }
                     const contenidousuario = await respuestaUser.json();
@@ -141,7 +139,6 @@ async function verNotificacionesReacciones() {
 }
 
 async function verNotificacionesSeguidores() {
-    console.log("hola")
     let limpiar = document.querySelector(".etiquetasNotificaciones");
     limpiar.innerHTML = "";
     try {

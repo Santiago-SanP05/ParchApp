@@ -38,7 +38,6 @@ async function loginUsuario(){
     var email = document.querySelector("#email").value;
     var password = document.querySelector("#contraseña").value;
     
-    console.log(username,email,password);
 
         const respuesta = await fetch("http://localhost:3002/api/auth/login", {
             method: "POST",
@@ -60,13 +59,11 @@ async function loginUsuario(){
         }
 
         const data = await respuesta.json();
-        console.log(data)
         localStorage.setItem("token", data.token);
         localStorage.setItem("email", data.email);
         localStorage.setItem("id", data.idUser);
         localStorage.setItem("name", data.nameUser);
         console.log("http://localhost:3002/api/comment");
-        console.log(data);
         
         alert("Inicio de sesión exitoso.");
         window.location.href = "/html/inicio.html";

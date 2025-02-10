@@ -164,13 +164,8 @@ async function enviareditarususario() {
   const editUrlImagen = document.querySelector("#editUrlImagen").value.trim();
   const editcontraseña = document.querySelector("#editcontraseña").value.trim();
   const editcontraseñaConfirmar = document.querySelector("#editcontraseñaConfirmar").value.trim();
-  console.log(editnombreusuario);
-  console.log(editusuario);
-  console.log(editemail);
-  console.log(editBio);
-  console.log(editUrlImagen);
-  console.log(editcontraseña);
-  console.log(editcontraseñaConfirmar);
+  
+  
 
   if (!editnombreusuario || !editusuario || !editemail || !editcontraseña || !editcontraseñaConfirmar || !editBio) {
     alert("Por favor, completa todos los campos obligatorios.");
@@ -232,7 +227,6 @@ async function enviareditarususario() {
 }
 
 async function publicacionUsuario(id) {
-  console.log(id)
   try {
     const token = localStorage.getItem("token");
     const id = Number(localStorage.getItem("id"));
@@ -240,7 +234,6 @@ async function publicacionUsuario(id) {
 
     // Definir obteniendoModulo FUERA del if
     const obteniendoModulo = "perfil"; 
-    console.log("📌 PERFIL.JS - obteniendoModulo definido como:", obteniendoModulo);
 
     // Obtener datos del usuario
     const response2 = await fetch(urluser + id, {
@@ -327,7 +320,7 @@ async function publicacionUsuario(id) {
                 <p>${element.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
-                <a href="#"><img src="/Images/Comentarios.png" alt="Icono de comentarios"></a>
+                <img src="/Images/Comentarios.png" alt="Icono de comentarios">
                 <p>${element.coments.length}</p>
               </div>
             </div>
@@ -436,8 +429,6 @@ function apartadoPublicacion() {
 async function enviaPulicacion() {
   const envioDescripcion = document.querySelector("#descripcion").value.trim();
   const envioImagen = document.querySelector("#urlImagen").value.trim();
-  console.log(envioDescripcion);
-  console.log(envioImagen);
 
 
   if (!envioDescripcion || !envioImagen) {
@@ -516,7 +507,6 @@ async function eliminarUsuario() {
 }
 
 async function eliminarPost(obteniendoIdPost, publicacionElemento) {
-  console.log(obteniendoIdPost);
   let url = 'http://localhost:3002/api/post/' + obteniendoIdPost;
   try {
     let token = localStorage.getItem("token");
@@ -583,8 +573,8 @@ async function envioEditPost(obteniendoIdPost, obteniendoimagenurl, obteniendoda
     caption: nuevaCaption,
     userId: Number(localStorage.getItem("id"))
   };
-  console.log(postActualizado);
-  console.log(obteniendoIdPost);
+  
+  
   try {
     let token = localStorage.getItem("token");
     console.log("Token:", token);

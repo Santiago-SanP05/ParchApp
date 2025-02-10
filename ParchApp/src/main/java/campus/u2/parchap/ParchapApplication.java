@@ -16,14 +16,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-public class ParchapApplication {
+public class ParchapApplication //extends SpringBootServletInitializer
+{
 
     public static void main(String[] args) {
         ConfigurableApplicationContext contexto = SpringApplication.run(ParchapApplication.class, args);
-
+        
+        
         // Fechas de ejemplo
-        LocalDateTime dateDeparture = LocalDateTime.of(2025, 3, 15, 14, 30);
-        LocalDateTime dateArrived = LocalDateTime.of(2025, 3, 19, 14, 30);
 
         // Obtener los servicios de cada entidad
         UserServiceImpl userServiceImpl = contexto.getBean(UserServiceImpl.class);
@@ -323,6 +323,6 @@ public class ParchapApplication {
         followerServiceImpl.save(f5);
         followerServiceImpl.save(f6);
         followerServiceImpl.save(f7);
-
+        
     }
 }
