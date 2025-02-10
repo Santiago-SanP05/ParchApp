@@ -121,7 +121,7 @@ function vistaregistrar(){
                     </div>
                     
                    <button id="registroUsuario">Registrarme</button>
-                   <a href="/html/main.html" id="return">Return</a>
+                   <a href="/index.html" id="return">Return</a>
 
     `;
     var registrar = document.querySelector("#registroUsuario");
