@@ -53,7 +53,7 @@ public class UserServiceImpl {
     public UserDTO save(UserDTO userDTO) {
         User user;
 
-        if (userDTO.getIdUser() != null) { // Si el ID no es nulo, buscar el usuario existente
+        if (userDTO.getIdUser() != null) {
             user = userRepository.findById(userDTO.getIdUser()).orElse(new User());
         } else {
             user = new User();
@@ -79,22 +79,18 @@ public class UserServiceImpl {
 
     @Transactional
     public void deleteUser(Long userId) {
-        // Primero, obtener todos los comentarios asociados al usuario
         List<Comment> comments = commentRepository.findAll()
                 .stream()
                 .filter(comment -> comment.getCommentUser().getId_User().equals(userId))
                 .collect(Collectors.toList());
 
-        // Eliminar cada comentario asociado al usuario
         for (Comment comment : comments) {
             commentRepository.delete(comment);
         }
 
-        // Eliminar los seguidores donde el usuario es el seguidor o seguido
         followerRepository.deleteByUserFollower(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
         followerRepository.deleteByUserFollowed(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
 
-        // Luego eliminamos al usuario
         userRepository.deleteById(userId);
     }
 
@@ -109,7 +105,6 @@ public class UserServiceImpl {
         return userDTO;
     }
 
-    // Métodos para seguir y dejar de seguir a usuarios (si es necesario)
     public void followUser(Long followerId, Long followedId) {
         if (followerId.equals(followedId)) {
             throw new IllegalArgumentException("Un usuario no puede seguirse a sí mismo.");
@@ -142,25 +137,25 @@ public class UserServiceImpl {
         // Obtener los posts del usuario
         return user.getPost().stream()
                 .map(post -> new PostDTO(
-                post.getIdPost(), // ID del post
-                post.getImageUrl(), // URL de la imagen
-                post.getPublicationDate(), // Fecha de publicación
-                post.getCaption(), // Descripción del post
-                post.getComments().stream() // Convertir comentarios a DTOs
+                post.getIdPost(),          
+                post.getImageUrl(),      
+                post.getPublicationDate(),        
+                post.getCaption(),        
+                post.getComments().stream()      
                         .map(comment -> new CommentDTO(
                         comment.getIdComment(),
                         comment.getText(),
                         comment.getPublicationDate(),
-                        comment.getCommentUser().getId_User(), // ID del usuario que hizo el comentario
-                        comment.getCommentPost().getIdPost())) // ID del post comentado
+                        comment.getCommentUser().getId_User(), 
+                        comment.getCommentPost().getIdPost())) 
                         .collect(Collectors.toList()),
                 // Convertir reacciones a DTOs
                 post.getLike1().stream()
                         .map(reaction -> new ReactionDTO(
                         reaction.getIdLike(),
-                        reaction.getLikeUser().getId_User(), // ID del usuario que hizo la reacción
-                        reaction.getLikePost().getIdPost(), // ID del post en el que se hizo la reacción
-                        reaction.getPublication_date())) // Fecha de publicación de la reacción
+                        reaction.getLikeUser().getId_User(), 
+                        reaction.getLikePost().getIdPost(), 
+                        reaction.getPublication_date())) 
                         .collect(Collectors.toList()),
                 // ID del usuario que publicó el post
                 post.getUserPublication().getId_User()))
@@ -172,13 +167,10 @@ public class UserServiceImpl {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Filtrar los seguidores buscando en los seguidores del usuario en la columna 'userFollowed'
         List<Follower> followers = followerRepository.findByUserFollowed(user);
 
-        // Usar un Set para evitar duplicados
         Set<Long> seenUsers = new HashSet<>();
 
-        // Convertir las entidades a DTO y devolver la lista
         return followers.stream()
                 .filter(follower -> seenUsers.add(follower.getUserFollower().getId_User())) // Evitar duplicados
                 .map(follower -> convertToDTO(follower.getUserFollower()))
@@ -189,15 +181,12 @@ public class UserServiceImpl {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Filtrar los usuarios a los que sigue buscando en la columna 'userFollower'
         List<Follower> followed = followerRepository.findByUserFollower(user);
 
-        // Usar un Set para evitar duplicados
         Set<Long> seenUsers = new HashSet<>();
 
-        // Convertir las entidades a DTO y devolver la lista
         return followed.stream()
-                .filter(follower -> seenUsers.add(follower.getUserFollowed().getId_User())) // Evitar duplicados
+                .filter(follower -> seenUsers.add(follower.getUserFollowed().getId_User()))
                 .map(follower -> convertToDTO(follower.getUserFollowed()))
                 .collect(Collectors.toList());
     }
@@ -225,6 +214,8 @@ public class UserServiceImpl {
 //                followed.getUserFollowed().getId_User()))
 //                .collect(Collectors.toList());
 //    }
+    
+    
     public UserDTO updateBiography(Long userId, String newBiography) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

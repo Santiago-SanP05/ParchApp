@@ -27,22 +27,19 @@ public class PostServiceImpl {
     }
 
     public List<PostDTO> findAll() {
-    return postRepository.findAll().stream()  // Obtenemos todos los posts de la base de datos
-            .map(this::convertToDTO)  // Convertimos cada Post a un PostDTO usando el método convertToDTO
-            .collect(Collectors.toList());  // Recogemos los DTOs en una lista
+    return postRepository.findAll().stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
 }
 
 
     public PostDTO save(PostDTO postDTO) {
-        // Convertir DTO a entidad Post
         Post post = convertToEntity(postDTO);
 
-        // Establecer fecha de publicación si no está definida
         if (post.getPublicationDate() == null) {
             post.setPublicationDate(LocalDateTime.now());
         }
 
-        // Guardar el post en la base de datos
         Post savedPost = postRepository.save(post);
         return convertToDTO(savedPost);
     }
@@ -57,58 +54,55 @@ public class PostServiceImpl {
     }
     
     private PostDTO convertToDTO(Post post) {
-    // Convertir la entidad Post a un PostDTO
     return new PostDTO(
-            post.getIdPost(),  // ID del post
-            post.getImageUrl(),  // URL de la imagen
-            post.getPublicationDate(),  // Fecha de publicación
-            post.getCaption(),  // Descripción del post
-            post.getComments().stream()  // Convertir comentarios a DTOs
+            post.getIdPost(),  
+            post.getImageUrl(),  
+            post.getPublicationDate(),  
+            post.getCaption(),  
+            post.getComments().stream()
                     .map(comment -> new CommentDTO(
                             comment.getIdComment(),
                             comment.getText(),
                             comment.getPublicationDate(),
-                            comment.getCommentUser().getId_User(),  // ID del usuario que hizo el comentario
-                            comment.getCommentPost().getIdPost()))  // ID del post comentado
+                            comment.getCommentUser().getId_User(),
+                            comment.getCommentPost().getIdPost()))
                     .collect(Collectors.toList()),
-            post.getLike1().stream()  // Convertir reacciones a DTOs
+            post.getLike1().stream()  
                     .map(reaction -> new ReactionDTO(
-                            reaction.getIdLike(),  // ID de la reacción
-                            reaction.getLikeUser().getId_User(),  // ID del usuario que hizo la reacción
-                            reaction.getLikePost().getIdPost(),  // ID del post en el que se hizo la reacción
-                            reaction.getPublication_date()))  // Fecha de publicación de la reacción
+                            reaction.getIdLike(),  
+                            reaction.getLikeUser().getId_User(),  
+                            reaction.getLikePost().getIdPost(),  
+                            reaction.getPublication_date()))  
                     .collect(Collectors.toList()),
-            post.getUserPublication().getId_User()  // ID del usuario que publicó el post
+            post.getUserPublication().getId_User()  
     );
 }
 
     public List<PostDTO> getPostsByUserId(Long userId) {
-        // Buscar al usuario por su ID
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Obtener los posts del usuario y mapear a PostDTO
         return user.getPost().stream()
                 .map(post -> new PostDTO(
-                post.getIdPost(), // ID del post
-                post.getImageUrl(), // URL de la imagen
-                post.getPublicationDate(), // Fecha de publicación
-                post.getCaption(), // Descripción del post
-                post.getComments().stream() // Convertir comentarios a DTOs
+                post.getIdPost(), 
+                post.getImageUrl(), 
+                post.getPublicationDate(), 
+                post.getCaption(), 
+                post.getComments().stream()     
                         .map(comment -> new CommentDTO(
                         comment.getIdComment(),
                         comment.getText(),
                         comment.getPublicationDate(),
-                        comment.getCommentUser().getId_User(), // ID del usuario que hizo el comentario
-                        comment.getCommentPost().getIdPost())) // ID del post comentado
+                        comment.getCommentUser().getId_User(), 
+                        comment.getCommentPost().getIdPost())) 
                         .collect(Collectors.toList()),
                 // Convertir reacciones a DTOs
                 post.getLike1().stream()
                         .map(reaction -> new ReactionDTO(
-                        reaction.getIdLike(), // ID de la reacción
-                        reaction.getLikeUser().getId_User(), // ID del usuario que hizo la reacción
-                        reaction.getLikePost().getIdPost(), // ID del post en el que se hizo la reacción
-                        reaction.getPublication_date())) // Fecha de publicación de la reacción
+                        reaction.getIdLike(),       
+                        reaction.getLikeUser().getId_User(),        
+                        reaction.getLikePost().getIdPost(), 
+                        reaction.getPublication_date()))      
                         .collect(Collectors.toList()),
                 // ID del usuario que publicó el post
                 post.getUserPublication().getId_User()))
