@@ -42,7 +42,7 @@ Si deseas ejecutar ParchApp en tu entorno local, sigue estos pasos detallados:
 
 ## 📌 Diagramas y capturas de pantalla
 ### 📊 Diagrama UML
-_Aquí puedes pegar el diagrama UML generado con StarUML._
+
 
 ![Diagrama UML](/ParchApp%20E-R.png)
 
