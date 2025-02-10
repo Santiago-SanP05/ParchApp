@@ -23,16 +23,13 @@ public class ParchapApplication //extends SpringBootServletInitializer
         ConfigurableApplicationContext contexto = SpringApplication.run(ParchapApplication.class, args);
         
         
-        // Fechas de ejemplo
 
-        // Obtener los servicios de cada entidad
         UserServiceImpl userServiceImpl = contexto.getBean(UserServiceImpl.class);
         PostServiceImpl postServiceImpl = contexto.getBean(PostServiceImpl.class);
         CommentServiceImpl commentServiceImpl = contexto.getBean(CommentServiceImpl.class);
         ReactionServiceImpl reactionServiceImpl = contexto.getBean(ReactionServiceImpl.class);
         FollowerServiceImpl followerServiceImpl = contexto.getBean(FollowerServiceImpl.class);
 
-        // Crear usuarios
         UserDTO u1 = new UserDTO();
         u1.setName("Juan Pérez");
         u1.setNameUser("juanp");
@@ -98,25 +95,25 @@ public class ParchapApplication //extends SpringBootServletInitializer
         p3.setImageUrl("https://cdn.pixabay.com/photo/2022/05/08/18/30/broken-heart-7182718_1280.png");
         p3.setCaption("I'm depresed");
         p3.setPublicationDate(LocalDateTime.now());
-        p3.setUserId(1L); // Asignar al usuario con ID 2
+        p3.setUserId(1L);
         
         PostDTO p4 = new PostDTO();
         p4.setImageUrl("https://wallpapers.com/images/featured/pantalla-4k-u3mo5lq8k93935zr.jpg");
         p4.setCaption("i this so ameising, or no?");
         p4.setPublicationDate(LocalDateTime.now());
-        p4.setUserId(3L); // Asignar al usuario con ID 2
+        p4.setUserId(3L); 
         
         PostDTO p5 = new PostDTO();
         p5.setImageUrl("https://img2.wallspic.com/previews/9/6/9/9/7/179969/179969-luz-diseno_grafico-arte_fractal-arte-diseno-500x.jpg");
         p5.setCaption("Brickell");
         p5.setPublicationDate(LocalDateTime.now());
-        p5.setUserId(3L); // Asignar al usuario con ID 2
+        p5.setUserId(3L); 
         
         PostDTO p6 = new PostDTO();
         p6.setImageUrl("https://wallpapershome.com/images/pages/ico_h/27175.jpg");
         p6.setCaption("I like coffe witn bread in the morning");
         p6.setPublicationDate(LocalDateTime.now());
-        p6.setUserId(2L); // Asignar al usuario con ID 2
+        p6.setUserId(2L); 
         
         PostDTO p7 = new PostDTO();
         p7.setImageUrl("https://png.pngtree.com/background/20231222/original/pngtree-modern-black-joysticks-set-on-abstract-light-wallpaper-perfect-for-gaming-picture-image_6936211.jpg");
@@ -141,7 +138,7 @@ public class ParchapApplication //extends SpringBootServletInitializer
         p10.setCaption("I'm Volanding");
         p10.setPublicationDate(LocalDateTime.now());
         p10.setUserId(5L);
-        // Guardar posts
+
         postServiceImpl.save(p1);
         postServiceImpl.save(p2);
         postServiceImpl.save(p3);
@@ -153,66 +150,65 @@ public class ParchapApplication //extends SpringBootServletInitializer
         postServiceImpl.save(p9);
         postServiceImpl.save(p10);
 
-        // Crear comentarios
         CommentDTO c1 = new CommentDTO();
         c1.setText("¡Gran post!");
         c1.setPublicationDate(LocalDateTime.now());
-        c1.setIdUser(1L); // Comentario hecho por el usuario con ID 2
-        c1.setIdPost(7L); // Comentario en el post con ID 1
+        c1.setIdUser(1L); 
+        c1.setIdPost(7L); 
 
         CommentDTO c2 = new CommentDTO();
         c2.setText("Amigo busca vida social");
         c2.setPublicationDate(LocalDateTime.now());
-        c2.setIdUser(2L); // Comentario hecho por el usuario con ID 3
-        c2.setIdPost(8L); // Comentario en el post con ID 1
+        c2.setIdUser(2L);
+        c2.setIdPost(8L); 
         
         CommentDTO c3 = new CommentDTO();
         c3.setText("Whaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat?????");
         c3.setPublicationDate(LocalDateTime.now());
-        c3.setIdUser(3L); // Comentario hecho por el usuario con ID 3
-        c3.setIdPost(2L); // Comentario en el post con ID 1
+        c3.setIdUser(3L);
+        c3.setIdPost(2L);
         
         CommentDTO c4 = new CommentDTO();
         c4.setText("Para entender la historia de Five Nights at Freddy's, necesitas entender la historia de Five Nights at Freddy's. ");
         c4.setPublicationDate(LocalDateTime.now());
-        c4.setIdUser(1L); // Comentario hecho por el usuario con ID 3
-        c4.setIdPost(8L); // Comentario en el post con ID 1
+        c4.setIdUser(1L);
+        c4.setIdPost(8L);
         
         CommentDTO c5 = new CommentDTO();
         c5.setText("I im super happy wow");
         c5.setPublicationDate(LocalDateTime.now());
-        c5.setIdUser(2L); // Comentario hecho por el usuario con ID 3
-        c5.setIdPost(1L); // Comentario en el post con ID 1
+        c5.setIdUser(2L); 
+        c5.setIdPost(1L); 
         
         CommentDTO c6 = new CommentDTO();
         c6.setText("ufffff");
         c6.setPublicationDate(LocalDateTime.now());
-        c6.setIdUser(3L); // Comentario hecho por el usuario con ID 3
-        c6.setIdPost(1L); // Comentario en el post con ID 1
+        c6.setIdUser(3L);
+        c6.setIdPost(1L);
         
         CommentDTO c7 = new CommentDTO();
         c7.setText("Creer es saber");
         c7.setPublicationDate(LocalDateTime.now());
-        c7.setIdUser(1L); // Comentario hecho por el usuario con ID 3
-        c7.setIdPost(5L); // Comentario en el post con ID 1
+        c7.setIdUser(1L);
+        c7.setIdPost(5L);
         
         CommentDTO c8 = new CommentDTO();
         c8.setText("Cuando el rio suena, se lo lleva la corriente");
         c8.setPublicationDate(LocalDateTime.now());
-        c8.setIdUser(2L); // Comentario hecho por el usuario con ID 3
-        c8.setIdPost(5L); // Comentario en el post con ID 1
+        c8.setIdUser(2L);
+        c8.setIdPost(5L);
         
         CommentDTO c9 = new CommentDTO();
         c9.setText("Y recuerda, recordar");
         c9.setPublicationDate(LocalDateTime.now());
-        c9.setIdUser(3L); // Comentario hecho por el usuario con ID 3
-        c9.setIdPost(5L); // Comentario en el post con ID 1
+        c9.setIdUser(3L);
+        c9.setIdPost(5L);
         
         CommentDTO c10 = new CommentDTO();
         c10.setText("Y la queso");
         c10.setPublicationDate(LocalDateTime.now());
-        c10.setIdUser(1L); // Comentario hecho por el usuario con ID 3
-        c10.setIdPost(6L); // Comentario en el post con ID 1
+        c10.setIdUser(1L);
+        c10.setIdPost(6L);
 
         // Guardar comentarios
         commentServiceImpl.save(c1);
@@ -229,44 +225,43 @@ public class ParchapApplication //extends SpringBootServletInitializer
         // Crear reacciones
         ReactionDTO r1 = new ReactionDTO();
         r1.setPublicationDate(LocalDateTime.now());
-        r1.setIdUser(1L); // Reacción hecha por el usuario con ID 1
-        r1.setIdPost(10L); // Reacción en el post con ID 2
-
+        r1.setIdUser(1L); 
+        r1.setIdPost(10L);
+        
         ReactionDTO r2 = new ReactionDTO();
         r2.setPublicationDate(LocalDateTime.now());
-        r2.setIdUser(3L); // Reacción hecha por el usuario con ID 3
-        r2.setIdPost(2L); // Reacción en el post con ID 2
+        r2.setIdUser(3L);
+        r2.setIdPost(2L);
         
         ReactionDTO r3 = new ReactionDTO();
         r3.setPublicationDate(LocalDateTime.now());
-        r3.setIdUser(1L); // Reacción hecha por el usuario con ID 3
-        r3.setIdPost(8L); // Reacción en el post con ID 2
+        r3.setIdUser(1L); 
+        r3.setIdPost(8L); 
         
         ReactionDTO r4 = new ReactionDTO();
         r4.setPublicationDate(LocalDateTime.now());
-        r4.setIdUser(1L); // Reacción hecha por el usuario con ID 3
-        r4.setIdPost(3L); // Reacción en el post con ID 2
+        r4.setIdUser(1L); 
+        r4.setIdPost(3L); 
         
         ReactionDTO r5 = new ReactionDTO();
         r5.setPublicationDate(LocalDateTime.now());
-        r5.setIdUser(1L); // Reacción hecha por el usuario con ID 3
-        r5.setIdPost(4L); // Reacción en el post con ID 2
+        r5.setIdUser(1L); 
+        r5.setIdPost(4L); 
         
         ReactionDTO r6 = new ReactionDTO();
         r6.setPublicationDate(LocalDateTime.now());
-        r6.setIdUser(1L); // Reacción hecha por el usuario con ID 3
-        r6.setIdPost(5L); // Reacción en el post con ID 2
+        r6.setIdUser(1L); 
+        r6.setIdPost(5L); 
         
         ReactionDTO r7 = new ReactionDTO();
         r7.setPublicationDate(LocalDateTime.now());
-        r7.setIdUser(2L); // Reacción hecha por el usuario con ID 3
-        r7.setIdPost(6L); // Reacción en el post con ID 2
+        r7.setIdUser(2L); 
+        r7.setIdPost(6L); 
         
         ReactionDTO r8 = new ReactionDTO();
         r8.setPublicationDate(LocalDateTime.now());
-        r8.setIdUser(3L); // Reacción hecha por el usuario con ID 3
-        r8.setIdPost(8L); // Reacción en el post con ID 2
-
+        r8.setIdUser(3L); 
+        r8.setIdPost(8L); 
 
         // Guardar reacciones
         reactionServiceImpl.save(r1);
@@ -281,39 +276,39 @@ public class ParchapApplication //extends SpringBootServletInitializer
         // Crear seguidores
         FollowerDTO f1 = new FollowerDTO();
         f1.setFollowDate(LocalDateTime.now());
-        f1.setUserFollowerId(1L); // Usuario con ID 1 sigue a
-        f1.setUserFollowedId(2L); // Usuario con ID 2
+        f1.setUserFollowerId(1L);
+        f1.setUserFollowedId(2L);
 
         FollowerDTO f2 = new FollowerDTO();
         f2.setFollowDate(LocalDateTime.now());
-        f2.setUserFollowerId(2L); // Usuario con ID 2 sigue a
-        f2.setUserFollowedId(3L); // Usuario con ID 3
+        f2.setUserFollowerId(2L); 
+        f2.setUserFollowedId(3L); 
         
         FollowerDTO f3 = new FollowerDTO();
         f3.setFollowDate(LocalDateTime.now());
-        f3.setUserFollowerId(1L); // Usuario con ID 2 sigue a
-        f3.setUserFollowedId(3L); // Usuario con ID 3
+        f3.setUserFollowerId(1L);
+        f3.setUserFollowedId(3L);
         
         FollowerDTO f4 = new FollowerDTO();
         f4.setFollowDate(LocalDateTime.now());
-        f4.setUserFollowerId(1L); // Usuario con ID 2 sigue a
-        f4.setUserFollowedId(5L); // Usuario con ID 3
+        f4.setUserFollowerId(1L);
+        f4.setUserFollowedId(5L);
         
         FollowerDTO f5 = new FollowerDTO();
         f5.setFollowDate(LocalDateTime.now());
-        f5.setUserFollowerId(2L); // Usuario con ID 2 sigue a
-        f5.setUserFollowedId(5L); // Usuario con ID 3
+        f5.setUserFollowerId(2L);
+        f5.setUserFollowedId(5L);
         
         
         FollowerDTO f6 = new FollowerDTO();
         f6.setFollowDate(LocalDateTime.now());
-        f6.setUserFollowerId(3L); // Usuario con ID 2 sigue a
-        f6.setUserFollowedId(5L); // Usuario con ID 3
+        f6.setUserFollowerId(3L);
+        f6.setUserFollowedId(5L);
         
         FollowerDTO f7 = new FollowerDTO();
         f7.setFollowDate(LocalDateTime.now());
-        f7.setUserFollowerId(4L); // Usuario con ID 2 sigue a
-        f7.setUserFollowedId(5L); // Usuario con ID 3
+        f7.setUserFollowerId(4L);
+        f7.setUserFollowedId(5L);
 
         // Guardar seguidores
         followerServiceImpl.save(f1);
