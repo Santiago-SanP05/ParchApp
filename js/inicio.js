@@ -28,8 +28,8 @@ async function fetchData() {
           <input type="text" placeholder="Buscar en ParchApp" aria-label="Buscar publicaciones">`;
   try {
     const token = localStorage.getItem("token");
-    const urlPost = "http://localhost:3002/api/post";
-    const urlUser = "http://localhost:3002/api/users/";
+    const urlPost = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/post";
+    const urlUser = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users/";
 
     const publicacionContainer = document.querySelector(".publicacion");
 
@@ -216,7 +216,7 @@ principal.addEventListener("click", fetchData);
 
 
 
-var urlCommentario = 'http://localhost:3002/api/comment/';
+var urlCommentario = 'http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/comment/';
 async function eliminarComentario(idComentario){
   try {
     let token = localStorage.getItem("token");

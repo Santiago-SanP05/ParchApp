@@ -1,10 +1,10 @@
 const notificaiones = document.querySelector("#notificaiones");
 notificaiones.addEventListener("click", apartadoNotificaiones)
 
-var urlUser2 = "http://localhost:3002/api/users"
+var urlUser2 = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users"
 var token2 = localStorage.getItem("token");
 var id = localStorage.getItem("id");
-var urlfollowers = "http://localhost:3002/api/follower"
+var urlfollowers = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/follower"
 
 
 function apartadoNotificaiones() {

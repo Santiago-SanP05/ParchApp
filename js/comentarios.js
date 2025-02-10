@@ -1,4 +1,4 @@
-const urlComentario = "http://localhost:3002/api/comment";
+const urlComentario = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/comment";
 const token = localStorage.getItem("token");
 async function hacerComentarioPerfil(postId, texto) {
 
@@ -145,7 +145,7 @@ async function hacerComentarioPerfil(postId, texto) {
   
     // Iterar sobre los comentarios y agregarlos al contenedor
     for (const comment of comments.reverse()) {
-    let urlUser = "http://localhost:3002/api/users/"+comment.idUser;
+    let urlUser = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users/"+comment.idUser;
 
     // Obtener todas las publicaciones
     const responseUser = await fetch(urlUser, {
@@ -218,7 +218,7 @@ async function hacerComentarioPerfil(postId, texto) {
     }
   }
 
-  var urlCommentario = 'http://localhost:3002/api/comment/';
+  var urlCommentario = 'http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/comment/';
 
 async function eliminarComentario2( idComentario, texto){
 

@@ -1,7 +1,7 @@
 
 async function hacerLikePerfil(postId, texto) {
 
-    let urlReaction = "http://localhost:3002/api/reaction";
+    let urlReaction = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/reaction";
     let token = localStorage.getItem("token");
     let userId = localStorage.getItem("id");
   
@@ -84,7 +84,7 @@ async function hacerLikePerfil(postId, texto) {
   }
 
   async function hacerLike(postId) {
-    let urlReaction = "http://localhost:3002/api/reaction";
+    let urlReaction = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/reaction";
     let token = localStorage.getItem("token");
     let userId = localStorage.getItem("id");
   

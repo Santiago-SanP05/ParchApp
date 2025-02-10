@@ -39,7 +39,7 @@ async function loginUsuario(){
     var password = document.querySelector("#contraseña").value;
     
 
-        const respuesta = await fetch("http://localhost:3002/api/auth/login", {
+        const respuesta = await fetch("http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"  
@@ -161,7 +161,7 @@ async function registrarUsuario(){
       return;
     }
   
-    const url = 'http://localhost:3002/api/users';
+    const url = 'http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users';
   
       const datosActualizados = {
         name: editnombreusuario,

@@ -1,4 +1,4 @@
-var urlUser3 = 'http://localhost:3002/api/users';
+var urlUser3 = 'http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users';
 var token3 = localStorage.getItem("token");
 var id = localStorage.getItem("id");
 
@@ -149,7 +149,7 @@ async function buscarPublicaciones(texto) {
 
 }
 
-var urlSeguimiento = "http://localhost:3002/api/follower";
+var urlSeguimiento = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/follower";
 
 
 async function hacerSeguimiento(idUser) {

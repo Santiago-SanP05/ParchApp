@@ -10,7 +10,7 @@ async function mostrarPerfil() {
   var identifiacador = localStorage.getItem("email");
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch('http://localhost:3002/api/users', {
+    const response = await fetch('http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users', {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -18,7 +18,7 @@ async function mostrarPerfil() {
       }
     });
 
-    const respuestaSeguidores = await fetch('http://localhost:3002/api/users/' + localStorage.getItem("id") + '/followers', {
+    const respuestaSeguidores = await fetch('http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users/' + localStorage.getItem("id") + '/followers', {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -26,7 +26,7 @@ async function mostrarPerfil() {
       }
     });
 
-    const respuestaSiguiendo = await fetch('http://localhost:3002/api/users/' + localStorage.getItem("id") + '/followed', {
+    const respuestaSiguiendo = await fetch('http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users/' + localStorage.getItem("id") + '/followed', {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -122,7 +122,7 @@ async function editarUsuario() {
   try {
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id")
-    const response = await fetch('http://localhost:3002/api/users/' + id, {
+    const response = await fetch('http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users/' + id, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -192,7 +192,7 @@ async function enviareditarususario() {
     return;
   }
 
-  const url = 'http://localhost:3002/api/users/' + localStorage.getItem("id");
+  const url = 'http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users/' + localStorage.getItem("id");
 
   const datosActualizados = {
     name: editnombreusuario,
@@ -236,7 +236,7 @@ async function publicacionUsuario(id) {
   try {
     const token = localStorage.getItem("token");
     const id = Number(localStorage.getItem("id"));
-    const urluser = "http://localhost:3002/api/users/";
+    const urluser = "http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users/";
 
     // Definir obteniendoModulo FUERA del if
     const obteniendoModulo = "perfil"; 
@@ -453,7 +453,7 @@ async function enviaPulicacion() {
     return;
   }
 
-  const url = 'http://localhost:3002/api/post';
+  const url = 'http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/post';
 
   const datosEnvioPublicacion = {
     userId: localStorage.getItem("id"),
@@ -489,7 +489,7 @@ async function enviaPulicacion() {
 }
 
 async function eliminarUsuario() {
-  let url = 'http://localhost:3002/api/users/' + localStorage.getItem("id");
+  let url = 'http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/users/' + localStorage.getItem("id");
   try {
     let token = localStorage.getItem("token");
     let response = await fetch(url, {
@@ -518,7 +518,7 @@ async function eliminarUsuario() {
 }
 
 async function eliminarPost(obteniendoIdPost, publicacionElemento) {
-  let url = 'http://localhost:3002/api/post/' + obteniendoIdPost;
+  let url = 'http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/post/' + obteniendoIdPost;
   try {
     let token = localStorage.getItem("token");
     let response = await fetch(url, {
@@ -589,7 +589,7 @@ async function envioEditPost(obteniendoIdPost, obteniendoimagenurl, obteniendoda
   try {
     let token = localStorage.getItem("token");
     
-    const respuesta = await fetch('http://localhost:3002/api/post/' + obteniendoIdPost, {
+    const respuesta = await fetch('http://localhost:8080/parchap-0.0.1-SNAPSHOT/api/post/' + obteniendoIdPost, {
       method: 'PUT', // Método HTTP PUT
       headers: {
         "Authorization": `Bearer ${token}`,
