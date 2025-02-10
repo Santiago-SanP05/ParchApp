@@ -97,14 +97,13 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
           "Content-Type": "application/json"
       }
   });
-
   const userCommentData = await responseCommentUser.json();
   const usuarioActualId = Number(localStorage.getItem("id"));
   const esPropietario = usuarioActualId === comment.idUser;
 
   return `
     <div class="etiquetasComentario" data-commentid="${comment.idComment}">
-      <h4>${userCommentData.nameUser}</h4>
+      <h4 >${userCommentData.nameUser}</h4>
       <p>${comment.text}</p>
       <p>${new Date(comment.publicationDate).toLocaleString()}</p>
 
@@ -123,7 +122,7 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
           <header class="encabezadoPubli">
             <img src="${userData.urlPhoto}" alt="Imagen de perfil del usuario" id="imagen">
             <div>
-              <h2>@${userData.nameUser}</h2>
+              <h2 class="user" data-nameUser="${userData.nameUser}">@${userData.nameUser}</h2>
               <time datetime="${post.publicationDate}">${new Date(post.publicationDate).toLocaleString()}</time>
             </div>
           </header>
@@ -173,6 +172,15 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
       });
     });
 
+    const Username = document.querySelectorAll(".user");
+    Username.forEach((Username) => {
+      Username.addEventListener("click", function () {
+         this.classList.toggle("active-border");
+         let username = this.getAttribute("data-nameUser");
+            
+         buscarPublicaciones(username);
+          });
+      });
     
     const likeImages = document.querySelectorAll(".like-img"); // Selecciona todas las imágenes con la clase "like-img"
    likeImages.forEach((likeImage) => {
@@ -189,6 +197,7 @@ const comentariosConNombres = await Promise.all(post.coments.map(async (comment)
     console.error('Hubo un problema con la solicitud:', error);
   }
 }
+
 
 
 
@@ -236,10 +245,7 @@ async function eliminarComentario(idComentario){
 }
 
 async function editarComentario(idComentario,obteniendoModulo){
-console.log(obteniendoModulo)
-console.log("📌 Comparación con 'inicio':", obteniendoModulo === "inicio");
-console.log("📌 Comparación con 'perfil':", obteniendoModulo === "perfil");
-console.log("📌 Comparación con 'perfil':", obteniendoModulo === "seguido");
+
 
   let leercomentario = document.querySelector("#ComentarioUsuario").value
   const estructuraComentario = {
@@ -260,8 +266,8 @@ console.log("📌 Comparación con 'perfil':", obteniendoModulo === "seguido");
     });
 
     if (respuesta.ok) {
-      const datos = await respuesta.json();
-      console.log('Datos actualizados:', datos);
+
+      alert('Datos actualizados');
 
     } else {
       console.error('Error al actualizar:', respuesta.status);

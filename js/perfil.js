@@ -212,7 +212,7 @@ async function enviareditarususario() {
 
     if (respuesta.ok) {
       const datos = await respuesta.json();
-      console.log('Datos actualizados:', datos);
+    
       localStorage.setItem("email", editemail);
     } else {
       console.error('Error al actualizar:', respuesta.status);
@@ -282,7 +282,7 @@ async function publicacionUsuario(id) {
     // Limpiar el contenedor antes de agregar nuevas publicaciones
     publicacionesUsuario.innerHTML = "";
 
-    for (const element of data) {
+    for (const element of data.reverse()) {
       // Solo mostrar botones si el usuario es el dueño de la publicación
       const esPropietario = id === element.userId;
       const botonesEdicion = esPropietario
@@ -464,7 +464,7 @@ async function enviaPulicacion() {
 
     if (respuesta.ok) {
       const datos = await respuesta.json();
-      console.log('Datos actualizados:', datos);
+ 
 
     } else {
       console.error('Error al actualizar:', respuesta.status);
@@ -525,7 +525,7 @@ async function eliminarPost(obteniendoIdPost, publicacionElemento) {
         const datos = await response.json();
         console.log('Publicación eliminada:', datos);
       } else {
-        console.log('Publicación eliminada exitosamente, sin contenido de respuesta.');
+        alert('Publicación eliminada exitosamente, sin contenido de respuesta.');
       }
     } else {
       console.error('Error al eliminar la publicación:', response.status);
@@ -577,7 +577,7 @@ async function envioEditPost(obteniendoIdPost, obteniendoimagenurl, obteniendoda
   
   try {
     let token = localStorage.getItem("token");
-    console.log("Token:", token);
+    
     const respuesta = await fetch('http://localhost:3002/api/post/' + obteniendoIdPost, {
       method: 'PUT', // Método HTTP PUT
       headers: {
@@ -589,7 +589,7 @@ async function envioEditPost(obteniendoIdPost, obteniendoimagenurl, obteniendoda
 
     if (respuesta.ok) {
       const datos = await respuesta.json();
-      console.log('Datos actualizados:', datos);
+      alert('Datos actualizados',);
       mostrarPerfil();
     } else {
       console.error('Error al actualizar:', respuesta.status);

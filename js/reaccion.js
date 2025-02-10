@@ -1,6 +1,6 @@
 
 async function hacerLikePerfil(postId, texto) {
-  console.log(texto)
+
     let urlReaction = "http://localhost:3002/api/reaction";
     let token = localStorage.getItem("token");
     let userId = localStorage.getItem("id");
@@ -29,7 +29,7 @@ async function hacerLikePerfil(postId, texto) {
   
       if (reaccionExistente) {
         // Si la reacción existe, eliminarla
-        console.log("Eliminando reacción con ID:", reaccionExistente.idLike);
+
         const respuestaDelete = await fetch(`${urlReaction}/${reaccionExistente.idLike}`, {
           method: "DELETE",
           headers: {
@@ -39,17 +39,19 @@ async function hacerLikePerfil(postId, texto) {
         });
   
         if (respuestaDelete.ok) {
-          console.log("Reacción eliminada");
+          alert("Reacción eliminada");
           if (texto == localStorage.getItem("id")) {
             publicacionUsuario(texto);
+          }else{
+            buscarPublicaciones(texto)
           }
-          buscarPublicaciones(texto) // Recargar datos
+           // Recargar datos
         } else {
           console.error("Error al eliminar la reacción:", respuestaDelete.status);
         }
       } else {
         // Si la reacción no existe, agregarla
-        console.log("Agregando nueva reacción");
+  
         const datosEnvioReaction = {
           idUser: userId,
           idPost: postId,
@@ -68,10 +70,12 @@ async function hacerLikePerfil(postId, texto) {
           alert("Reacción agregada");
           if (texto == localStorage.getItem("id")) {
             publicacionUsuario();
+          }else{
+            buscarPublicaciones(texto)
           }
-          buscarPublicaciones(texto)
+          
         } else {
-          console.error("Error al agregar la reacción:", respuestaPost.status);
+          alert("Error al agregar la reacción:", respuestaPost.status);
         }
       }
     } catch (error) {
@@ -108,7 +112,6 @@ async function hacerLikePerfil(postId, texto) {
   
       if (reaccionExistente) {
         // Si la reacción existe, eliminarla
-        console.log("Eliminando reacción con ID:", reaccionExistente.idLike);
         const respuestaDelete = await fetch(`${urlReaction}/${reaccionExistente.idLike}`, {
           method: "DELETE",
           headers: {
@@ -118,14 +121,14 @@ async function hacerLikePerfil(postId, texto) {
         });
   
         if (respuestaDelete.ok) {
-          console.log("Reacción eliminada");
+          alert("Reacción eliminada");
           fetchData(); // Recargar datos
         } else {
           console.error("Error al eliminar la reacción:", respuestaDelete.status);
         }
       } else {
         // Si la reacción no existe, agregarla
-        console.log("Agregando nueva reacción");
+
         const datosEnvioReaction = {
           idUser: userId,
           idPost: postId,
@@ -141,7 +144,7 @@ async function hacerLikePerfil(postId, texto) {
         });
   
         if (respuestaPost.ok) {
-          console.log("Reacción agregada");
+          alert("Reacción agregada");
           fetchData(); // Recargar datos
         } else {
           console.error("Error al agregar la reacción:", respuestaPost.status);

@@ -46,7 +46,7 @@ async function verNotificacionesComentarios() {
 
         if (respuesta.ok) {
             const notificacionesComentarios = await respuesta.json();
-            console.log('Notificaiones:', notificacionesComentarios);
+            
             for (const element of notificacionesComentarios) {
                 for (const element2 of element.coments) {
                     const respuestaUser = await fetch(urlUser2 + "/" + element2.idUser , {
@@ -102,7 +102,7 @@ async function verNotificacionesReacciones() {
 
         if (respuesta.ok) {
             const notificacionesComentarios = await respuesta.json();
-            console.log('Notificaiones:', notificacionesComentarios);
+            
             for (const element of notificacionesComentarios) {
                 for (const element2 of element.reactions) {
                     const respuestaUser = await fetch(urlUser2 + "/" + element2.idUser , {

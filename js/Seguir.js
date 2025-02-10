@@ -20,6 +20,7 @@ async function buscarPublicaciones(texto) {
     mostrarPerfil()
     return
   }
+
   try {
     const response = await fetch(urlUser3 + "/user" + "/" + texto, {
       method: "GET",
@@ -141,6 +142,7 @@ async function buscarPublicaciones(texto) {
           });
 
   } catch (error) {
+    alert("no existe ningun usuario con ese username")
     console.error('Hubo un problema con la solicitud:', error);
   }
 
@@ -150,7 +152,7 @@ var urlSeguimiento = "http://localhost:3002/api/follower";
 
 
 async function hacerSeguimiento(idUser) {
-  console.log(idUser)
+  
 
 
   try {
@@ -172,7 +174,7 @@ async function hacerSeguimiento(idUser) {
     // Verificar si el usuario ya reaccionó a esta publicación
     const SeguidorExistente = datos2.find((seguidor) => {
       if (seguidor.userFollowerId == id && seguidor.userFollowedId == idUser) {
-        console.log("Seguidor encontrado con ID:", seguidor.idFollower);
+
         return true; // Retorna `true` para que `find()` devuelva este objeto
       }
       return false;
@@ -181,7 +183,7 @@ async function hacerSeguimiento(idUser) {
 
     if (SeguidorExistente) {
       // Si la reacción existe, eliminarla
-      console.log("Eliminando seguidor con ID:", SeguidorExistente.idFollower);
+
       const respuestaDelete = await fetch(`${urlSeguimiento}/${SeguidorExistente.idFollower}`, {
         method: "DELETE",
         headers: {
@@ -198,7 +200,7 @@ async function hacerSeguimiento(idUser) {
       }
     } else {
       // Si la reacción no existe, agregarla
-      console.log("Agregando nueva reacción");
+      
       const datosEnvioSeguimiento = {
         userFollowedId: idUser,
         followDate: getCurrentDateTime(),
@@ -231,8 +233,7 @@ async function hacerSeguimiento(idUser) {
 
 
 async function publicacionUsuarioSeguido(id, texto) {
-  console.log(";DSFSFSD"+texto)
-  console.log("assssssssssssssss")
+
   try {
 
     // Obtener datos del usuario
@@ -287,7 +288,7 @@ async function publicacionUsuarioSeguido(id, texto) {
     // Limpiar el contenedor antes de agregar nuevas publicaciones
     publicacionesUsuario.innerHTML = "";
 
-    for (const element of data) {
+    for (const element of data.reverse()) {
       // Solo mostrar botones si el usuario es el dueño de la publicación
       const esPropietario = id === element.userId;
 
@@ -319,7 +320,7 @@ async function publicacionUsuarioSeguido(id, texto) {
                 <p>${element.reactions.length}</p>
               </div>
               <div class="contenedorimgcoment">
-                <a href="#"><img src="/Images/Comentarios.png" alt="Icono de comentarios"></a>
+                <img src="/Images/Comentarios.png" alt="Icono de comentarios">
                 <p>${element.coments.length}</p>
               </div>
             </div>
@@ -381,9 +382,7 @@ async function publicacionUsuarioSeguido(id, texto) {
 }
 
 async function eliminarComentario3( idComentario, texto){
-  console.log(texto)
-  console.log("holaaaaaaaaaaaaaaaaaaaaa "+ idComentario)
-  console.log(urlComentario+idComentario)
+
   try {
     let token = localStorage.getItem("token");
     let response = await fetch(urlCommentario+idComentario, {
@@ -403,7 +402,7 @@ async function eliminarComentario3( idComentario, texto){
 
         
       } else {
-        console.log('Comentario eliminado exitosamente.');
+        alert('Comentario eliminado exitosamente.');
         buscarPublicaciones(texto);
       }
     } else {

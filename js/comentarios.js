@@ -1,9 +1,7 @@
 const urlComentario = "http://localhost:3002/api/comment";
 const token = localStorage.getItem("token");
 async function hacerComentarioPerfil(postId, texto) {
-    console.log(texto)
-    console.log(new Date().toISOString())
-    console.log("ID del post:", postId);
+
     
     // Buscar la publicación específica por su atributo data-postid
     const publicacion = document.querySelector(`[data-postid="${postId}"]`).closest(".publicacion");
@@ -22,7 +20,7 @@ async function hacerComentarioPerfil(postId, texto) {
     }
 
     let leercomentaroo = inputComentario.value.trim();
-    console.log("Comentario a enviar:", leercomentaroo);
+  
 
     if (!leercomentaroo) {
         console.error("El comentario está vacío");
@@ -50,7 +48,7 @@ async function hacerComentarioPerfil(postId, texto) {
         });
 
         if (respuesta.ok) {
-            console.log("Comentario enviado con éxito.");
+            alert("Comentario enviado con éxito.");
 
             // Limpiar el campo de comentario
             inputComentario.value = "";
@@ -58,8 +56,10 @@ async function hacerComentarioPerfil(postId, texto) {
             // Recargar los comentarios solo de esta publicación
             if (texto == localStorage.getItem("id")) {
               publicacionUsuario();
+            }else{
+              buscarPublicaciones(texto)
             }
-            buscarPublicaciones(texto)
+            
         } else {
             console.error("Error al enviar comentario:", respuesta.status);
         }
@@ -70,7 +70,6 @@ async function hacerComentarioPerfil(postId, texto) {
 
 
   async function hacerComentario(postId) {
-    console.log("ID del post:", postId);
   
     // Seleccionar el contenedor de la publicación específica
     let publicacionItem = document.querySelector(`[data-postid="${postId}"]`);
@@ -104,7 +103,7 @@ async function hacerComentarioPerfil(postId, texto) {
       idPost: postId,
     };
   
-    console.log("Enviando comentario:", datosEnvioComentario);
+  
   
     try {
       
@@ -121,7 +120,7 @@ async function hacerComentarioPerfil(postId, texto) {
   
       if (respuesta.ok) {
         const datos = await respuesta.json();
-        console.log("Comentario enviado con éxito:", datos);
+        alert("Comentario enviado con éxito:", datos);
         
         // Limpiar el campo de comentario después de enviar
         leerComentarioInput.value = "";
@@ -138,14 +137,14 @@ async function hacerComentarioPerfil(postId, texto) {
 
 
  async function insertarComentarios(comments, contenedor , prueba) {
-  console.log
+
     // Limpiar el contenedor de comentarios antes de agregar nuevos
     contenedor.innerHTML = "";
   
     const usuarioActualId = Number(localStorage.getItem("id"));
   
     // Iterar sobre los comentarios y agregarlos al contenedor
-    for (const comment of comments) {
+    for (const comment of comments.reverse()) {
     let urlUser = "http://localhost:3002/api/users/"+comment.idUser;
 
     // Obtener todas las publicaciones
@@ -161,7 +160,7 @@ async function hacerComentarioPerfil(postId, texto) {
       throw new Error(`Error en la solicitud de usuario`);
     }
 
-    let users = await responseUser.json();
+    let users= await responseUser.json();
       const esPropietario = usuarioActualId === comment.idUser;
       const botonesEdicion = esPropietario
         ? `
@@ -191,12 +190,12 @@ async function hacerComentarioPerfil(postId, texto) {
         if (btnEliminar && prueba == miId) {
 
           btnEliminar.addEventListener("click", function () {
-            console.log("el 2")
+            
             eliminarComentario2(comment.idComment,prueba);
           });
         }
         if (btnEliminar && prueba != miId) {
-          console.log("el 3")
+          
           btnEditar.addEventListener("click", function(){
             const seguido ="seguido"
             editarComentarioApartado(comment.idComment,prueba)
@@ -222,9 +221,7 @@ async function hacerComentarioPerfil(postId, texto) {
   var urlCommentario = 'http://localhost:3002/api/comment/';
 
 async function eliminarComentario2( idComentario, texto){
-  console.log(texto)
-  console.log("holaaaaaaaaaaaaaaaaaaaaa "+ idComentario)
-  console.log(urlComentario+idComentario)
+
   try {
     let token = localStorage.getItem("token");
     let response = await fetch(urlCommentario+idComentario, {
@@ -244,7 +241,7 @@ async function eliminarComentario2( idComentario, texto){
 
         
       } else {
-        console.log('Comentario eliminado exitosamente.');
+        alert('Comentario eliminado exitosamente.');
       }
     } else {
       console.error('Error al eliminar el usuario:', response.status);

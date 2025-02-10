@@ -63,7 +63,7 @@ async function loginUsuario(){
         localStorage.setItem("email", data.email);
         localStorage.setItem("id", data.idUser);
         localStorage.setItem("name", data.nameUser);
-        console.log("http://localhost:3002/api/comment");
+
         
         alert("Inicio de sesión exitoso.");
         window.location.href = "/html/inicio.html";
@@ -144,12 +144,7 @@ async function registrarUsuario(){
     const editBio = document.querySelector("#editBio").value.trim();
     const editcontraseña = document.querySelector("#editcontraseña").value.trim();
     const editcontraseñaConfirmar = document.querySelector("#editcontraseñaConfirmar").value.trim();
-    console.log(editnombreusuario);
-    console.log(editusuario);
-    console.log(editemail);
-    console.log(editBio);
-    console.log(editcontraseña);
-    console.log(editcontraseñaConfirmar);
+
   
     if (!editnombreusuario || !editusuario || !editemail || !editcontraseña || !editcontraseñaConfirmar || !editBio) {
       alert("Por favor, completa todos los campos obligatorios.");
@@ -191,7 +186,7 @@ async function registrarUsuario(){
 
           if (respuesta.ok) {
               const datos = await respuesta.json();
-              console.log('Datos registrados:', datos);
+              
               alert('Datos registrados:', datos);
           } else {
               console.error('Error al actualizar:', respuesta.status);
