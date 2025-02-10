@@ -47,7 +47,7 @@ _Aquí puedes pegar el diagrama UML generado con StarUML._
 ![Diagrama UML](/ParchApp%20E-R.png)
 
 ### 🖥️ Página principal y login
-_Aquí puedes pegar la captura de la página principal con el login._
+
 ![Lofin de la Página](/Images/login.png)
 ![Página Principal](/Images/inicio.png)
 
